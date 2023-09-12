@@ -1,9 +1,18 @@
-import React, { FormEvent, ReactEventHandler, useState } from "react";
+import React, {
+  FormEvent,
+  ReactEventHandler,
+  useEffect,
+  useState,
+} from "react";
 
 import {
+  IonButton,
   IonContent,
   IonHeader,
   IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -18,6 +27,28 @@ const Tab1: React.FC = () => {
 
   const [anchorId, setAnchorId] = useState("");
   const [ownerId, setOwnerId] = useState("");
+
+  // useEffect(() => {
+  //   console.log(anchors.length);
+  //   getAnchors();
+  // }, [anchors.length]);
+
+  const getAnchors = () => {
+    fetch("http://localhost:5000/", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        query,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => setAnchors(res.data.anchors));
+  };
+
   console.log(anchors);
   return (
     <>
@@ -28,9 +59,7 @@ const Tab1: React.FC = () => {
           label="Owner ID"
           defaultValue=""
           value={ownerId}
-          onChange={(event: React.ChangeEvent<HTMLIonInputElement>) =>
-            setOwnerId(event.target.value as string)
-          }
+          onIonInput={(event: any) => setOwnerId(event.target.value as string)}
         />
         <IonInput
           required
@@ -38,34 +67,23 @@ const Tab1: React.FC = () => {
           label="Anchor Name"
           defaultValue=""
           value={anchorId}
-          onChange={(event: React.ChangeEvent<HTMLIonInputElement>) =>
-            setOwnerId(event.target.value as string)
-          }
+          onIonInput={(event: any) => {
+            console.log(event.target);
+            setAnchorId(event.target.value as string);
+          }}
+          // onChange={(event: React.ChangeEvent<HTMLIonInputElement>) => {
+          //   console.log(event.target);
+          //   setOwnerId(event.target.value as string);
+          // }}
         />
       </div>
 
       <div>
-        <button
+        <IonButton onClick={getAnchors}>Read Anchor</IonButton>
+        <IonButton
           onClick={() => {
-            fetch("http://localhost:5000/", {
-              method: "POST",
-
-              headers: {
-                "Content-Type": "application/json",
-              },
-
-              body: JSON.stringify({
-                query,
-              }),
-            })
-              .then((res) => res.json())
-              .then((res) => setAnchors(res.data.anchors));
-          }}
-        >
-          Read Anchor
-        </button>
-        <button
-          onClick={() => {
+            console.log("aaaaa");
+            console.log(anchorId, ownerId);
             fetch("http://localhost:5000/", {
               method: "POST",
               headers: {
@@ -83,20 +101,45 @@ const Tab1: React.FC = () => {
               }),
             })
               .then((res) => res.json())
-              .then((res) => console.log(res.data));
+              .then((res) => getAnchors());
           }}
         >
           Create Anchor
-        </button>
+        </IonButton>
       </div>
-      {anchors &&
-        anchors.length > 0 &&
-        anchors.map((anchor, index) => (
-          <div key={index}>
-            <span>{anchor.anchor_name}</span> from {anchor.owner_id}{" "}
-            <button>Delete me</button>
-          </div>
-        ))}
+      <IonList>
+        {anchors &&
+          anchors.length > 0 &&
+          anchors.map((anchor, index) => (
+            <IonItem key={index}>
+              <IonLabel>
+                {anchor.anchor_name} from {anchor.owner_id}
+              </IonLabel>
+              <IonButton
+                onClick={() => {
+                  console.log(anchor.id);
+                  fetch("http://localhost:5000/", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+
+                    body: JSON.stringify({
+                      query: delete_mutation,
+                      variables: {
+                        deleteAnchorId: anchor.id,
+                      },
+                    }),
+                  })
+                    .then((res) => res.json())
+                    .then((res) => getAnchors());
+                }}
+              >
+                Delete me
+              </IonButton>
+            </IonItem>
+          ))}
+      </IonList>
     </>
   );
 };

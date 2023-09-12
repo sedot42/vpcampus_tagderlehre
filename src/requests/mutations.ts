@@ -7,9 +7,6 @@ created_at
 }
 }`;
 
-export const delete_mutation = `mutation DeleteAnchor($anchor: id){
-deleteAnchor(id: $deleteAnchorId) {
-anchor_name
-id
-}
+export const delete_mutation = `mutation DeleteAnchor($deleteAnchorId: String!){
+deleteAnchor(id: $deleteAnchorId) 
 }`;
