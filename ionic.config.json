@@ -1,0 +1,7 @@
+{
+  "name": "campus-v-p-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
