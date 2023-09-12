@@ -5,9 +5,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./Tab2.css";
 
-const Tab2: React.FC = () => {
+const Tab2 = () => {
   return (
     <IonPage>
       <IonHeader>

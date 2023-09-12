@@ -1,37 +1,19 @@
-import React, {
-  FormEvent,
-  ReactEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import React, { useState } from "react";
 
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
-import "./Tab1.css";
+import { IonButton, IonInput, IonItem, IonLabel, IonList } from "@ionic/react";
 import { create_mutation, delete_mutation } from "../requests/mutations";
 import { query } from "../requests/queries";
 import { Anchor } from "../types/types";
 
-const Tab1: React.FC = () => {
-  const [anchors, setAnchors] = useState<Anchor[]>([]);
-
+const Tab1 = ({
+  anchors,
+  setAnchors,
+}: {
+  anchors: Anchor[];
+  setAnchors: (anchors: Anchor[]) => void;
+}) => {
   const [anchorId, setAnchorId] = useState("");
   const [ownerId, setOwnerId] = useState("");
-
-  // useEffect(() => {
-  //   console.log(anchors.length);
-  //   getAnchors();
-  // }, [anchors.length]);
 
   const getAnchors = () => {
     fetch("http://localhost:5000/", {
@@ -49,7 +31,6 @@ const Tab1: React.FC = () => {
       .then((res) => setAnchors(res.data.anchors));
   };
 
-  console.log(anchors);
   return (
     <>
       <div>
@@ -68,13 +49,8 @@ const Tab1: React.FC = () => {
           defaultValue=""
           value={anchorId}
           onIonInput={(event: any) => {
-            console.log(event.target);
             setAnchorId(event.target.value as string);
           }}
-          // onChange={(event: React.ChangeEvent<HTMLIonInputElement>) => {
-          //   console.log(event.target);
-          //   setOwnerId(event.target.value as string);
-          // }}
         />
       </div>
 
@@ -82,8 +58,6 @@ const Tab1: React.FC = () => {
         <IonButton onClick={getAnchors}>Read Anchor</IonButton>
         <IonButton
           onClick={() => {
-            console.log("aaaaa");
-            console.log(anchorId, ownerId);
             fetch("http://localhost:5000/", {
               method: "POST",
               headers: {
@@ -101,7 +75,7 @@ const Tab1: React.FC = () => {
               }),
             })
               .then((res) => res.json())
-              .then((res) => getAnchors());
+              .then(() => getAnchors());
           }}
         >
           Create Anchor
@@ -117,7 +91,6 @@ const Tab1: React.FC = () => {
               </IonLabel>
               <IonButton
                 onClick={() => {
-                  console.log(anchor.id);
                   fetch("http://localhost:5000/", {
                     method: "POST",
                     headers: {
@@ -132,7 +105,7 @@ const Tab1: React.FC = () => {
                     }),
                   })
                     .then((res) => res.json())
-                    .then((res) => getAnchors());
+                    .then(() => getAnchors());
                 }}
               >
                 Delete me
