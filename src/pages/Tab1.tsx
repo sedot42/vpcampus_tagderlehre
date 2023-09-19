@@ -55,7 +55,7 @@ const Tab1 = ({
       </div>
 
       <div>
-        <IonButton onClick={getAnchors}>Read Anchor</IonButton>
+        
         <IonButton
           onClick={() => {
             fetch("http://localhost:5000/", {
@@ -81,38 +81,7 @@ const Tab1 = ({
           Create Anchor
         </IonButton>
       </div>
-      <IonList>
-        {anchors &&
-          anchors.length > 0 &&
-          anchors.map((anchor, index) => (
-            <IonItem key={index}>
-              <IonLabel>
-                {anchor.anchor_name} from {anchor.owner_id}
-              </IonLabel>
-              <IonButton
-                onClick={() => {
-                  fetch("http://localhost:5000/", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
 
-                    body: JSON.stringify({
-                      query: delete_mutation,
-                      variables: {
-                        deleteAnchorId: anchor.id,
-                      },
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then(() => getAnchors());
-                }}
-              >
-                Delete me
-              </IonButton>
-            </IonItem>
-          ))}
-      </IonList>
     </>
   );
 };
