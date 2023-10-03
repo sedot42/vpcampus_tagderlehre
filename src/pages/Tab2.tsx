@@ -28,8 +28,6 @@ const Tab2 = ({
   setAnchors: (anchors: Anchor[]) => void;
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  // const input_anchor_name = useRef<HTMLIonInputElement>(null);
-  // const input_owner_id = useRef<HTMLIonInputElement>(null);
 
   const defaultAnchor = { id: "", anchor_name: "", owner_id: "" };
   const [openModal, setOpenModal] = useState(false);
@@ -111,35 +109,6 @@ const Tab2 = ({
                 >
                   Delete me
                 </IonButton>
-                {/* <IonButton
-                onClick={() => {
-                  console.log('inside the event');
-                  fetch("http://localhost:5000/", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-
-                    body: JSON.stringify({
-                      query: update_mutation,
-                      variables: {
-                        updateAnchorId: anchor.id,
-                        anchor: {
-                          anchor_name: anchorId,
-                          owner_id: ownerId,
-                        },
-                      },
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then(responseData => {console.log(responseData); return responseData;})
-                    .then(() => getAnchors()
-                    );
-                    
-                }}
-              >
-                Update me
-              </IonButton> */}
 
                 <IonButton
                   id={"open-modal-" + index}
@@ -151,64 +120,7 @@ const Tab2 = ({
                 >
                   Update me
                 </IonButton>
-                {/* <IonModal isOpen={openModal}>
-                  <IonHeader>
-                  <IonToolbar>
-                  <IonButtons slot="start">
-                  <IonButton onClick={() => setOpenModal(false)}>
-                  Cancel
-                  </IonButton>
-                  </IonButtons>
-                  <IonTitle>Item Number {index}</IonTitle>
-                  <IonButtons slot="end">
-                  <IonButton
-                  strong={true}
-                  onClick={() => {
-                    confirm(
-                      anchor.anchor_name,
-                      anchor.owner_id,
-                      anchor.id
-                      );
-                      setOpenModal(false);
-                    }}
-                    >
-                    Confirm
-                    </IonButton>
-                    </IonButtons>
-                    </IonToolbar>
-                    </IonHeader>
-                    <IonContent className="ion-padding">
-                    <IonItem>
-                    <div>
-                    <p>{anchor.id}</p>
-                    <IonInput
-                    value={anchor.anchor_name}
-                    type="text"
-                    placeholder="anchor_name"
-                    onChange={(e) =>
-                      setNewAnchorName(
-                        e &&
-                        e.currentTarget &&
-                        (e.currentTarget.value as string)
-                        )
-                      }
-                      />
-                      <IonInput
-                      value={anchor.owner_id}
-                      type="text"
-                      placeholder="owner_id"
-                      onChange={(e) =>
-                        setNewOwnerId(
-                          e &&
-                          e.currentTarget &&
-                          (e.currentTarget.value as string)
-                          )
-                        }
-                        />
-                        </div>
-                        </IonItem>
-                        </IonContent>
-                      </IonModal> */}
+
               </IonItem>
             ))}
 
