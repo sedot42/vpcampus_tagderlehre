@@ -51,7 +51,7 @@ const App: React.FC = () => {
               <Tab1 anchors={anchors} setAnchors={setAnchors} />
             </Route>
             <Route exact path="/tab2">
-              <Tab2 />
+              <Tab2 anchors={anchors} setAnchors={setAnchors} />
             </Route>
             <Route path="/tab3">
               <Tab3 />
