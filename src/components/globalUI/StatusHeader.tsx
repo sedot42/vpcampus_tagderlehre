@@ -23,6 +23,7 @@ export const StatusHeader = ({
     <IonHeader
       style={{
         boxShadow: BOXSHADOW,
+        backgroundColor: COLOR.white,
       }}
     >
       <div

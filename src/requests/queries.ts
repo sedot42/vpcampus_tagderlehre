@@ -3,5 +3,6 @@ export const query = `query ExampleQuery{
     anchor_name
     owner_id
     id
+    created_at
   }
 }`;

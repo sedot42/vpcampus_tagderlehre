@@ -60,6 +60,7 @@ export const FindAnchorComponent = ({
                 <IonCardHeader>
                   <IonCardTitle>{anchor.anchor_name || "-"}</IonCardTitle>
                   <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
+                  <IonCardSubtitle> {anchor.created_at || "-"}</IonCardSubtitle>
                 </IonCardHeader>
 
                 <IonCardContent>
