@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
+import { IonPage, IonButton, IonIcon, IonModal, IonInput } from "@ionic/react";
+import { StatusHeader } from "../globalUI/StatusHeader";
+import { create_mutation, delete_mutation } from "../../requests/mutations";
+import { query } from "../../requests/queries";
+import { Anchor } from "../../types/types";
 
-import { IonButton, IonInput, IonItem, IonLabel, IonList } from "@ionic/react";
-import { create_mutation, delete_mutation } from "../requests/mutations";
-import { query } from "../requests/queries";
-import { Anchor } from "../types/types";
-
-const Tab1 = ({
-  anchors,
-  setAnchors,
-}: {
+type CreateAnchorProps = {
   anchors: Anchor[];
   setAnchors: (anchors: Anchor[]) => void;
-}) => {
+};
+
+export const CreateAnchorComponent = ({
+  anchors,
+  setAnchors,
+}: CreateAnchorProps) => {
   const [anchorId, setAnchorId] = useState("");
   const [ownerId, setOwnerId] = useState("");
 
@@ -30,15 +32,16 @@ const Tab1 = ({
       .then((res) => res.json())
       .then((res) => setAnchors(res.data.anchors));
   };
-
   return (
-    <>
+    <IonPage>
+      <StatusHeader titleText="Anker erstellen" />
+
       <div>
         <IonInput
           required
           id="outlined-required"
           label="Owner ID"
-          defaultValue=""
+          placeholder="Owner"
           value={ownerId}
           onIonInput={(event: any) => setOwnerId(event.target.value as string)}
         />
@@ -46,7 +49,7 @@ const Tab1 = ({
           required
           id="outlined-required"
           label="Anchor Name"
-          defaultValue=""
+          placeholder="Anchor Name"
           value={anchorId}
           onIonInput={(event: any) => {
             setAnchorId(event.target.value as string);
@@ -55,7 +58,6 @@ const Tab1 = ({
       </div>
 
       <div>
-        
         <IonButton
           onClick={() => {
             fetch("http://localhost:5000/", {
@@ -81,9 +83,6 @@ const Tab1 = ({
           Create Anchor
         </IonButton>
       </div>
-
-    </>
+    </IonPage>
   );
 };
-
-export default Tab1;

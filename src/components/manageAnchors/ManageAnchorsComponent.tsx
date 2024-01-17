@@ -1,32 +1,30 @@
+import { useState, useRef, useContext, useEffect } from "react";
 import {
+  IonPage,
   IonContent,
   IonHeader,
-  IonPage,
   IonTitle,
   IonToolbar,
   IonLabel,
   IonButton,
   IonItem,
   IonList,
-  IonModal,
-  IonButtons,
-  IonInput,
 } from "@ionic/react";
-import { Anchor } from "../types/types";
-import React, { useState, useRef } from "react";
-import { delete_mutation, update_mutation } from "../requests/mutations";
-import { query } from "../requests/queries";
-import UpdateAnchor from "./UpdateAnchor";
-import { OverlayEventDetail } from "@ionic/core/components";
-import { UpdateModal } from "../components/UpdateModal";
+import { StatusHeader } from "../globalUI/StatusHeader";
+import { create_mutation, delete_mutation } from "../../requests/mutations";
+import { query } from "../../requests/queries";
+import { Anchor } from "../../types/types";
+import { UpdateModal } from "../../components/UpdateModal";
 
-const Tab2 = ({
-  anchors,
-  setAnchors,
-}: {
+type ManageAnchorProps = {
   anchors: Anchor[];
   setAnchors: (anchors: Anchor[]) => void;
-}) => {
+};
+
+export const ManageAnchorComponent = ({
+  anchors,
+  setAnchors,
+}: ManageAnchorProps) => {
   const modal = useRef<HTMLIonModalElement>(null);
 
   const defaultAnchor = { id: "", anchor_name: "", owner_id: "" };
@@ -36,16 +34,6 @@ const Tab2 = ({
   const [message, setMessage] = useState(
     "This modal example uses triggers to automatically open a modal when the button is clicked."
   );
-
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-    if (ev.detail.role === "confirm") {
-      setMessage(`Hello, ${ev.detail.data}!`);
-    }
-  }
-
-  //const [anchorId, setAnchorId] = useState("");
-  //const [ownerId, setOwnerId] = useState("");
-  //const [editingAnchor, setEditingAnchor] = useState(null)
 
   const getAnchors = () => {
     fetch("http://localhost:5000/", {
@@ -60,26 +48,21 @@ const Tab2 = ({
       }),
     })
       .then((res) => res.json())
-      .then((res) => setAnchors(res.data.anchors));
+      .then((res) => setAnchors(res.data.anchors))
+      .catch((e) => {
+        console.log(e);
+        setAnchors([defaultAnchor]);
+      });
   };
+
+  useEffect(() => {
+    getAnchors();
+  }, []);
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <StatusHeader titleText="Anker verwalten" />
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-
-        <div>
-          <IonButton onClick={getAnchors}>Read Anchor</IonButton>
-        </div>
-
         <IonList>
           {anchors &&
             anchors.length > 0 &&
@@ -120,7 +103,6 @@ const Tab2 = ({
                 >
                   Update me
                 </IonButton>
-
               </IonItem>
             ))}
 
@@ -135,5 +117,3 @@ const Tab2 = ({
     </IonPage>
   );
 };
-
-export default Tab2;
