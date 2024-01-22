@@ -10,43 +10,13 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { query } from "../../requests/queries";
 import { Anchor } from "../../types/types";
+import { AnchorContext } from "../../context";
 
-type FindAnchorProps = {
-  anchors: Anchor[];
-  setAnchors: (anchors: Anchor[]) => void;
-};
+export const FindAnchorComponent = () => {
+  const { getAnchors } = useContext(AnchorContext);
 
-export const FindAnchorComponent = ({
-  anchors,
-  setAnchors,
-}: FindAnchorProps) => {
-  const defaultAnchor = { id: "", anchor_name: "", owner_id: "" };
-
-  const getAnchors = () => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        query,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => setAnchors(res.data.anchors))
-      .catch((e) => {
-        console.log(e);
-        setAnchors([defaultAnchor]);
-      });
-  };
-
-  useEffect(() => {
-    getAnchors();
-  }, []);
+  const anchors = getAnchors();
 
   return (
     <IonPage>

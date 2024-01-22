@@ -24,7 +24,7 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { create_mutation, delete_mutation } from "../../requests/mutations";
 import { query } from "../../requests/queries";
 import { Anchor } from "../../types/types";
-import { UpdateModal } from "../../components/UpdateModal";
+import { UpdateModal } from "./UpdateModal";
 
 type ManageAnchorProps = {
   anchors: Anchor[];
