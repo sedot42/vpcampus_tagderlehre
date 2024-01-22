@@ -2,14 +2,24 @@ import { useState, useRef, useContext, useEffect } from "react";
 import {
   IonPage,
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
+  IonIcon,
   IonLabel,
+  IonToolbar,
   IonButton,
   IonItem,
   IonList,
+  IonNote,
+  IonText,
 } from "@ionic/react";
+import {
+  trashOutline,
+  build,
+  ellipse,
+  searchOutline,
+  settingsOutline,
+  square,
+  triangle,
+} from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { create_mutation, delete_mutation } from "../../requests/mutations";
 import { query } from "../../requests/queries";
@@ -69,9 +79,31 @@ export const ManageAnchorComponent = ({
             anchors.map((anchor, index) => (
               <IonItem key={index}>
                 <IonLabel>
-                  {anchor.anchor_name} from {anchor.owner_id} and id {anchor.id}
+                  <div style={{ fontWeight: 700, padding: "6px 0" }}>
+                    {anchor.anchor_name}
+                  </div>
+                  <IonNote color="medium">
+                    Von: {anchor.owner_id}
+                    <br />
+                    Um: {anchor.created_at || "-"}
+                  </IonNote>
                 </IonLabel>
+
                 <IonButton
+                  id={"open-modal-" + index}
+                  expand="block"
+                  color="primary"
+                  fill="clear"
+                  onClick={() => {
+                    setModalData(anchor);
+                    setOpenModal(true);
+                  }}
+                >
+                  <IonIcon aria-hidden="true" icon={build} />
+                </IonButton>
+                <IonButton
+                  fill="clear"
+                  color="danger"
                   onClick={() => {
                     fetch("http://localhost:5000/", {
                       method: "POST",
@@ -90,18 +122,7 @@ export const ManageAnchorComponent = ({
                       .then(() => getAnchors());
                   }}
                 >
-                  Delete me
-                </IonButton>
-
-                <IonButton
-                  id={"open-modal-" + index}
-                  expand="block"
-                  onClick={() => {
-                    setModalData(anchor);
-                    setOpenModal(true);
-                  }}
-                >
-                  Update me
+                  <IonIcon aria-hidden="true" icon={trashOutline} />
                 </IonButton>
               </IonItem>
             ))}

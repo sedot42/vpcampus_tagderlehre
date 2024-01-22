@@ -2,8 +2,8 @@
 /** Colors **/
 
 export enum COLOR {
-    white = "FFFFFF",
-    black = "000000",
+    white = "#ffffff",
+    black = "#000000",
 
     protored = "#A31111",
     protoredShade = "#8f0f0f",
