@@ -1,5 +1,5 @@
 import { Anchor } from "../../types/types";
-import React, { useState, useRef, useContext } from "react";
+import { useContext } from "react";
 
 import {
   IonContent,
@@ -15,7 +15,7 @@ import {
   IonItemDivider,
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
-import { createInputs } from "../globalUI/GenericFields";
+import { Config, createInputs } from "../globalUI/GenericFields";
 import { AnchorContext } from "../../context";
 
 export const UpdateModal = ({
@@ -30,7 +30,7 @@ export const UpdateModal = ({
   setOpenModal: (openModal: boolean) => void;
 }) => {
   const { updateOneAnchor } = useContext(AnchorContext);
-  const config = [
+  const config: Config[] = [
     {
       required: true,
       property: "owner_id",

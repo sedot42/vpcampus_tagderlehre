@@ -17,4 +17,4 @@ export const update_mutation = `mutation UpdateAnchor($anchor: AnchorInput){
         anchor_name
         owner_id
     }
-    }`;
+}`;

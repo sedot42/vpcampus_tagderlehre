@@ -1,19 +1,16 @@
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   IonPage,
   IonContent,
   IonIcon,
   IonLabel,
-  IonToolbar,
   IonButton,
   IonItem,
   IonList,
   IonNote,
-  IonText,
 } from "@ionic/react";
 import { trashOutline, build } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { create_mutation, delete_mutation } from "../../requests/mutations";
 import { AnchorContext } from "../../context";
 
 import { Anchor } from "../../types/types";
@@ -22,11 +19,9 @@ import { defaultAnchor } from "../../types/defaults";
 
 export const ManageAnchorComponent = () => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
-  const modal = useRef<HTMLIonModalElement>(null);
 
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor>(defaultAnchor);
-  console.log(anchors);
 
   return (
     <IonPage>
@@ -72,7 +67,6 @@ export const ManageAnchorComponent = () => {
               </IonItem>
             ))}
 
-          {/* Needs to be outside of mapping function and gets populated with the data from the row where the update button has been clicked (via setModalData): */}
           <UpdateModal
             modalData={modalData}
             setModalData={setModalData}
