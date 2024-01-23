@@ -26,6 +26,7 @@ export const ManageAnchorComponent = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor>(defaultAnchor);
+  console.log(anchors);
 
   return (
     <IonPage>
@@ -73,7 +74,8 @@ export const ManageAnchorComponent = () => {
 
           {/* Needs to be outside of mapping function and gets populated with the data from the row where the update button has been clicked (via setModalData): */}
           <UpdateModal
-            anchor={modalData}
+            modalData={modalData}
+            setModalData={setModalData}
             openModal={openModal}
             setOpenModal={setOpenModal}
           />

@@ -1,18 +1,24 @@
 import { useState, createContext, useEffect } from "react";
 import { query } from "./requests/queries";
-import { create_mutation, delete_mutation } from "./requests/mutations";
+import {
+  create_mutation,
+  delete_mutation,
+  update_mutation,
+} from "./requests/mutations";
 
 import { Anchor } from "./types/types";
 import { defaultAnchor } from "./types/defaults";
 
 export type AnchorContextType = {
   setOneAnchor: (anchor: Anchor) => void;
+  updateOneAnchor: (anchor: Anchor) => void;
   deleteOneAnchor: (anchor: Anchor) => void;
   anchors: Anchor[];
 };
 
 export const AnchorContext = createContext<AnchorContextType>({
   setOneAnchor: () => {},
+  updateOneAnchor: () => {},
   deleteOneAnchor: () => {},
   anchors: [],
 });
@@ -67,6 +73,27 @@ export const AnchorProvider = ({ children }: Props) => {
       .then(() => fetchAnchors());
   };
 
+  const updateOneAnchor = (anchor: Anchor) => {
+    fetch("http://localhost:5000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: update_mutation,
+        variables: {
+          anchor: {
+            id: anchor.id,
+            anchor_name: anchor.anchor_name, //"e976e882-50aa-428e-a831-00749d7db311",
+            owner_id: anchor.owner_id,
+          },
+        },
+      }),
+    })
+      .then((response) => response.json())
+      .then(() => fetchAnchors());
+  };
+
   const deleteOneAnchor = (anchor: Anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
@@ -89,6 +116,7 @@ export const AnchorProvider = ({ children }: Props) => {
     <AnchorContext.Provider
       value={{
         setOneAnchor,
+        updateOneAnchor,
         deleteOneAnchor,
         anchors,
       }}

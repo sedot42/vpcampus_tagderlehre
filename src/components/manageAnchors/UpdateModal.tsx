@@ -1,65 +1,49 @@
 import { Anchor } from "../../types/types";
-import React, { useState, useRef } from "react";
-import { delete_mutation, update_mutation } from "../../requests/mutations";
+import React, { useState, useRef, useContext } from "react";
 
 import {
   IonContent,
   IonHeader,
-  IonPage,
   IonTitle,
   IonToolbar,
-  IonLabel,
   IonButton,
-  IonItem,
-  IonList,
   IonModal,
   IonButtons,
-  IonInput,
   IonFooter,
   IonIcon,
   IonText,
   IonItemDivider,
 } from "@ionic/react";
-import { build, closeCircleOutline, closeOutline } from "ionicons/icons";
+import { closeOutline } from "ionicons/icons";
+import { createInputs } from "../globalUI/GenericFields";
+import { AnchorContext } from "../../context";
 
 export const UpdateModal = ({
-  anchor,
+  modalData,
+  setModalData,
   openModal,
   setOpenModal,
 }: {
-  anchor: Anchor;
+  modalData: Anchor;
+  setModalData: (anchor: Anchor) => void;
   openModal: boolean;
   setOpenModal: (openModal: boolean) => void;
 }) => {
-  const [newAnchorName, setNewAnchorName] = useState("");
-  const [newOwnerId, setNewOwnerId] = useState("");
-
-  const triggerUpdate = (anchor_name: string, owner_id: string, id: string) => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: update_mutation,
-        variables: {
-          anchor: {
-            id: id,
-            anchor_name: anchor_name, //"e976e882-50aa-428e-a831-00749d7db311",
-            owner_id: owner_id,
-          },
-        },
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Anchor updated:", data.data.updateAnchor);
-      })
-      .catch((error) => {
-        console.error("Error updating anchor:", error);
-        // Handle error, show an error message
-      });
-  };
+  const { updateOneAnchor } = useContext(AnchorContext);
+  const config = [
+    {
+      required: true,
+      property: "owner_id",
+      placeholder: "Owner",
+      label: "Owner",
+    },
+    {
+      required: true,
+      property: "anchor_name",
+      placeholder: "Anchor",
+      label: "Anchor",
+    },
+  ];
 
   return (
     <IonModal isOpen={openModal}>
@@ -75,45 +59,21 @@ export const UpdateModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <div>
-          <IonInput
-            label="Titel"
-            labelPlacement="stacked"
-            clearInput={true}
-            value={newAnchorName}
-            type="text"
-            placeholder={anchor.anchor_name}
-            onIonInput={(event) =>
-              setNewAnchorName(event.target.value as string)
-            }
-          />
-          <IonInput
-            label="Ersteller"
-            labelPlacement="stacked"
-            clearInput={true}
-            value={newOwnerId}
-            placeholder={anchor.owner_id}
-            type="text"
-            onIonInput={(event) => {
-              setNewOwnerId(event.target.value as string);
-            }}
-          />
-        </div>
+        {createInputs(modalData, setModalData, config)}
         <IonItemDivider />
-
         <br />
-        <IonText color="medium">ID: {anchor.id}</IonText>
+        <IonText color="medium">ID: {modalData.id}</IonText>
         <br />
-        <IonText color="medium">Created: {anchor.created_at}</IonText>
+        <IonText color="medium">Created: {modalData.created_at}</IonText>
         <br />
-        <IonText color="medium">Update: {anchor.updated_at}</IonText>
+        <IonText color="medium">Update: {modalData.updated_at}</IonText>
       </IonContent>
       <IonFooter style={{ display: "flex", justifyContent: "center" }}>
         <IonButton
           fill="clear"
           strong={true}
           onClick={() => {
-            triggerUpdate(newAnchorName, newOwnerId, anchor.id);
+            updateOneAnchor(modalData);
             setOpenModal(false);
           }}
         >

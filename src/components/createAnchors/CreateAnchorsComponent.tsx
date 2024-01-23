@@ -1,5 +1,11 @@
 import { useState, useRef, useContext, useEffect } from "react";
-import { IonPage, IonButton, IonIcon, IonModal, IonInput } from "@ionic/react";
+import {
+  IonPage,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonInput,
+} from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { query } from "../../requests/queries";
 import { Anchor } from "../../types/types";
@@ -19,10 +25,9 @@ export const CreateAnchorComponent = () => {
     <IonPage>
       <StatusHeader titleText="Anker erstellen" />
 
-      <div>
+      <IonContent fullscreen>
         <IonInput
           required
-          id="outlined-required"
           label="Owner ID"
           placeholder="Owner"
           value={localAnchor.owner_id}
@@ -46,7 +51,7 @@ export const CreateAnchorComponent = () => {
             });
           }}
         />
-      </div>
+      </IonContent>
 
       <div>
         <IonButton onClick={() => setOneAnchor(localAnchor)}>
