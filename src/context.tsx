@@ -1,17 +1,20 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { query } from "./requests/queries";
+import { create_mutation, delete_mutation } from "./requests/mutations";
 
 import { Anchor } from "./types/types";
 import { defaultAnchor } from "./types/defaults";
 
 export type AnchorContextType = {
-  getAnchors: () => Anchor[];
-  setAnchor: (anchor: Anchor) => void;
+  setOneAnchor: (anchor: Anchor) => void;
+  deleteOneAnchor: (anchor: Anchor) => void;
+  anchors: Anchor[];
 };
 
 export const AnchorContext = createContext<AnchorContextType>({
-  getAnchors: () => [],
-  setAnchor: () => {},
+  setOneAnchor: () => {},
+  deleteOneAnchor: () => {},
+  anchors: [],
 });
 
 type Props = { children: React.ReactElement | React.ReactElement[] };
@@ -19,7 +22,8 @@ type Props = { children: React.ReactElement | React.ReactElement[] };
 export const AnchorProvider = ({ children }: Props) => {
   const [anchors, setAnchors] = useState<Anchor[]>([]);
 
-  const getAnchors = () => {
+  // Don`t expose this method outside this component. It is used to populate state, share state instead.
+  const fetchAnchors = () => {
     fetch("http://localhost:5000/", {
       method: "POST",
 
@@ -37,16 +41,56 @@ export const AnchorProvider = ({ children }: Props) => {
         console.log(e);
         setAnchors([defaultAnchor]);
       });
-    return anchors;
   };
 
-  const setAnchor = () => []; // todos
+  // Populate app state
+  useEffect(() => fetchAnchors(), [children]);
+
+  const setOneAnchor = (anchor: Anchor) => {
+    fetch("http://localhost:5000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        query: create_mutation,
+        variables: {
+          anchor: {
+            anchor_name: anchor.anchor_name,
+            owner_id: anchor.owner_id,
+          },
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => fetchAnchors());
+  };
+
+  const deleteOneAnchor = (anchor: Anchor) => {
+    fetch("http://localhost:5000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        query: delete_mutation,
+        variables: {
+          deleteAnchorId: anchor.id,
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then(() => fetchAnchors());
+  };
 
   return (
     <AnchorContext.Provider
       value={{
-        getAnchors,
-        setAnchor,
+        setOneAnchor,
+        deleteOneAnchor,
+        anchors,
       }}
     >
       {children}

@@ -11,63 +11,21 @@ import {
   IonNote,
   IonText,
 } from "@ionic/react";
-import {
-  trashOutline,
-  build,
-  ellipse,
-  searchOutline,
-  settingsOutline,
-  square,
-  triangle,
-} from "ionicons/icons";
+import { trashOutline, build } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { create_mutation, delete_mutation } from "../../requests/mutations";
-import { query } from "../../requests/queries";
+import { AnchorContext } from "../../context";
+
 import { Anchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
+import { defaultAnchor } from "../../types/defaults";
 
-type ManageAnchorProps = {
-  anchors: Anchor[];
-  setAnchors: (anchors: Anchor[]) => void;
-};
-
-export const ManageAnchorComponent = ({
-  anchors,
-  setAnchors,
-}: ManageAnchorProps) => {
+export const ManageAnchorComponent = () => {
+  const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   const modal = useRef<HTMLIonModalElement>(null);
 
-  const defaultAnchor = { id: "", anchor_name: "", owner_id: "" };
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor>(defaultAnchor);
-
-  const [message, setMessage] = useState(
-    "This modal example uses triggers to automatically open a modal when the button is clicked."
-  );
-
-  const getAnchors = () => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        query,
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => setAnchors(res.data.anchors))
-      .catch((e) => {
-        console.log(e);
-        setAnchors([defaultAnchor]);
-      });
-  };
-
-  useEffect(() => {
-    getAnchors();
-  }, []);
 
   return (
     <IonPage>
@@ -105,21 +63,7 @@ export const ManageAnchorComponent = ({
                   fill="clear"
                   color="danger"
                   onClick={() => {
-                    fetch("http://localhost:5000/", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-
-                      body: JSON.stringify({
-                        query: delete_mutation,
-                        variables: {
-                          deleteAnchorId: anchor.id,
-                        },
-                      }),
-                    })
-                      .then((res) => res.json())
-                      .then(() => getAnchors());
+                    deleteOneAnchor(anchor);
                   }}
                 >
                   <IonIcon aria-hidden="true" icon={trashOutline} />

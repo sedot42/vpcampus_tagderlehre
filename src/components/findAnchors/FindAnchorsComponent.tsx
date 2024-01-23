@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
   IonPage,
   IonContent,
@@ -10,13 +10,10 @@ import {
   IonCardTitle,
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { Anchor } from "../../types/types";
 import { AnchorContext } from "../../context";
 
 export const FindAnchorComponent = () => {
-  const { getAnchors } = useContext(AnchorContext);
-
-  const anchors = getAnchors();
+  const { anchors } = useContext(AnchorContext);
 
   return (
     <IonPage>

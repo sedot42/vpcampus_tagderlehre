@@ -50,7 +50,7 @@ import { AnchorProvider } from "./context";
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [anchors, setAnchors] = useState<Anchor[]>([]);
+  // const [anchors, setAnchors] = useState<Anchor[]>([]);
 
   return (
     <AnchorProvider>
@@ -66,14 +66,14 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/createAnchors">
                 <CreateAnchorComponent
-                  anchors={anchors}
-                  setAnchors={setAnchors}
+                // anchors={anchors}
+                // setAnchors={setAnchors}
                 />
               </Route>
               <Route path="/manageAnchors">
                 <ManageAnchorComponent
-                  anchors={anchors}
-                  setAnchors={setAnchors}
+                // anchors={anchors}
+                // setAnchors={setAnchors}
                 />
               </Route>
               <Route path="/settings">
