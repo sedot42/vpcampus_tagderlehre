@@ -19,6 +19,7 @@ export const createInputs = (
     <IonInput
       labelPlacement="stacked"
       type="text"
+      style={{ margin: "16px 0 16px 0" }}
       required={entry.required}
       fill={entry.fill || undefined}
       key={index}
