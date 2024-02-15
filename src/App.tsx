@@ -14,11 +14,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import {
   addOutline,
   createOutline,
-  ellipse,
   searchOutline,
   settingsOutline,
-  square,
-  triangle,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -50,8 +47,6 @@ import { AnchorProvider } from "./context";
 setupIonicReact();
 
 const App: React.FC = () => {
-  // const [anchors, setAnchors] = useState<Anchor[]>([]);
-
   return (
     <AnchorProvider>
       <IonApp>
@@ -59,22 +54,13 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/findAnchors">
-                <FindAnchorComponent
-                // anchors={anchors}
-                // setAnchors={setAnchors}
-                />
+                <FindAnchorComponent />
               </Route>
               <Route exact path="/createAnchors">
-                <CreateAnchorComponent
-                // anchors={anchors}
-                // setAnchors={setAnchors}
-                />
+                <CreateAnchorComponent />
               </Route>
               <Route path="/manageAnchors">
-                <ManageAnchorComponent
-                // anchors={anchors}
-                // setAnchors={setAnchors}
-                />
+                <ManageAnchorComponent />
               </Route>
               <Route path="/settings">
                 <SettingsComponent />

@@ -63,8 +63,7 @@ export const AnchorProvider = ({ children }: Props) => {
         query: create_mutation,
         variables: {
           anchor: {
-            anchor_name: anchor.anchor_name,
-            owner_id: anchor.owner_id,
+            ...anchor,
           },
         },
       }),
@@ -83,9 +82,7 @@ export const AnchorProvider = ({ children }: Props) => {
         query: update_mutation,
         variables: {
           anchor: {
-            id: anchor.id,
-            anchor_name: anchor.anchor_name, //"e976e882-50aa-428e-a831-00749d7db311",
-            owner_id: anchor.owner_id,
+            ...anchor,
           },
         },
       }),
