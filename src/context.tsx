@@ -69,12 +69,7 @@ export const AnchorProvider = ({ children }: Props) => {
       }),
     })
       .then((res) => res.json())
-      .then(() => fetchAnchors())
-      .catch(({ name, message }) => {
-        console.error(name); // "TypeError"
-        console.error(message); // "oops"
-        throw new TypeError("oops");
-      });
+      .then(() => fetchAnchors());
   };
 
   const updateOneAnchor = (anchor: Anchor) => {
