@@ -19,7 +19,6 @@ export enum SORT {
   NONE = "NONE",
 }
 
-// created_at muss später in Startzeitpunkt geändert werden
 export type SortState = {
   anchor_name: SORT;
   owner_id: SORT;
@@ -35,6 +34,7 @@ const defaultSortState = {
 export const FindAnchorComponent = () => {
   const { anchors } = useContext(AnchorContext);
   const [sortState, setSortState] = useState<SortState>(defaultSortState);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const setSort = (param: keyof typeof sortState) => {
     const newParam =
@@ -74,25 +74,41 @@ export const FindAnchorComponent = () => {
   return (
     <IonPage>
       <StatusHeader titleText="Anker finden" />
-      <FilterBar setSort={setSort} sortState={sortState} />
+      <FilterBar
+        setSort={setSort}
+        sortState={sortState}
+        setSearchTerm={setSearchTerm}
+      />
       <IonContent fullscreen>
         <IonList>
           {anchors &&
             anchors.length > 0 &&
-            sortedAnchors().map((anchor, index) => (
-              <IonCard key={index}>
-                <IonCardHeader>
-                  <IonCardTitle>{anchor.anchor_name || "-"}</IonCardTitle>
-                  <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
-                  <IonCardSubtitle> {anchor.created_at || "-"}</IonCardSubtitle>
-                </IonCardHeader>
+            sortedAnchors()
+              .filter(
+                (anchor) =>
+                  anchor.anchor_name
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                  anchor.owner_id
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
+              )
+              .map((anchor, index) => (
+                <IonCard key={index}>
+                  <IonCardHeader>
+                    <IonCardTitle>{anchor.anchor_name || "-"}</IonCardTitle>
+                    <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
+                    <IonCardSubtitle>
+                      {anchor.created_at || "-"}
+                    </IonCardSubtitle>
+                  </IonCardHeader>
 
-                <IonCardContent>
-                  Here's a small text description for the card content. Nothing
-                  more, nothing less.
-                </IonCardContent>
-              </IonCard>
-            ))}
+                  <IonCardContent>
+                    Here's a small text description for the card content.
+                    Nothing more, nothing less.
+                  </IonCardContent>
+                </IonCard>
+              ))}
         </IonList>
       </IonContent>
     </IonPage>

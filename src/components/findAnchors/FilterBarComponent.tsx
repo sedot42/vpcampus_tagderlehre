@@ -1,18 +1,30 @@
 import { IonRow } from "@ionic/react";
-import { IonButton, IonIcon } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonPopover,
+  IonSearchbar,
+} from "@ionic/react";
 import {
   arrowUpOutline,
   arrowDownOutline,
   swapVerticalOutline,
+  search,
 } from "ionicons/icons";
 import { SortState, SORT } from "./FindAnchorsComponent";
 
 type FilterBarProp = {
-  setSort(param: keyof SortState): void;
+  setSort: (param: keyof SortState) => void;
+  setSearchTerm: (searchTerm: string) => void;
   sortState: SortState;
 };
 
-export const FilterBar = ({ setSort, sortState }: FilterBarProp) => {
+export const FilterBar = ({
+  setSort,
+  sortState,
+  setSearchTerm,
+}: FilterBarProp) => {
   const renderArrow = (param: SORT) =>
     param === SORT.ASC
       ? arrowUpOutline
@@ -24,14 +36,16 @@ export const FilterBar = ({ setSort, sortState }: FilterBarProp) => {
     <IonRow
       style={{
         zIndex: 2,
-        padding: 12,
+        padding: "4px",
         width: "100%",
         textAlign: "center",
         backgroundColor: "white",
-        borderBottom: `1px solid grey`,
+        borderBottom: `1px solid #D0D0D0`,
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
-      <div style={{ width: "100%", padding: "0px 2px" }}>
+      <div>
         <IonButton
           size="small"
           fill={sortState["created_at"] === SORT.NONE ? "clear" : "solid"}
@@ -65,6 +79,27 @@ export const FilterBar = ({ setSort, sortState }: FilterBarProp) => {
           ></IonIcon>
           Wer
         </IonButton>
+      </div>
+      <div style={{ marginRight: 4 }}>
+        <IonButton
+          id="search-trigger"
+          size="small"
+          fill="clear"
+          onClick={() => setSort("owner_id")}
+        >
+          Suche
+          <IonIcon slot="end" icon={search}></IonIcon>
+        </IonButton>
+        <IonPopover trigger="search-trigger" triggerAction="hover">
+          <IonContent class="ion-padding">
+            <IonSearchbar
+              debounce={100}
+              onIonInput={(e) => setSearchTerm(e.target.value || "")}
+              placeholder="Suche"
+              style={{ padding: 0 }}
+            ></IonSearchbar>
+          </IonContent>
+        </IonPopover>
       </div>
     </IonRow>
   );
