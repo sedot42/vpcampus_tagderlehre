@@ -10,14 +10,14 @@ import { Anchor } from "./types/types";
 import { defaultAnchor } from "./types/defaults";
 
 export type AnchorContextType = {
-  setOneAnchor: (anchor: Anchor) => void;
+  createOneAnchor: (anchor: Anchor) => void;
   updateOneAnchor: (anchor: Anchor) => void;
   deleteOneAnchor: (anchor: Anchor) => void;
   anchors: Anchor[];
 };
 
 export const AnchorContext = createContext<AnchorContextType>({
-  setOneAnchor: () => {},
+  createOneAnchor: () => {},
   updateOneAnchor: () => {},
   deleteOneAnchor: () => {},
   anchors: [],
@@ -60,7 +60,7 @@ export const AnchorProvider = ({ children }: Props) => {
   // Populate app state
   useEffect(() => fetchAnchors(), [children]);
 
-  const setOneAnchor = (anchor: Anchor) => {
+  const createOneAnchor = (anchor: Anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
@@ -124,7 +124,7 @@ export const AnchorProvider = ({ children }: Props) => {
   return (
     <AnchorContext.Provider
       value={{
-        setOneAnchor,
+        createOneAnchor,
         updateOneAnchor,
         deleteOneAnchor,
         anchors,

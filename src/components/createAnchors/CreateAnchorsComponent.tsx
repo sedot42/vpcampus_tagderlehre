@@ -46,7 +46,7 @@ export const CreateAnchorComponent = () => {
   const { anchors } = useContext(AnchorContext);
 
   const [localAnchor, setLocalAnchor] = useState<Anchor>(defaultAnchor);
-  const { setOneAnchor } = useContext(AnchorContext);
+  const { createOneAnchor } = useContext(AnchorContext);
   const [error, setError] = useState<boolean>(false);
 
   // functional components for the selection of tags for an anchor
@@ -106,7 +106,7 @@ export const CreateAnchorComponent = () => {
     console.log(localAnchor)
     if (localAnchor.anchor_name) {
       setError(false);
-      setOneAnchor(localAnchor);
+      createOneAnchor(localAnchor);
       setLocalAnchor(defaultAnchor);
       // reset all
       setSelectedTagList([]);             // tags     
