@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["plugin:react/recommended", "eslint:recommended", 'plugin:@typescript-eslint/recommended'],
+  extends: ["plugin:react/recommended", "plugin:react-hooks/recommended", "eslint:recommended", 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2020,
