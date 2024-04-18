@@ -15,13 +15,12 @@ import { AnchorContext } from "../../context";
 
 import { Anchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
-import { defaultAnchor } from "../../types/defaults";
 
 export const ManageAnchorComponent = () => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
 
   const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] = useState<Anchor>(defaultAnchor);
+  const [modalData, setModalData] = useState<Anchor>();
 
   return (
     <IonPage>
@@ -66,13 +65,14 @@ export const ManageAnchorComponent = () => {
                 </IonButton>
               </IonItem>
             ))}
-
-          <UpdateModal
-            modalData={modalData}
-            setModalData={setModalData}
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-          />
+          { modalData &&
+            <UpdateModal
+              modalData={modalData}
+              setModalData={setModalData}
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+            />
+          }
         </IonList>
       </IonContent>
     </IonPage>

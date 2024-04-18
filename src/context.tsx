@@ -7,7 +7,6 @@ import {
 } from "./requests/mutations";
 
 import { Anchor } from "./types/types";
-import { defaultAnchor } from "./types/defaults";
 
 export type AnchorContextType = {
   createOneAnchor: (anchor: Anchor) => void;
@@ -53,7 +52,7 @@ export const AnchorProvider = ({ children }: Props) => {
       .then((resAnchors) => setAnchors(resAnchors))
       .catch((e) => {
         console.log(e);
-        setAnchors([defaultAnchor]);
+        setAnchors([]);
       });
   };
 
