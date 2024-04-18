@@ -25,12 +25,11 @@ export const FilterBar = ({
   sortState,
   setSearchTerm,
 }: FilterBarProp) => {
-  const renderArrow = (param: SORT) =>
-    param === SORT.ASC
-      ? arrowUpOutline
-      : param === SORT.DSC
-      ? arrowDownOutline
-      : swapVerticalOutline;
+  const sortStateToIconMap: { [key in SORT]: string } = {
+    ASC: arrowUpOutline,
+    DSC: arrowDownOutline,
+    NONE: swapVerticalOutline,
+  };
 
   return (
     <IonRow
@@ -53,7 +52,7 @@ export const FilterBar = ({
         >
           <IonIcon
             slot="end"
-            icon={renderArrow(sortState["created_at"])}
+            icon={sortStateToIconMap[sortState["created_at"]]}
           ></IonIcon>
           Wann
         </IonButton>
@@ -64,7 +63,7 @@ export const FilterBar = ({
         >
           <IonIcon
             slot="end"
-            icon={renderArrow(sortState["anchor_name"])}
+            icon={sortStateToIconMap[sortState["anchor_name"]]}
           ></IonIcon>
           Was
         </IonButton>
@@ -75,7 +74,7 @@ export const FilterBar = ({
         >
           <IonIcon
             slot="end"
-            icon={renderArrow(sortState["owner_id"])}
+            icon={sortStateToIconMap[sortState["owner_id"]]}
           ></IonIcon>
           Wer
         </IonButton>

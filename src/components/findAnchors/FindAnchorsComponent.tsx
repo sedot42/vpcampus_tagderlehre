@@ -37,12 +37,8 @@ export const FindAnchorsComponent = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const setSort = (param: keyof typeof sortState) => {
-    const newParam =
-      sortState[param] === SORT.NONE
-        ? SORT.DSC
-        : sortState[param] === SORT.DSC
-        ? SORT.ASC
-        : SORT.NONE;
+    const sortCycleOrder = { ASC: "DSC", DSC: "NONE", NONE: "ASC" };
+    const newParam = sortCycleOrder[sortState[param]]
     setSortState(() => ({ ...defaultSortState, [param]: newParam }));
   };
 
