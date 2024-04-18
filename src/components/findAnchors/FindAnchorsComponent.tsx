@@ -31,7 +31,7 @@ const defaultSortState = {
   created_at: SORT.NONE,
 };
 
-export const FindAnchorComponent = () => {
+export const FindAnchorsComponent = () => {
   const { anchors } = useContext(AnchorContext);
   const [sortState, setSortState] = useState<SortState>(defaultSortState);
   const [searchTerm, setSearchTerm] = useState<string>("");
