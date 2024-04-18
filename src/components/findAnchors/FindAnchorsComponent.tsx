@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { FilterBar } from "./FilterBarComponent";
-import { AnchorContext } from "../../context";
+import { AnchorContext } from "../../anchorContext";
 
 export enum SORT {
   ASC = "ASC",

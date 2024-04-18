@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { trashOutline, build } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { AnchorContext } from "../../context";
+import { AnchorContext } from "../../anchorContext";
 
 import { Anchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";

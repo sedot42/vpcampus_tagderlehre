@@ -16,7 +16,7 @@ import {
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { Config, createInputs } from "../globalUI/GenericFields";
-import { AnchorContext } from "../../context";
+import { AnchorContext } from "../../anchorContext";
 
 export const UpdateModal = ({
   modalData,
