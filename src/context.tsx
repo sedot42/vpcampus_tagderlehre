@@ -59,7 +59,7 @@ export const AnchorProvider = ({ children }: Props) => {
   // Populate app state
   useEffect(() => fetchAnchors(), [children]);
 
-  const createOneAnchor = (anchor: Anchor) => {
+  const createOneAnchor: AnchorContextType['createOneAnchor'] = (anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
@@ -83,7 +83,7 @@ export const AnchorProvider = ({ children }: Props) => {
       });
   };
 
-  const updateOneAnchor = (anchor: Anchor) => {
+  const updateOneAnchor: AnchorContextType['updateOneAnchor'] = (anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
@@ -102,7 +102,7 @@ export const AnchorProvider = ({ children }: Props) => {
       .then(() => fetchAnchors());
   };
 
-  const deleteOneAnchor = (anchor: Anchor) => {
+  const deleteOneAnchor: AnchorContextType['deleteOneAnchor'] = (id) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {

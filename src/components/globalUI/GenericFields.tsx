@@ -11,6 +11,7 @@ export type ConfigInput = {
 
 // Creates a set of input fields.
 export const createInputs = (
+  // FixMe: Define types
   state: any,
   setState: (state: any) => void,
   config: ConfigInput[]

@@ -5,7 +5,7 @@ type ButtonProps = {
   className?: string;
   icon?: React.ReactElement;
   color?: string;
-  onClick?: (e?: any) => void;
+  onClick?: React.MouseEventHandler;
   style?: { [key: string]: string | number };
   text: string;
   size?: "small" | "default" | "large" | undefined;

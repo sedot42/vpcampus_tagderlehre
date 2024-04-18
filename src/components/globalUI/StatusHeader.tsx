@@ -7,7 +7,7 @@ import { BOXSHADOW, COLOR, HEIGHT } from "../../theme/settings";
 type StatusHeaderProps = {
   titleText: string;
   buttonText?: string;
-  buttonOnClick?: any;
+  buttonOnClick?: (Parameters<typeof TextButton>)[0]["onClick"];
   routerLink?: string;
   children?: React.ReactElement;
 };
