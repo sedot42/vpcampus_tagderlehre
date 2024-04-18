@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, useRef, BaseSyntheticEvent } from "react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { Anchor } from "../../types/types";
-import { defaultAnchor } from "../../types/defaults";
+import { convertFlatAnchorToDBAnchor } from "../../types/types";
+import { draftAnchor } from "../../types/defaults";
 import { AnchorContext } from "../../context";
 import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import {
@@ -47,7 +47,7 @@ export const CreateAnchorComponent = () => {
 
   const [localAnchor, setLocalAnchor] = useState<Anchor>(defaultAnchor);
   const { createOneAnchor } = useContext(AnchorContext);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState(false);
 
   // functional components for the selection of tags for an anchor
   const [filterTagString, setFilterTagString] = useState<string>("");             // string to filter the tags
@@ -106,6 +106,7 @@ export const CreateAnchorComponent = () => {
     console.log(localAnchor)
     if (localAnchor.anchor_name) {
       setError(false);
+<<<<<<< HEAD
       createOneAnchor(localAnchor);
       setLocalAnchor(defaultAnchor);
       // reset all
@@ -129,6 +130,11 @@ export const CreateAnchorComponent = () => {
       const groupContainerDiv = document.getElementById("groupContainer")!;
       groupContainerDiv.innerHTML = "";
       setSelectedFileList([]);            // documents
+=======
+      // convert to AnchorDB type
+      createOneAnchor(convertFlatAnchorToDBAnchor(localAnchor));
+      setLocalAnchor(draftAnchor);
+>>>>>>> c4c3a16 (Introduce new DBAnchor type to reflect DB and graphql schema)
     } else {
       setError(true);
     }     

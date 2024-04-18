@@ -1,6 +1,6 @@
 
 // If the anchor type definition is changed, changes need to be applied here as well:
-export const create_mutation = `mutation CreateAnchor($anchor: AnchorInput){
+export const create_mutation = `mutation CreateAnchor($anchor: AnchorInput!){
     createAnchor(anchor: $anchor) {
     id
     anchor_name
@@ -28,7 +28,10 @@ export const create_mutation = `mutation CreateAnchor($anchor: AnchorInput){
     group_id
     prev_anchor_id
     next_anchor_id
-    owner_id
+    owner {
+        id
+        name
+    }
     owner_group_id
     private_anchor
     }
@@ -39,7 +42,7 @@ export const delete_mutation = `mutation DeleteAnchor($deleteAnchorId: String!){
 }`;
 
 // If the anchor type definition is changed, changes need to be applied here as well:
-export const update_mutation = `mutation UpdateAnchor($anchor: AnchorInput){
+export const update_mutation = `mutation UpdateAnchor($anchor: AnchorInput!){
     updateAnchor(anchor: $anchor) {
     id
     anchor_name
@@ -67,7 +70,10 @@ export const update_mutation = `mutation UpdateAnchor($anchor: AnchorInput){
     group_id
     prev_anchor_id
     next_anchor_id
-    owner_id
+    owner {
+        id
+        name
+    }
     owner_group_id
     private_anchor
     }

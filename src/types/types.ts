@@ -1,6 +1,41 @@
 // Update mutations on changes; otherwise the requests will fail silently
+
+// compatibility type because frontend expects flat object 
+export type DBAnchor = Omit<Anchor, 'owner_id'> & {
+    owner: {
+        id: string;
+        name?: string;
+    }
+}
+
+// (DB)Anchor with optional id field
+export type DraftAnchor<T extends Anchor | DBAnchor> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>;
+
+// overload so TS infers the correct type
+export function convertFlatAnchorToDBAnchor(anchor: Anchor): DBAnchor
+export function convertFlatAnchorToDBAnchor(anchor: DraftAnchor<Anchor>): DraftAnchor<DBAnchor> 
+export function convertFlatAnchorToDBAnchor(anchor: Anchor | DraftAnchor<Anchor>): DBAnchor | DraftAnchor<DBAnchor>{
+    const { owner_id, ...dbAnchor } = anchor;
+    return {
+        ...dbAnchor,
+        owner: {
+            id: owner_id
+        }
+    }
+}
+
+export function convertDBAnchorToFlatAnchor(anchor: DBAnchor): Anchor
+export function convertDBAnchorToFlatAnchor(anchor: DraftAnchor<DBAnchor> | DBAnchor): DraftAnchor<Anchor> | Anchor {
+    const { owner, ...flatAnchor } = anchor;
+    return {
+        ...flatAnchor,
+        owner_id: owner.id,
+        owner_name: owner.name,
+    }
+}
+
 export type Anchor = {
-    id?: string;
+    id: string;
     anchor_name: string;
     anchor_description?: string;
     tags?: string[];
@@ -35,8 +70,7 @@ export type Anchor = {
 
     // A&A fields:
     owner_id: string;
+    owner_name?: string;
     owner_group_id?: string;
     private_anchor?: boolean
-
-
 }

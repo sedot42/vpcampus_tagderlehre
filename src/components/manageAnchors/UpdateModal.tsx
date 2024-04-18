@@ -1,4 +1,4 @@
-import { Anchor } from "../../types/types";
+import { Anchor, convertFlatAnchorToDBAnchor } from "../../types/types";
 import { useContext } from "react";
 
 import {
@@ -73,7 +73,8 @@ export const UpdateModal = ({
           fill="clear"
           strong={true}
           onClick={() => {
-            updateOneAnchor(modalData);
+            // convert from flat to nested for DB update
+            updateOneAnchor(convertFlatAnchorToDBAnchor(modalData));
             setOpenModal(false);
           }}
         >

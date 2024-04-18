@@ -6,12 +6,17 @@ import {
   update_mutation,
 } from "./requests/mutations";
 
-import { Anchor } from "./types/types";
+import {
+  Anchor,
+  DBAnchor,
+  DraftAnchor,
+  convertDBAnchorToFlatAnchor,
+} from "./types/types";
 
 export type AnchorContextType = {
-  createOneAnchor: (anchor: Anchor) => void;
-  updateOneAnchor: (anchor: Anchor) => void;
-  deleteOneAnchor: (anchor: Anchor) => void;
+  createOneAnchor: (anchor: DraftAnchor<DBAnchor>) => void;
+  updateOneAnchor: (anchor: DBAnchor) => void;
+  deleteOneAnchor: (anchor: DBAnchor) => void;
   anchors: Anchor[];
 };
 
@@ -43,9 +48,11 @@ export const AnchorProvider = ({ children }: Props) => {
       .then((res) => res.json())
       // restore the original coordinates after saving as an integer
       .then((res) => {
-        res.data.anchors.forEach((anchor:any) => {
-          anchor.lat = anchor.lat != undefined? anchor.lat /= 1_000_000 : null;
-          anchor.lon = anchor.lon != undefined? anchor.lon /= 1_000_000 : null;
+        res.data.anchors.forEach((anchor: any) => {
+          anchor.lat =
+            anchor.lat != undefined ? (anchor.lat /= 1_000_000) : null;
+          anchor.lon =
+            anchor.lon != undefined ? (anchor.lon /= 1_000_000) : null;
         });
         return res.data.anchors;
       })
@@ -59,7 +66,7 @@ export const AnchorProvider = ({ children }: Props) => {
   // Populate app state
   useEffect(() => fetchAnchors(), [children]);
 
-  const createOneAnchor: AnchorContextType['createOneAnchor'] = (anchor) => {
+  const createOneAnchor: AnchorContextType["createOneAnchor"] = (anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
@@ -83,7 +90,7 @@ export const AnchorProvider = ({ children }: Props) => {
       });
   };
 
-  const updateOneAnchor: AnchorContextType['updateOneAnchor'] = (anchor) => {
+  const updateOneAnchor: AnchorContextType["updateOneAnchor"] = (anchor) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
@@ -102,7 +109,7 @@ export const AnchorProvider = ({ children }: Props) => {
       .then(() => fetchAnchors());
   };
 
-  const deleteOneAnchor: AnchorContextType['deleteOneAnchor'] = (id) => {
+  const deleteOneAnchor: AnchorContextType["deleteOneAnchor"] = (id) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: {
