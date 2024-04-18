@@ -58,7 +58,7 @@ export const ManageAnchorComponent = () => {
                   fill="clear"
                   color="danger"
                   onClick={() => {
-                    deleteOneAnchor(anchor);
+                    deleteOneAnchor(anchor.id);
                   }}
                 >
                   <IonIcon aria-hidden="true" icon={trashOutline} />

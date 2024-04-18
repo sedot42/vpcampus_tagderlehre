@@ -16,7 +16,7 @@ import {
 export type AnchorContextType = {
   createOneAnchor: (anchor: DraftAnchor<DBAnchor>) => void;
   updateOneAnchor: (anchor: DBAnchor) => void;
-  deleteOneAnchor: (anchor: DBAnchor) => void;
+  deleteOneAnchor: (anchor: DBAnchor['id']) => void;
   anchors: Anchor[];
 };
 
@@ -119,7 +119,7 @@ export const AnchorProvider = ({ children }: Props) => {
       body: JSON.stringify({
         query: delete_mutation,
         variables: {
-          deleteAnchorId: anchor.id,
+          deleteAnchorId: id,
         },
       }),
     })
