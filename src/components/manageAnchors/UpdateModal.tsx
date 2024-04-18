@@ -66,7 +66,7 @@ export const UpdateModal = ({
         <br />
         <IonText color="medium">Created: {modalData.created_at}</IonText>
         <br />
-        <IonText color="medium">Update: {modalData.updated_at}</IonText>
+        <IonText color="medium">Updated: {modalData.updated_at}</IonText>
       </IonContent>
       <IonFooter style={{ display: "flex", justifyContent: "center" }}>
         <IonButton
