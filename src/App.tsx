@@ -1,5 +1,4 @@
 import { Redirect, Route } from "react-router-dom";
-import React, { useState } from "react";
 import {
   IonApp,
   IonIcon,
@@ -77,23 +76,31 @@ const App: React.FC = () => {
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
-                <IonIcon aria-hidden="true" icon={calendarOutline} size="large"/>
+                <IonIcon
+                  aria-hidden="true"
+                  icon={calendarOutline}
+                  size="large"
+                />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
-                <IonIcon aria-hidden="true" icon={mapOutline} size="large"/>
+                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
               <IonTabButton tab="createAnchors" href="/createAnchors">
-                <IonIcon aria-hidden="true" icon={addOutline} size="large"/>
+                <IonIcon aria-hidden="true" icon={addOutline} size="large" />
                 <IonLabel>Erstellen</IonLabel>
               </IonTabButton>
               <IonTabButton tab="manageAnchors" href="/manageAnchors">
-                <IonIcon aria-hidden="true" icon={createOutline} size="large"/>
+                <IonIcon aria-hidden="true" icon={createOutline} size="large" />
                 <IonLabel>Verwalten</IonLabel>
               </IonTabButton>
               <IonTabButton tab="settings" href="/settings">
-                <IonIcon aria-hidden="true" icon={settingsOutline} size="large"/>
+                <IonIcon
+                  aria-hidden="true"
+                  icon={settingsOutline}
+                  size="large"
+                />
                 <IonLabel>Optionen</IonLabel>
               </IonTabButton>
             </IonTabBar>

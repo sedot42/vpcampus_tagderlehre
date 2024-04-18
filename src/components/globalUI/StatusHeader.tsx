@@ -59,14 +59,6 @@ export const StatusHeader = ({
   );
 };
 
-export const BlankHeader = () => {
-  return (
-    <StatusHeader titleText="">
-      <div style={{ height: 35 }}></div>
-    </StatusHeader>
-  );
-};
-
 export const DefaultHeader = () => {
   const [present, dismiss] = useIonToast();
   const router = useIonRouter();

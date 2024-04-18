@@ -18,7 +18,7 @@ export const CardTitle = ({ text, style }: TitleProps) => (
   </IonCardTitle>
 );
 
-export const HeaderTitle = ({ text, style }: TitleProps) => (
+export const HeaderTitle = ({ text }: TitleProps) => (
   <IonText
     color="#f0f"
     style={{
@@ -30,7 +30,7 @@ export const HeaderTitle = ({ text, style }: TitleProps) => (
     {text}
   </IonText>
 );
-export const QuizQuestion = ({ text, style }: TitleProps) => (
+export const QuizQuestion = ({ text }: TitleProps) => (
   <p
     color="darkfont"
     style={{
