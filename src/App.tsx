@@ -45,6 +45,7 @@ import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsC
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
+import { UserProvider } from "./userContext";
 
 setupIonicReact();
 
