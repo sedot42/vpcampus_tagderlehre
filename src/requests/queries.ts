@@ -20,4 +20,16 @@ export const query = `query ExampleQuery{
   }
 }`;
 
-// default: anchor_name owner_id id created_at
+export const getUserQuery = `query GetUserData($userId: String!) {
+  user(id: $userId) {
+    bookmarked_anchors {
+      id
+    }
+    id
+    name
+    owned_anchors {
+      id
+    }
+  }
+}
+`;

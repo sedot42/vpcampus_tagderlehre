@@ -78,3 +78,19 @@ export const update_mutation = `mutation UpdateAnchor($anchor: AnchorInput!){
     private_anchor
     }
 }`;
+
+export const createBookmarkMutation = `mutation createBookmark($anchorId: String!, $userId: String!) {
+  createBookmark(anchor_id: $anchorId, user_id: $userId) {
+    anchor_id
+    user_id
+  }
+}
+`
+
+export const deleteBookmarkMutation = `mutation deleteBookmark($anchorId: String!, $userId: String!) {
+  deleteBookmark(anchor_id: $anchorId, user_id: $userId) {
+    anchor_id
+    user_id
+  }
+}
+`

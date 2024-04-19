@@ -8,10 +8,14 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonButton,
+  IonIcon,
 } from "@ionic/react";
+import { star, starOutline } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { FilterBar } from "./FilterBarComponent";
 import { AnchorContext } from "../../anchorContext";
+import { UserContext } from "../../userContext";
 
 export enum SORT {
   ASC = "ASC",
@@ -24,8 +28,10 @@ const sortCycleOrder: { [key in SORT]: SORT } = { ASC: SORT.DSC, DSC: SORT.NONE,
 
 export const FindAnchorsComponent = () => {
   const { anchors } = useContext(AnchorContext);
-  const [sortState, setSortState] = useState<SortState>(defaultSortState);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const { bookmarks, createBookmark, deleteBookmark } = useContext(UserContext);
+  const [sortState, setSortState] = useState(defaultSortState);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterByBookmarked, setFilterByBookmarked] = useState(false);
 
   const setSort = (param: keyof typeof sortState) => {
     const newParam = sortCycleOrder[sortState[param]];
@@ -55,6 +61,8 @@ export const FindAnchorsComponent = () => {
     <IonPage>
       <StatusHeader titleText="Anker finden" />
       <FilterBar
+        setFilterByBookmarked={setFilterByBookmarked}
+        filterByBookmarked={filterByBookmarked}
         setSort={setSort}
         sortState={sortState}
         setSearchTerm={setSearchTerm}
@@ -67,12 +75,31 @@ export const FindAnchorsComponent = () => {
               .filter(
                 (anchor) =>
                   (anchor.anchor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  anchor.owner_id.toLowerCase().includes(searchTerm.toLowerCase()))
+                    anchor.owner_id.toLowerCase().includes(searchTerm.toLowerCase())) &&
+                  (!filterByBookmarked || bookmarks.includes(anchor.id))
               )
               .map((anchor, index) => (
                 <IonCard key={index}>
                   <IonCardHeader>
-                    <IonCardTitle>{anchor.anchor_name || "-"}</IonCardTitle>
+                    <IonCardTitle>
+                      {anchor.anchor_name || "-"}
+                      <IonButton
+                        size="small"
+                        shape="round"
+                        fill="clear"
+                        onClick={() =>
+                          bookmarks.includes(anchor.id)
+                            ? deleteBookmark(anchor.id)
+                            : createBookmark(anchor.id)
+                        }
+                      >
+                        <IonIcon
+                          slot="icon-only"
+                          size="default"
+                          icon={bookmarks.includes(anchor.id) ? star : starOutline}
+                        ></IonIcon>
+                      </IonButton>
+                    </IonCardTitle>
                     <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
                     <IonCardSubtitle>{anchor.created_at || "-"}</IonCardSubtitle>
                   </IonCardHeader>

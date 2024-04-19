@@ -11,26 +11,31 @@ import {
   arrowDownOutline,
   swapVerticalOutline,
   search,
+  star,
+  starOutline
 } from "ionicons/icons";
 import { SortState, SORT } from "./FindAnchorsComponent";
 
 type FilterBarProp = {
+  filterByBookmarked: boolean;
+  setFilterByBookmarked: (filterByBookmarked: boolean) => void;
   setSort: (param: keyof SortState) => void;
   setSearchTerm: (searchTerm: string) => void;
   sortState: SortState;
 };
+const sortStateToIconMap: { [key in SORT]: string } = {
+  ASC: arrowUpOutline,
+  DSC: arrowDownOutline,
+  NONE: swapVerticalOutline,
+};
 
 export const FilterBar = ({
+  setFilterByBookmarked,
+  filterByBookmarked,
   setSort,
   sortState,
   setSearchTerm,
 }: FilterBarProp) => {
-  const sortStateToIconMap: { [key in SORT]: string } = {
-    ASC: arrowUpOutline,
-    DSC: arrowDownOutline,
-    NONE: swapVerticalOutline,
-  };
-
   return (
     <IonRow
       style={{
@@ -45,6 +50,18 @@ export const FilterBar = ({
       }}
     >
       <div>
+        <IonButton
+          size="small"
+          shape="round"
+          fill="clear"
+          onClick={() => setFilterByBookmarked(!filterByBookmarked)}
+        >
+          <IonIcon
+            slot="icon-only"
+            size="small"
+            icon={filterByBookmarked ? star : starOutline}
+          ></IonIcon>
+        </IonButton>
         <IonButton
           size="small"
           fill={sortState["created_at"] === SORT.NONE ? "clear" : "solid"}
