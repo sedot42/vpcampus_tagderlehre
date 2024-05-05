@@ -31,28 +31,29 @@ export const StatusHeader = ({
           justifyContent: "space-between",
           alignItems: "center",
           height: HEIGHT.statusHeader,
-          backgroundColor: COLOR.white,
+          backgroundColor: COLOR.fhnw_yellow0,
+          color: COLOR.black,
         }}
       >
         <img
           alt="fhnw_log"
-          height="20"
-          src="/assets/fhnw_logo_small.PNG"
+          height="24"
+          src="/assets/FHNW_HABG.svg"
           style={{ marginLeft: "8px" }}
         />
         <HeaderTitle text={titleText} />
 
-        {children ? (
+        {/*{ {children ? (
           children
         ) : (
           <TextButton
             color="protored"
             onClick={buttonOnClick}
             routerLink={routerLink}
-            text={buttonText || ""}
+            text={buttonText || "haha"}
             style={{ minWidth: 100 }}
           />
-        )}
+        )} */}
       </div>
     </IonHeader>
   );

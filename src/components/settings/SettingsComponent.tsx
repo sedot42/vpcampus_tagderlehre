@@ -1,14 +1,67 @@
 import { useState, useRef, useContext, useEffect } from "react";
-import { IonPage, IonButton, IonIcon, IonModal } from "@ionic/react";
+import {
+  IonPage,
+  IonContent,
+  IonList,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+} from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
+import { AnchorContext } from "../../context";
 
 type SettingsProps = undefined;
 
 export const SettingsComponent = () => {
+
+  const { anchors } = useContext(AnchorContext);
+
+  console.log(anchors)
+
+
   return (
     <IonPage>
-      <StatusHeader titleText="Einstellungen" />
-      <div>Placeholder</div>
+      <StatusHeader titleText="Optionen" />
+      <IonContent fullscreen>
+        hallo
+
+      </IonContent>
+    </IonPage>
+  );
+};
+
+
+
+
+
+export const MapAnchorComponent = () => {
+  const { anchors } = useContext(AnchorContext);
+
+  return (
+    <IonPage>
+      <StatusHeader titleText="Karte" />
+      <IonContent fullscreen>
+        <IonList>
+          {anchors &&
+            anchors.length > 0 &&
+            anchors.map((anchor, index) => (
+              <IonCard key={index}>
+                <IonCardHeader>
+                  <IonCardTitle>{anchor.anchor_name || "-"}</IonCardTitle>
+                  <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
+                  <IonCardSubtitle> {anchor.created_at || "-"}</IonCardSubtitle>
+                </IonCardHeader>
+
+                <IonCardContent>
+                  Here's a small text description for the card content. Nothing
+                  more, nothing less.
+                </IonCardContent>
+              </IonCard>
+            ))}
+        </IonList>
+      </IonContent>
     </IonPage>
   );
 };

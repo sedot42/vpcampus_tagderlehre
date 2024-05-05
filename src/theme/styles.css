@@ -2,3 +2,106 @@
     padding: 20px 10px;
     border: 1px solid #e6e6e6;
 }
+
+#openDialogSelectTag, #openDialogSelectGroup, 
+#openDialogSelectDocument, #openDialogSelectLocation,
+#openDialogSelectPosition, #openDialogSelectBuilding{
+    text-transform: none;
+    --padding-start: 16px;
+    --border-radius: 0px;
+    --padding-end: 16px;
+    --box-shadow: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 16px;
+   }
+
+#openDialogSelectTag > div, #openDialogSelectGroup > div, 
+#openDialogSelectDocument > div, #openDialogSelectLocation > div,
+#openDialogSelectPosition > div, #openDialogSelectBuilding > div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#openDialogSelectTagLabel, #openDialogSelectGroupLabel, 
+#openDialogSelectDocumentLabel, #openDialogSelectLocationLabel,
+#openDialogSelectPositionLabel, #openDialogSelectBuildingLabel{
+    font-size: 16px;
+    letter-spacing: normal;
+    text-align: left;
+}
+
+.documentContainerButtonLabels, .groupContainerButtonLabels, 
+.tagContainerButtonLabels, .locationContainerButtonLabels,
+.positionContianerButtonLabels, .buildingContainerButtonLabels{
+    letter-spacing: normal;
+    padding-right: 16px;
+    text-transform: none;
+}
+
+
+ion-toast{
+    --white-space: pre-wrap
+}
+
+
+ion-modal{
+    --height: 50%;	
+    --width: 90%;
+    --margin: 16px;
+}
+
+
+
+
+#dateContainer, #validContainer{
+    display: none;
+}
+
+ion-datetime{
+    --background: #ffffff;
+}
+
+ion-popover{
+    --height:40%;
+}
+
+
+ion-datetime-button::part(native) {
+    background: #FFF;
+}
+
+
+
+/** definition of the style options of the tabs for changing views **/
+
+ion-tab-bar{
+    min-height: 8% !important;
+    --background:#fde70e;
+    --border: #000000;
+    --color: #000000;
+}
+
+ion-tab-button{     
+    --background: #fde70e ;       
+    --background-focused: #fff48d;
+    --background-focused-opacity: 80;         
+    --color: #000000;
+    --color-focused: #000000;
+    --color-selected: #000000;	
+    --padding-bottom: 0px;
+    --padding-end: 0px;
+    --padding-start: 0px;
+    --padding-top: 0px;
+    --ripple-color: #000000;
+}
+
+.tab-selected { 
+    --background: #000000;
+    --background-focused: #000000;
+    --color-focused: #ffffff;
+    --color-selected: #ffffff;
+}

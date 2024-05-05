@@ -20,11 +20,11 @@ export const CardTitle = ({ text, style }: TitleProps) => (
 
 export const HeaderTitle = ({ text, style }: TitleProps) => (
   <IonText
-    color="darkfont"
+    color="#f0f"
     style={{
-      fontWeight: 700,
+      fontWeight: 600,
       marginLeft: "auto",
-      marginRight: "auto",
+      marginRight: "8px",
     }}
   >
     {text}

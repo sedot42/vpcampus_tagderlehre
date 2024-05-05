@@ -32,7 +32,13 @@ export enum COLOR {
     routeDotOutline = "#000000",
     routeNextStation = "#96241c",
     routeUnvisitedStation = "#df736b",
-    routeVisitedStation = "#A2A4A6"
+    routeVisitedStation = "#A2A4A6",
+
+    /** FHNW-Colors **/
+    fhnw_yellow0 = '#fde70e',
+    fhnw_yellow1 = '#f5dd19',
+    fhnw_yellow2 = '#fbd100',
+    fhnw_yellow3 = 'fff48d'
 }
 
 

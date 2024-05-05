@@ -1,7 +1,7 @@
-import { IonInput, IonText } from "@ionic/react";
+import { IonInput, IonText, IonTextarea } from "@ionic/react";
 import { Anchor } from "../../types/types";
 
-export type Config = {
+export type ConfigInput = {
   required: boolean;
   property: keyof Anchor; // Enforce state matching properties of anchor type.
   placeholder: string;
@@ -13,10 +13,11 @@ export type Config = {
 export const createInputs = (
   state: any,
   setState: (state: any) => void,
-  config: Config[]
+  config: ConfigInput[]
 ) => {
   return config.map((entry, index) => (
     <IonInput
+      color="dark"
       labelPlacement="stacked"
       type="text"
       style={{ margin: "16px 0 16px 0" }}
@@ -44,3 +45,43 @@ export const createInputs = (
     </IonInput>
   ));
 };
+
+export const createTextarea = (
+  state: any,
+  setState: (state: any) => void,
+  config: ConfigInput[]
+) => {
+  return config.map((entry, index) => (
+    <IonTextarea
+      autoGrow={true}
+      color="dark"
+      inputmode="text"
+      labelPlacement="stacked"
+      style={{ margin: "16px 0 16px 0" }}
+      required={entry.required}
+      fill={entry.fill || undefined}
+      key={index}
+      value={state[entry.property] || ""}
+      placeholder={entry.label || ""}
+      onIonInput={(event: any) => {
+        setState({
+          ...state,
+          [entry.property]: event.target.value as string,
+        });
+      }}
+    >
+      {entry.required ? (
+        <div slot="label">
+          {entry.label}
+          <IonText color="danger"> (Pflichtfeld) </IonText>
+        </div>
+      ) : (
+        <div slot="label">{entry.label}</div>
+      )}
+    </IonTextarea>
+  ));
+};
+
+
+
+

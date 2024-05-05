@@ -25,7 +25,7 @@ export const ManageAnchorComponent = () => {
 
   return (
     <IonPage>
-      <StatusHeader titleText="Anker verwalten" />
+      <StatusHeader titleText="Verwalten" />
       <IonContent fullscreen>
         <IonList>
           {anchors &&

@@ -13,7 +13,9 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import {
   addOutline,
+  calendarOutline,
   createOutline,
+  mapOutline,
   searchOutline,
   settingsOutline,
 } from "ionicons/icons";
@@ -38,7 +40,8 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { Anchor } from "./types/types";
-import { FindAnchorComponent } from "./components/findAnchors/FindAnchorsComponent";
+import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
+import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { SettingsComponent } from "./components/settings/SettingsComponent";
@@ -53,8 +56,11 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/findAnchors">
-                <FindAnchorComponent />
+              <Route exact path="/calendarAnchors">
+                <CalendarAnchorComponent />
+              </Route>
+              <Route exact path="/mapAnchors">
+                <MapAnchorComponent />
               </Route>
               <Route exact path="/createAnchors">
                 <CreateAnchorComponent />
@@ -66,25 +72,29 @@ const App: React.FC = () => {
                 <SettingsComponent />
               </Route>
               <Route exact path="/">
-                <Redirect to="/findAnchors" />
+                <Redirect to="/mapAnchors" />
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="findAnchors" href="/findAnchors">
-                <IonIcon aria-hidden="true" icon={searchOutline} />
-                <IonLabel>Finden</IonLabel>
+              <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
+                <IonIcon aria-hidden="true" icon={calendarOutline} size="large"/>
+                <IonLabel>Kalender</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="mapAnchors" href="/mapAnchors">
+                <IonIcon aria-hidden="true" icon={mapOutline} size="large"/>
+                <IonLabel>Karte</IonLabel>
               </IonTabButton>
               <IonTabButton tab="createAnchors" href="/createAnchors">
-                <IonIcon aria-hidden="true" icon={addOutline} />
+                <IonIcon aria-hidden="true" icon={addOutline} size="large"/>
                 <IonLabel>Erstellen</IonLabel>
               </IonTabButton>
               <IonTabButton tab="manageAnchors" href="/manageAnchors">
-                <IonIcon aria-hidden="true" icon={createOutline} />
+                <IonIcon aria-hidden="true" icon={createOutline} size="large"/>
                 <IonLabel>Verwalten</IonLabel>
               </IonTabButton>
               <IonTabButton tab="settings" href="/settings">
-                <IonIcon aria-hidden="true" icon={settingsOutline} />
-                <IonLabel>Einstellungen</IonLabel>
+                <IonIcon aria-hidden="true" icon={settingsOutline} size="large"/>
+                <IonLabel>Optionen</IonLabel>
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

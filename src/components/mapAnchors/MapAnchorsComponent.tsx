@@ -12,12 +12,12 @@ import {
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../context";
 
-export const FindAnchorComponent = () => {
+export const MapAnchorComponent = () => {
   const { anchors } = useContext(AnchorContext);
 
   return (
     <IonPage>
-      <StatusHeader titleText="Anker finden" />
+      <StatusHeader titleText="Karte" />
       <IonContent fullscreen>
         <IonList>
           {anchors &&
