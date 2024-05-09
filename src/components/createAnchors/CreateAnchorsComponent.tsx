@@ -39,6 +39,9 @@ export const CreateAnchorComponent = () => {
   // definition of functional components (hooks)
   // ------------------------------------------------------------------------------------------
 
+  // anchors from the server (database)
+  const { anchors } = useContext(AnchorContext);
+
   const [localAnchor, setLocalAnchor] = useState<Anchor>(defaultAnchor);
   const { setOneAnchor } = useContext(AnchorContext);
   const [error, setError] = useState<boolean>(false);
@@ -145,8 +148,16 @@ export const CreateAnchorComponent = () => {
 
   // get all unique tags that occur in the database
   const getTagsFromDB = () => {
-    const tagsDB = ["gis", "geo", "fhnw", "habg", "geomatics", "ibau", "measure", "leica", "trimble", "vr", "ar", "python", "qgis"];
-    return tagsDB;
+    if (!anchors) return [];
+    const uniqueTags = new Set();
+    anchors.forEach(anchor => {
+      if (anchor && anchor.tags) {
+        anchor.tags.forEach(tag => {
+          if (tag) uniqueTags.add(tag);
+        });
+      }
+    });
+    return Array.from(uniqueTags);
   };
 
   // update of the list of tags (tags from database and temporarily created by user)
@@ -163,7 +174,7 @@ export const CreateAnchorComponent = () => {
     // iteration through all existing (db / user) tags
     let i = 0
     while (i < allTags.length) {
-      var value = allTags[i]
+      const value:any = allTags[i]
       // list of all elements corresponding to the filter
       if (value.startsWith(filterTagString)){
         // create all elements
@@ -294,8 +305,9 @@ export const CreateAnchorComponent = () => {
             const selectedTagListValue = [];
             let j = 0;
             while (j < selectedTagList.length) {
-              if (selectedTagList[j] != targetTag)
+              if (selectedTagList[j] != targetTag) {
                 selectedTagListValue.push(selectedTagList[j]);
+              };
               j++;
             };
             setSelectedTagList(selectedTagListValue);
@@ -430,18 +442,23 @@ export const CreateAnchorComponent = () => {
 
   // get all unique locations that occur in the database
   const getLocationsFromDB = () => {
-    const locationsDB = [
-      {room_id: "10.M.14", lat: 12.56465447845, lon: 13.546544678, floor_nr: 10, building_id: "CMU", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: "FHNW Muttenz"},
-      {room_id: "10.M.14", lat: 12, lon: 13, floor_nr: 10, building_id: "", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: "FHNW Muttenz"},
-      {room_id: "", lat: 12, lon: 13, floor_nr: 10, building_id: "CMU", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: "FHNW Muttenz"},
-      {room_id: "10.M.22", lat: 12, lon: 14, floor_nr: 10, building_id: "CMU", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: "FHNW Muttenz"},
-      {room_id: "10.M.04", lat: 12, lon: 13, floor_nr: 10, building_id: "CMU", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: "FHNW Muttenz"},
-      {room_id: "10.M.04", lat: null, lon: null, floor_nr: 10, building_id: "CMU", address_string: "Hofackerstrasse 30, 0000 Muttenz", campus_id: ""},
-    ];
+    if (!anchors) return [];
+    const locationListDB =  anchors.map(location => ({
+      room_id: location.room_id || '',
+      lat: location.lat,
+      lon: location.lon,
+      floor_nr: location.floor_nr,
+      building_id: location.building_id || '',
+      address_string: location.address_string || '',
+      campus_id: location.campus_id || ''
+    }));
     // create a new list with unique rows
-    const uniqueRows = filterUniqueRows(locationsDB);
+    const uniqueRows = filterUniqueRows(locationListDB);
+    // remove the dictionary for empty location from the list (if exists)
+    const dictNoLocation = {room_id: "", lat: null, lon: null, floor_nr: null, building_id: "", address_string: "", campus_id: ""};
+    const uniqueRowsClear = uniqueRows.filter((dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoLocation));
     // return the unique list
-    return uniqueRows;
+    return uniqueRowsClear;
   };
 
   // update of the list of locations (locations from database and temporarily created by user)
@@ -452,8 +469,8 @@ export const CreateAnchorComponent = () => {
     var allLocations = locationsDB.concat(temporaryLocationList);
     // sort the location list
     allLocations.sort((a : any, b : any) => {
-      let roomA = a.room_id.toUpperCase();  // not case sensitive
-      let roomB = b.room_id.toUpperCase();  // not case sensitive
+      let roomA = (a.room_id).toUpperCase();  // not case sensitive
+      let roomB = (b.room_id).toUpperCase();  // not case sensitive
       if (roomA < roomB) {return -1;}
       else if (roomA > roomB) {return 1;}
       else {return 0};                      // same room
@@ -684,8 +701,11 @@ export const CreateAnchorComponent = () => {
     }));
     // filter out the unique buildings
     const buildingsDB = filterUniqueRows(allbuildingsDB);
+    // remove the dictionary for empty buildings from the list (if exists)
+    const dictNoBuilding = {building_id: "", address_string: "", campus_id: ""};
+    const buildingsDBClear = buildingsDB.filter((dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoBuilding));
     // combination of all buildings
-    var allBuildings = buildingsDB.concat(temporaryBuildingList);
+    var allBuildings = buildingsDBClear.concat(temporaryBuildingList);
     // sort the building list
     allBuildings.sort((a : any, b : any) => {
       let buildingA = a.building_id.toUpperCase();  // not case sensitive
@@ -941,8 +961,16 @@ export const CreateAnchorComponent = () => {
 
   // get all unique groups that occur in the database
   const getGroupsFromDB = () => {
-    const groupsDB = ["g2023", "g2024", "g2025"];
-    return groupsDB;
+    if (!anchors) return [];
+    const uniqueGroups = new Set();
+    anchors.forEach(anchor => {
+      if (anchor && anchor.group_id) {
+        uniqueGroups.add(anchor.group_id);
+      }
+    });
+    return Array.from(uniqueGroups);
+    // const groupsDB = ["g2023", "g2024", "g2025"];
+    // return groupsDB;
   };
 
   // update of the list of groups (groups from database and temporarily created by user)
@@ -975,7 +1003,7 @@ export const CreateAnchorComponent = () => {
     // iteration through all existing (db / user) groups
     let i = 0
     while (i < allGroups.length) {
-      var value = allGroups[i]
+      const value: any = allGroups[i]
       // list of all elements corresponding to the filter
       if (value.startsWith(filterGroupString)){
         // create all elements
@@ -1149,8 +1177,9 @@ export const CreateAnchorComponent = () => {
         const selectedFileListValue = [];
         let j = 0;
         while (j < selectedFileList.length) {
-          if (selectedFileList[j] != targetDocument)
-          selectedFileListValue.push(selectedFileList[j]);
+          if (selectedFileList[j] != targetDocument) {
+            selectedFileListValue.push(selectedFileList[j]);
+          }
           j++;
         };
         setSelectedFileList(selectedFileListValue);
@@ -1200,7 +1229,7 @@ export const CreateAnchorComponent = () => {
         <IonModal id="dialogSelectTag" trigger="openDialogSelectTag" onDidPresent={getTagsFromFilter} onDidDismiss={updateTagInput}>
             <IonHeader>
               <IonToolbar>
-                <IonTitle slot="start">Tag auswählen</IonTitle>
+                <IonTitle slot="start">Tags auswählen</IonTitle>
                 <IonButtons slot="end">
                   <IonButton onClick={closeDialogSelectTag}>
                     <IonIcon icon={closeOutline} size="large"></IonIcon>
