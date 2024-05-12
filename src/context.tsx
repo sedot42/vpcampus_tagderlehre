@@ -69,7 +69,11 @@ export const AnchorProvider = ({ children }: Props) => {
       }),
     })
       .then((res) => res.json())
-      .then(() => fetchAnchors());
+      .then(() => fetchAnchors())
+      .catch((e) => {
+        console.log(e);
+        setAnchors([defaultAnchor]);
+      });
   };
 
   const updateOneAnchor = (anchor: Anchor) => {

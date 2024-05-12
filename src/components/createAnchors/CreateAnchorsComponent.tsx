@@ -32,6 +32,9 @@ import {
 
 } from "@ionic/react";
 import { addCircleOutline, checkmarkCircleOutline, alertCircleOutline, trashOutline, closeOutline } from "ionicons/icons";
+import { MapContainer, WMSTileLayer, useMapEvents } from 'react-leaflet'
+import { divIcon, Marker, icon } from 'leaflet'
+import 'leaflet/dist/leaflet.css';
 import "../../theme/styles.css";
 
 export const CreateAnchorComponent = () => {
@@ -87,6 +90,9 @@ export const CreateAnchorComponent = () => {
   const [newBuildingError, setNewBuildingError] = useState<boolean>(false);                                     // status for permissibility of the created building
   const [showToastCreateBuilding, setShowToastCreateBuilding] = useState<boolean>(false);                       // status for triggering the user information
 
+  const [newPositionLatitude, setNewPositionLatitude] = useState<number>(NaN);                                  // temporary number to save new coordinate - lat
+  const [newPositionLongitude, setNewPositionLongitude] = useState<number>(NaN);                                // temporary number to save new coordinate - lon
+
   // functional components for the selection of documents for an anchor
   const [selectedFileList, setSelectedFileList] = useState<string[]>([]);     // list of all selected documents
   const fileInput = useRef<null>(null);                                       // ref object for input
@@ -109,6 +115,8 @@ export const CreateAnchorComponent = () => {
       setAnchorStartValid("");            // validity-start
       setAnchorEndValid("");              // validity-end
       setSelectedLocationDictionary({});  // location
+      setNewPositionLatitude(NaN);        // latitude
+      setNewPositionLongitude(NaN);       // longitude
       const locationContainerDiv = document.getElementById("locationContainer")!;
       locationContainerDiv.innerHTML = "";
       setSelectedGroupString("");         // group
@@ -536,7 +544,7 @@ export const CreateAnchorComponent = () => {
         // if exists, add the coordinates to the object in the selection list
         if (value.lat != null && value.lon != null) {
           var selectedLocationCoord = document.createElement("ion-label");
-          selectedLocationCoord.innerHTML = value.lat.toFixed(5) + " / " + value.lon.toFixed(5);
+          selectedLocationCoord.innerHTML = Math.round(value.lat *100000)/100000 + " / " + Math.round(value.lon *100000)/100000;
           selectedLocationCoord.setAttribute("class", "ion-text-wrap");
           locationRadio.appendChild(selectedLocationCoord);
         };
@@ -666,7 +674,7 @@ export const CreateAnchorComponent = () => {
             if (selectedLocationDictionary.building_id != "" ) {innerHTMLString += selectedLocationDictionary.building_id}
             else if (selectedLocationDictionary.campus_id != "") {innerHTMLString += selectedLocationDictionary.campus_id}
             else if (selectedLocationDictionary.address_string != "" ) {innerHTMLString += selectedLocationDictionary.address_string}
-            else if (selectedLocationDictionary.lat != null && selectedLocationDictionary.lon != null) {innerHTMLString += selectedLocationDictionary.lat.toFixed(5) + " / " + selectedLocationDictionary.lon.toFixed(5)}
+            else if (selectedLocationDictionary.lat != null && selectedLocationDictionary.lon != null) {innerHTMLString += String(Math.round(selectedLocationDictionary.lat * 100000)/100000) + " / " + String(Math.round(selectedLocationDictionary.lon * 100000)/100000)}
             else if (selectedLocationDictionary.floor_nr != null) {innerHTMLString += selectedLocationDictionary.floor_nr}
         }
         else {
@@ -677,7 +685,7 @@ export const CreateAnchorComponent = () => {
         if (selectedLocationDictionary.building_id != "" ) {innerHTMLString += selectedLocationDictionary.building_id}
         else if (selectedLocationDictionary.campus_id != "") {innerHTMLString += selectedLocationDictionary.campus_id}
         else if (selectedLocationDictionary.address_string != "" ) {innerHTMLString += selectedLocationDictionary.address_string}
-        else if (selectedLocationDictionary.lat != null && selectedLocationDictionary.lon != null) {innerHTMLString += selectedLocationDictionary.lat.toFixed(5) + " / " + selectedLocationDictionary.lon.toFixed(5)}
+        else if (selectedLocationDictionary.lat != null && selectedLocationDictionary.lon != null) {innerHTMLString += String(Math.round(selectedLocationDictionary.lat * 100000)/100000) + " / " + String(Math.round(selectedLocationDictionary.lon * 100000)/100000)}
         else if (selectedLocationDictionary.floor_nr != null) {innerHTMLString += selectedLocationDictionary.floor_nr}
       };
       locationButtonLabel.innerHTML = innerHTMLString;
@@ -828,7 +836,6 @@ export const CreateAnchorComponent = () => {
 
   // whenever the release of an individual building changes check the validity
   useEffect(() => {
-    console.log(newBuildingDictionary)
     // error if location exists or no input
     if (newBuildingDictionary.building_id == "" && newBuildingDictionary.address_string == "" && newBuildingDictionary.campus_id == "") {
       setNewBuildingError(true);
@@ -900,7 +907,6 @@ export const CreateAnchorComponent = () => {
     buildingContainerDiv.innerHTML = "";
     if (Object.keys(selectedBuildingDictionary).length == 0) {
       // nothing to do
-      console.log(selectedBuildingDictionary)
     }
     else {
       // create a new element for the selected building
@@ -938,6 +944,89 @@ export const CreateAnchorComponent = () => {
       buildingButton.appendChild(buildingButtonIcon);
       buildingContainerDiv.appendChild(buildingButton);
     };
+  };
+
+  // get click position and place marker
+  function GetPosClickDisplayedMap() {
+    const customMarkerStyle = `
+      background-color: #44a2fa;
+      width: 3rem;
+      height: 3rem;
+      display: block;
+      left: -1.5rem;
+      top: -1.5rem;
+      position: relative;
+      border-radius: 3rem 3rem 0;
+      transform: rotate(45deg);
+      border: 1px solid #FFFFFF`
+    const customPosIcon = divIcon({
+      className: "my-custom-pin",
+      iconAnchor: [0, 24],
+      popupAnchor: [0, -36],
+      html: `<span style="${customMarkerStyle}" />`
+    })
+    const map = useMapEvents({
+      click: (e) => {
+        map.eachLayer((layer) => {if (layer.options.pane === 'markerPane') {map.removeLayer(layer)}});
+        const mapPositionMarker = new Marker(e.latlng, {icon: customPosIcon});
+        mapPositionMarker.addTo(map); // add to map;
+        setNewPositionLatitude(e.latlng.lat);
+        setNewPositionLongitude(e.latlng.lng);
+      }
+    });
+    return null;
+  };
+
+  // save the selected coordinates from the map
+  const saveClickedLocation = () => {
+    if (!Number.isNaN(newPositionLatitude) && !Number.isNaN(newPositionLongitude)) {
+      // save the coordinates in the new location 
+
+      // get container for displaying selection
+      const locationContainerDiv = document.getElementById("positionContainer")!;
+      locationContainerDiv.innerHTML = "";
+
+      // create a new element for the selected position
+      const positionButton = document.createElement("ion-button");
+      positionButton.setAttribute("id", JSON.stringify(newPositionLatitude));
+      positionButton.setAttribute("class", "positionContainerButton");
+      positionButton.setAttribute("color", "medium");
+      // add a function to delete the building
+      positionButton.addEventListener("click", (event: any) => {
+        locationContainerDiv.innerHTML = "";
+        // reset temp clicked position
+        setNewPositionLatitude(NaN);
+        setNewPositionLongitude(NaN);
+        });
+      const locationButtonLabel = document.createElement("ion-label");
+      locationButtonLabel.classList.add("positionContainerButtonLabels", "ion-text-wrap");
+      var innerHTMLString = newPositionLatitude.toFixed(5) + " / " + newPositionLongitude.toFixed(5);
+      locationButtonLabel.innerHTML = innerHTMLString;
+      const locationButtonIcon = document.createElement("ion-icon");
+      locationButtonIcon.setAttribute("icon", trashOutline);
+      positionButton.appendChild(locationButtonLabel);
+      positionButton.appendChild(locationButtonIcon);
+      locationContainerDiv.appendChild(positionButton);
+    };
+    // close modal
+    {(document.getElementById('dialogSelectPosition')! as HTMLIonModalElement).dismiss()};
+  };
+
+  // update the coordinates 
+  useEffect(() => {
+    const newLocationDictValue : { [key: string]: any; } = Object.assign({}, newLocationDictionary);
+    newLocationDictValue.lat = Number.isNaN(newPositionLatitude) ? undefined : parseFloat("10.5")//newPositionLatitude.toFixed(15);
+    newLocationDictValue.lon = Number.isNaN(newPositionLongitude) ? undefined : parseFloat("10.5") //newPositionLongitude.toFixed(15);
+    setNewLocationDictionary(newLocationDictValue);
+  }, [newPositionLatitude, newPositionLongitude])
+
+  // close location selection on map without selection
+  const closeLocationSelectionMap = () => {
+    // reset temp clicked position
+    setNewPositionLatitude(NaN);
+    setNewPositionLongitude(NaN);
+    // close modal
+    {(document.getElementById('dialogSelectPosition')! as HTMLIonModalElement).dismiss()};
   };
 
   // save changes in the temporary anchor for forwarding to the database
@@ -1471,34 +1560,44 @@ export const CreateAnchorComponent = () => {
                       {/* container for showing the selection */}
                       </div>
                       {/* overlay (modal) for the selection of the position */}
-                      <IonModal id="dialogSelectPosition" trigger="openDialogSelectPosition">
+                      <IonModal id="dialogSelectPosition" trigger="openDialogSelectPosition" onIonModalDidPresent={() => {window.dispatchEvent(new Event('resize'))}}>
                         <IonHeader>
                           <IonToolbar>
                             <IonTitle slot="start">Position wählen</IonTitle>
                             <IonButtons slot="end">
-                              <IonButton onClick={() => console.log("Überlagerung schliessen...")}>
+                              <IonButton onClick={() => closeLocationSelectionMap()}>
                                 <IonIcon icon={closeOutline} size="large"></IonIcon>
                               </IonButton>
                             </IonButtons>
                           </IonToolbar>
                         </IonHeader>
                         <IonContent class="padding">
-                          <IonGrid>
-                            <IonRow>
-                              <IonCol>
-                                Inhalt...
-                              </IonCol>
-                            </IonRow>
-                          </IonGrid>
+                          <MapContainer 
+                            id="selectPositionMap"
+                            center={[47.5349015179286, 7.6419409280402535]} 
+                            zoom={18} 
+                            maxBounds={[[45.8148308954386, 5.740290246442871], [47.967830538595194, 10.594475942663449]]}>
+                            <WMSTileLayer
+                              id="backgroundPixelKarte"
+                              url="https://wms.geo.admin.ch/?"
+                              layers="ch.swisstopo.pixelkarte-farbe"
+                              format="image/jpeg"
+                              detectRetina={true}
+                              minZoom={7.5}
+                              maxZoom={20}
+                              attribution="Map by <a href = 'https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>"
+                              />
+                            <GetPosClickDisplayedMap/>
+                          </MapContainer>
                         </IonContent>
                         <IonFooter>
                           <IonGrid>
                             <IonRow>
                               <IonCol>
-                                <IonButton onClick={() => console.log("Überlagerung schliessen...")} id="cancelTempLocation" expand="full" color="primary">Abbrechen</IonButton>
+                                <IonButton onClick={() => closeLocationSelectionMap()} id="cancelTempLocation" expand="full" color="primary">Abbrechen</IonButton>
                               </IonCol>
                               <IonCol>
-                                <IonButton onClick={() => console.log("Speichern...")} id="saveTempLocation" expand="full" color="primary">Speichern</IonButton>
+                                <IonButton onClick={() => saveClickedLocation()} id="saveTempLocation" expand="full" color="primary">Speichern</IonButton>
                               </IonCol>
                             </IonRow>
                           </IonGrid>

@@ -372,15 +372,9 @@ export const SettingsComponent = () => {
             <IonContent className="ion-padding">
               <IonText>An dieser Stelle besteht die Möglichkeit, eine Auswahl relevanter Tags und Gruppen zu treffen. Die innerhalb der Applikation angezeigten Anker beschränken sich in diesem Fall auf die ausgewählten Gruppen und gewählten Stichworte. Liegt keine Auswahl vor, werden alle Anker angezeigt. </IonText>
             </IonContent>
-            <IonFooter>
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <IonButton onClick={() => {(document.getElementById('dialogFilterInfo')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Ok</IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-              </IonFooter>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={() => {(document.getElementById('dialogFilterInfo')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Ok</IonButton>
+            </IonFooter>
         </IonModal>
 
         {/* part for the selection of tags */}
@@ -412,15 +406,9 @@ export const SettingsComponent = () => {
                 </IonList>
               </IonInfiniteScroll>
             </IonContent>
-            <IonFooter>
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <IonButton onClick={closeDialogSelectTags} id="cancelSelectTag" expand="full" color="primary">Speichern</IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-              </IonFooter>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={closeDialogSelectTags} id="cancelSelectTag" expand="full" color="primary">Speichern</IonButton>
+            </IonFooter>
         </IonModal>
 
         {/* part for the selection of groups */}
@@ -435,32 +423,26 @@ export const SettingsComponent = () => {
         </div>
         {/* overlay (modal) for the selection of groups */}
         <IonModal id="dialogSelectGroups" trigger="selectGroupButton" onDidPresent={showGroupsOnSelection} onDidDismiss={updateGroupSelectionInput}>
-            <IonHeader>
-              <IonToolbar>
-                <IonTitle slot="start">Gruppen auswählen</IonTitle>
-                <IonButtons slot="end">
-                  <IonButton onClick={closeDialogSelectGroups}>
-                    <IonIcon icon={closeOutline} size="large"></IonIcon>
-                  </IonButton>
-                </IonButtons>
-              </IonToolbar>
-              <IonSearchbar onIonInput={updateFilterGroup} color="light" id="groupSearchBar"></IonSearchbar>
-            </IonHeader>
-            <IonContent>
-              <IonInfiniteScroll>
-                <IonList id="listAllFilteredGroups">
-                </IonList>
-              </IonInfiniteScroll>
-            </IonContent>
-            <IonFooter>
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <IonButton onClick={closeDialogSelectGroups} id="cancelSelectGroup" expand="full" color="primary">Speichern</IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-              </IonFooter>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle slot="start">Gruppen auswählen</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={closeDialogSelectGroups}>
+                  <IonIcon icon={closeOutline} size="large"></IonIcon>
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+            <IonSearchbar onIonInput={updateFilterGroup} color="light" id="groupSearchBar"></IonSearchbar>
+          </IonHeader>
+          <IonContent>
+            <IonInfiniteScroll>
+              <IonList id="listAllFilteredGroups">
+              </IonList>
+            </IonInfiniteScroll>
+          </IonContent>
+          <IonFooter class="ion-padding">
+            <IonButton onClick={closeDialogSelectGroups} id="cancelSelectGroup" expand="full" color="primary">Speichern</IonButton>
+          </IonFooter>
         </IonModal>
 
       </IonContent>
