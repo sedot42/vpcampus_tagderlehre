@@ -16,6 +16,7 @@ export const query = `query ExampleQuery{
     tags
     valid_from
     valid_until
+    anchor_description
   }
 }`;
 

@@ -42,7 +42,15 @@ export const AnchorProvider = ({ children }: Props) => {
       }),
     })
       .then((res) => res.json())
-      .then((res) => setAnchors(res.data.anchors))
+      // restore the original coordinates after saving as an integer
+      .then((res) => {
+        res.data.anchors.forEach((anchor:any) => {
+          anchor.lat = anchor.lat != undefined? anchor.lat /= 1_000_000 : null;
+          anchor.lon = anchor.lon != undefined? anchor.lon /= 1_000_000 : null;
+        });
+        return res.data.anchors;
+      })
+      .then((resAnchors) => setAnchors(resAnchors))
       .catch((e) => {
         console.log(e);
         setAnchors([defaultAnchor]);

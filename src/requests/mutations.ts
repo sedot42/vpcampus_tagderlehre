@@ -34,7 +34,7 @@ export const create_mutation = `mutation CreateAnchor($anchor: AnchorInput){
     }
 }`;
 
-export const delete_mutation = `mutation DeleteAnchor($deleteAnchorId!){
+export const delete_mutation = `mutation DeleteAnchor($deleteAnchorId: String!){
     deleteAnchor(id: $deleteAnchorId) 
 }`;
 

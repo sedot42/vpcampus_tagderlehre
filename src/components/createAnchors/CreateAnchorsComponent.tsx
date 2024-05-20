@@ -117,6 +117,12 @@ export const CreateAnchorComponent = () => {
       setSelectedLocationDictionary({});  // location
       setNewPositionLatitude(NaN);        // latitude
       setNewPositionLongitude(NaN);       // longitude
+      setSelectedBuildingDictionary({});  // building
+      // reset temporary user creations
+      setTemporaryTagList([]);            // tag
+      setTemporaryGroupList([]);          // group
+      setTemporaryLocationList([]);       // location
+      setTemporaryBuildingList([]);       // building
       const locationContainerDiv = document.getElementById("locationContainer")!;
       locationContainerDiv.innerHTML = "";
       setSelectedGroupString("");         // group
@@ -368,16 +374,13 @@ export const CreateAnchorComponent = () => {
     setAnchorEndDate(event.detail.value);
   };
 
-
-
-
   // changing the dates in the event of changes in time or use
   useEffect(() => {
     if (useDate) {
       setLocalAnchor({
         ...localAnchor,
-        start_at: anchorStartDate as string + ".000Z" || undefined,
-        end_at: anchorEndDate as string + ".000Z" || undefined,
+        start_at: anchorStartDate != ""? anchorStartDate as string + ".000Z" : undefined,
+        end_at: anchorEndDate != ""? anchorEndDate as string + ".000Z" : undefined,
       });        
     }
     else {
@@ -420,8 +423,8 @@ export const CreateAnchorComponent = () => {
     if (useValid) {
       setLocalAnchor({
         ...localAnchor,
-        valid_from: anchorStartValid as string + ".000Z" || undefined,
-        valid_until: anchorEndValid as string + ".000Z" || undefined,
+        valid_from: anchorStartValid != ""? anchorStartValid as string + ".000Z" : undefined,
+        valid_until: anchorEndValid != ""? anchorEndValid as string + ".000Z" : undefined,
       });        
     }
     else {
@@ -1015,8 +1018,8 @@ export const CreateAnchorComponent = () => {
   // update the coordinates 
   useEffect(() => {
     const newLocationDictValue : { [key: string]: any; } = Object.assign({}, newLocationDictionary);
-    newLocationDictValue.lat = Number.isNaN(newPositionLatitude) ? undefined : parseFloat("10.5")//newPositionLatitude.toFixed(15);
-    newLocationDictValue.lon = Number.isNaN(newPositionLongitude) ? undefined : parseFloat("10.5") //newPositionLongitude.toFixed(15);
+    newLocationDictValue.lat = Number.isNaN(newPositionLatitude) ? undefined : newPositionLatitude;
+    newLocationDictValue.lon = Number.isNaN(newPositionLongitude) ? undefined : newPositionLongitude;
     setNewLocationDictionary(newLocationDictValue);
   }, [newPositionLatitude, newPositionLongitude])
 
@@ -1034,8 +1037,9 @@ export const CreateAnchorComponent = () => {
     setLocalAnchor({
       ...localAnchor,
       room_id: selectedLocationDictionary.room_id !== "" ? selectedLocationDictionary.room_id : undefined,
-      lat: selectedLocationDictionary.lat === null ? undefined : selectedLocationDictionary.lat,
-      lon: selectedLocationDictionary.lon === null ? undefined : selectedLocationDictionary.lon ,
+      // manipulate coordinates (multiply by 100000 and integer) for storage in database -> problems with floating point numbers
+      lat: selectedLocationDictionary.lat === null ? undefined : Math.round(selectedLocationDictionary.lat * 1_000_000),
+      lon: selectedLocationDictionary.lon === null ? undefined : Math.round(selectedLocationDictionary.lon * 1_000_000),
       floor_nr: selectedLocationDictionary.floor_nr === null ? undefined : selectedLocationDictionary.floor_nr,
       building_id: selectedLocationDictionary.building_id !== "" ? selectedLocationDictionary.building_id : undefined,
       address_string: selectedLocationDictionary.address_string !== "" ? selectedLocationDictionary.address_string : undefined,
@@ -1058,8 +1062,6 @@ export const CreateAnchorComponent = () => {
       }
     });
     return Array.from(uniqueGroups);
-    // const groupsDB = ["g2023", "g2024", "g2025"];
-    // return groupsDB;
   };
 
   // update of the list of groups (groups from database and temporarily created by user)
@@ -1418,6 +1420,9 @@ export const CreateAnchorComponent = () => {
               id="starttime"
               onIonChange={(e) => updateStartTimeInput(e)}
             ></IonDatetime>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={() => {(document.getElementById('dialogSelectDateStart')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Speichern</IonButton>
+            </IonFooter>
           </IonModal>
           <IonModal keepContentsMounted={true} id="dialogSelectDateEnd">
             <IonHeader>
@@ -1435,6 +1440,9 @@ export const CreateAnchorComponent = () => {
               id="endtime"
               onIonChange={(e) => updateEndTimeInput(e)}
             ></IonDatetime>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={() => {(document.getElementById('dialogSelectDateEnd')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Speichern</IonButton>
+            </IonFooter>
           </IonModal>
         </div>
         
@@ -1473,6 +1481,9 @@ export const CreateAnchorComponent = () => {
               id="starttimevalid"
               onIonChange={(e) => updateStartValidInput(e)}
             ></IonDatetime>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={() => {(document.getElementById('dialogSelectValidStart')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Speichern</IonButton>
+            </IonFooter>
           </IonModal>
           <IonModal keepContentsMounted={true} id="dialogSelectValidEnd">
             <IonHeader>
@@ -1490,6 +1501,9 @@ export const CreateAnchorComponent = () => {
               id="endtimevalid"
               onIonChange={(e) => updateEndValidInput(e)}
             ></IonDatetime>
+            <IonFooter class="ion-padding">
+              <IonButton onClick={() => {(document.getElementById('dialogSelectValidEnd')! as HTMLIonModalElement).dismiss()}} expand="full" color="primary">Speichern</IonButton>
+            </IonFooter>
           </IonModal>
         </div>
 
