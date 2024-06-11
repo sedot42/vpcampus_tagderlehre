@@ -144,9 +144,11 @@ export const SettingsComponent = () => {
   };
 
   // updating the function for selecting tags
-  const updateTagSelectionInput = () => {
+  const updateTagSelectionInput = (modalClose = false) => {
     // reset filter string (tag)
-    setFilterStringTag("");
+    if (modalClose == true) {
+      setFilterStringTag("");
+    };
     // temporary storage of the current selection for subsequent editing
     var listSelectedTagValue = [...listSelectedTag];
     // clearing the current display
@@ -293,9 +295,11 @@ export const SettingsComponent = () => {
   };
   
   // updating the function for selecting groups
-  const updateGroupSelectionInput = () => {
+  const updateGroupSelectionInput = (modalClose = false) => {
     // reset filter string (group)
-    setFilterStringGroup("");
+    if (modalClose == true) {
+      setFilterStringGroup("");
+    };
     // temporary storage of the current selection for subsequent editing
     var listSelectedGroupValue = [...listSelectedGroups];
     // clearing the current display
@@ -388,7 +392,7 @@ export const SettingsComponent = () => {
           {/* container for showing the tag selection */}
         </div>
         {/* overlay (modal) for the selection of tags */}
-        <IonModal id="dialogSelectTags" trigger="selectTagButton" onDidPresent={showTagsOnSelection} onDidDismiss={updateTagSelectionInput}>
+        <IonModal id="dialogSelectTags" trigger="selectTagButton" onDidPresent={showTagsOnSelection} onDidDismiss={() => updateTagSelectionInput(true)}>
             <IonHeader>
               <IonToolbar>
                 <IonTitle slot="start">Tags auswählen</IonTitle>
@@ -422,7 +426,7 @@ export const SettingsComponent = () => {
           {/* container for showing the group selection */}
         </div>
         {/* overlay (modal) for the selection of groups */}
-        <IonModal id="dialogSelectGroups" trigger="selectGroupButton" onDidPresent={showGroupsOnSelection} onDidDismiss={updateGroupSelectionInput}>
+        <IonModal id="dialogSelectGroups" trigger="selectGroupButton" onDidPresent={showGroupsOnSelection} onDidDismiss={() => updateGroupSelectionInput(true)}>
           <IonHeader>
             <IonToolbar>
               <IonTitle slot="start">Gruppen auswählen</IonTitle>

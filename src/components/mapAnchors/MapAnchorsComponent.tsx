@@ -171,7 +171,9 @@ export const MapAnchorComponent = () => {
         // appointment
         if (startsOnSameDayOrBevor(selectedDayFilter, startDate) && endsOnSameDayOrLater(selectedDayFilter, endDate)) {
           // filter for selected filter for start and end time
-          if ((startDate.getHours()+startDate.getMinutes()/60) < endTimeFilter && (endDate.getHours()+endDate.getMinutes()/60) > startTimeFilter) {
+          var anchorStartTime = selectedDayFilter.getDate() === startDate.getDate()? startDate.getHours()+startDate.getMinutes()/60 : 0;
+          var anchorEndTime = selectedDayFilter.getDate() === endDate.getDate()? endDate.getHours()+endDate.getMinutes()/60 : 23.999;
+          if (anchorStartTime < endTimeFilter && anchorEndTime > startTimeFilter) {
             // filter for selected floor
             if (anchor.floor_nr === selectedFloor) {
               filteredAnchorListHasDate.push(anchor);
@@ -185,7 +187,9 @@ export const MapAnchorComponent = () => {
         // validity
         if (startsOnSameDayOrBevor(selectedDayFilter, startValid) && endsOnSameDayOrLater(selectedDayFilter, endValid)) {
           // filter for selected filter for start and end time
-          if ((startValid.getHours()+startValid.getMinutes()/60) < endTimeFilter && (endValid.getHours()+endValid.getMinutes()/60) > startTimeFilter) {
+          var anchorStartValid = selectedDayFilter.getDate() === startValid.getDate()? startValid.getHours()+startValid.getMinutes()/60 : 0;
+          var anchorEndValid = selectedDayFilter.getDate() === endValid.getDate()? endValid.getHours()+endValid.getMinutes()/60 : 23.999;
+          if (anchorStartValid < endTimeFilter && anchorEndValid > startTimeFilter) {
             // filter for selected floor
             if (anchor.floor_nr === selectedFloor) {
               filteredAnchorListIsValid.push(anchor);
@@ -294,30 +298,30 @@ export const MapAnchorComponent = () => {
     if (layerFloorplanVisible === false) {
       // anchor with a validity in the selected period (no appointment!)
       for (const anchor of filteredAnchorData[3].concat(filteredAnchorData[5])) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 3);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 4);
       };
       //anchor with a date within the selected time period (possibly also a validity)
       for (const anchor of filteredAnchorData[0].concat(filteredAnchorData[2])) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 3);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 4);
       };
     }
     // if floorplan ist displayed
     else {
       // anchor with a validity in the selected period on a wrong floor (no appointment!)
       for (const anchor of filteredAnchorData[5]) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 2);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 3);
       };
       // anchor with a validity in the selected period on the selected floor (no appointment!)
       for (const anchor of filteredAnchorData[3]) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 3);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#9c9c9c', 4);
       };
       //anchor with a date within the selected time period on a wrong floor (possibly also a validity)
       for (const anchor of filteredAnchorData[2]) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 2);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 3);
       };
       //anchor with a date within the selected time period on the selected floor (possibly also a validity)
       for (const anchor of filteredAnchorData[0]) {
-        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 3);
+        addMarkerToMap(anchor, mapCenter, mapBounds, '#44a2fa', 4);
       };
     };
   };
@@ -441,7 +445,7 @@ export const MapAnchorComponent = () => {
         var htmlString = "";
         if (anchor.attachments.length > 0) {
           for (const attachement of anchor.attachments) {
-            htmlString += '<a href="' + attachement + '">' + attachement + '</a> '
+            htmlString += '<a style="color:#000000" href="' + attachement + '">' + attachement + '</a> '
           };
         };
         anchorInfoDocumentValue.innerHTML = htmlString;  
@@ -536,7 +540,7 @@ export const MapAnchorComponent = () => {
         var htmlString = "";
         if (anchor.attachments.length > 0) {
           for (const attachement of anchor.attachments) {
-            htmlString += '<a href="' + attachement + '">' + attachement + '</a> '
+            htmlString += '<a style="color:#8c8c8c" href="' + attachement + '">' + attachement + '</a> '
           };
         };
         anchorInfoDocumentValue.innerHTML = htmlString;  
