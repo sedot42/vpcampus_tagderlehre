@@ -6,9 +6,13 @@ import {
   BaseSyntheticEvent,
 } from "react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { convertFlatAnchorToDBAnchor } from "../../types/types";
+import {
+  Anchor,
+  convertFlatAnchorToDBAnchor,
+  DraftAnchor,
+} from "../../types/types";
 import { draftAnchor } from "../../types/defaults";
-import { AnchorContext } from "../../context";
+import { AnchorContext } from "../../anchorContext";
 import {
   ConfigInput,
   createInputs,
@@ -59,7 +63,7 @@ export const CreateAnchorComponent = () => {
   // anchors from the server (database)
   const { anchors } = useContext(AnchorContext);
 
-  const [localAnchor, setLocalAnchor] = useState<Anchor>(defaultAnchor);
+  const [localAnchor, setLocalAnchor] = useState<DraftAnchor>(draftAnchor);
   const { createOneAnchor } = useContext(AnchorContext);
   const [error, setError] = useState(false);
 
