@@ -12,12 +12,13 @@ import {
   DraftAnchor,
   convertDBAnchorToFlatAnchor,
 } from "./types/types";
+import { draftAnchor } from "./types/defaults";
 
 export type AnchorContextType = {
   createOneAnchor: (anchor: DraftAnchor<DBAnchor>) => void;
   updateOneAnchor: (anchor: DBAnchor) => void;
-  deleteOneAnchor: (anchor: DBAnchor['id']) => void;
-  anchors: Anchor[];
+  deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
+  anchors: DBAnchor[];
 };
 
 export const AnchorContext = createContext<AnchorContextType>({
@@ -86,7 +87,7 @@ export const AnchorProvider = ({ children }: Props) => {
       .then(() => fetchAnchors())
       .catch((e) => {
         console.log(e);
-        setAnchors([defaultAnchor]);
+        setAnchors([draftAnchor]);
       });
   };
 

@@ -143,7 +143,7 @@ export const CreateAnchorComponent = () => {
     if (localAnchor.anchor_name) {
       setError(false);
       createOneAnchor(localAnchor);
-      setLocalAnchor(defaultAnchor);
+      setLocalAnchor(draftAnchor);
       // reset all
       setSelectedTagList([]); // tags
       setAnchorStartDate(""); // date-start
