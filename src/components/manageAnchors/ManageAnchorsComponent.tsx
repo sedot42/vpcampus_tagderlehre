@@ -65,14 +65,14 @@ export const ManageAnchorComponent = () => {
                 </IonButton>
               </IonItem>
             ))}
-          { modalData &&
+          {modalData && (
             <UpdateModal
               modalData={modalData}
               setModalData={setModalData}
               openModal={openModal}
               setOpenModal={setOpenModal}
             />
-          }
+          )}
         </IonList>
       </IonContent>
     </IonPage>

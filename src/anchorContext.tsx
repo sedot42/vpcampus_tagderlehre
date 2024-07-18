@@ -13,9 +13,12 @@ import {
   convertDBAnchorToFlatAnchor,
 } from "./types/types";
 import { draftAnchor } from "./types/defaults";
+import { mockState } from "./mockState";
+
+// RESTORE THIS FILE AFTER THE HACKATHON
 
 export type AnchorContextType = {
-  createOneAnchor: (anchor: DraftAnchor<DBAnchor>) => void;
+  createOneAnchor: (anchor: DBAnchor) => void;
   updateOneAnchor: (anchor: DBAnchor) => void;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
   anchors: DBAnchor[];
@@ -31,101 +34,28 @@ export const AnchorContext = createContext<AnchorContextType>({
 type Props = { children: React.ReactElement | React.ReactElement[] };
 
 export const AnchorProvider = ({ children }: Props) => {
-  const [anchors, setAnchors] = useState<Anchor[]>([]);
+  const [anchors, setAnchors] = useState<DBAnchor[]>(mockState);
 
   // Don`t expose this method outside this component. It is used to populate state, share state instead.
   const fetchAnchors = () => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        query,
-      }),
-    })
-      .then((res) => res.json())
-      // restore the original coordinates after saving as an integer
-      .then((res) => {
-        res.data.anchors.forEach((anchor: any) => {
-          anchor.lat =
-            anchor.lat != undefined ? (anchor.lat /= 1_000_000) : null;
-          anchor.lon =
-            anchor.lon != undefined ? (anchor.lon /= 1_000_000) : null;
-        });
-        return res.data.anchors;
-      })
-      .then((resAnchors) => setAnchors(resAnchors))
-      .catch((e) => {
-        console.log(e);
-        setAnchors([]);
-      });
+    return anchors;
   };
 
-  // Populate app state
-  useEffect(() => fetchAnchors(), [children]);
-
   const createOneAnchor: AnchorContextType["createOneAnchor"] = (anchor) => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        query: create_mutation,
-        variables: {
-          anchor: {
-            ...anchor,
-          },
-        },
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => fetchAnchors())
-      .catch((e) => {
-        console.log(e);
-        setAnchors([draftAnchor]);
-      });
+    setAnchors([...anchors, anchor]);
+    return [...anchors, anchor];
   };
 
   const updateOneAnchor: AnchorContextType["updateOneAnchor"] = (anchor) => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: update_mutation,
-        variables: {
-          anchor: {
-            ...anchor,
-          },
-        },
-      }),
-    })
-      .then((response) => response.json())
-      .then(() => fetchAnchors());
+    const newState = anchors.map((a) => (a.id === anchor.id ? anchor : a));
+    setAnchors(newState);
+    return newState;
   };
 
   const deleteOneAnchor: AnchorContextType["deleteOneAnchor"] = (id) => {
-    fetch("http://localhost:5000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        query: delete_mutation,
-        variables: {
-          deleteAnchorId: id,
-        },
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => fetchAnchors());
+    const newState = anchors.filter((a) => a.id !== id);
+    setAnchors(newState);
+    return newState;
   };
 
   return (

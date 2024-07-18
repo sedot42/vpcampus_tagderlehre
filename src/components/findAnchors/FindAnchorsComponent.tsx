@@ -22,9 +22,16 @@ export enum SORT {
   DSC = "DSC",
   NONE = "NONE",
 }
-export type SortState = { anchor_name: SORT; owner_id: SORT; created_at: SORT };
-const defaultSortState = { anchor_name: SORT.NONE, owner_id: SORT.NONE, created_at: SORT.NONE };
-const sortCycleOrder: { [key in SORT]: SORT } = { ASC: SORT.DSC, DSC: SORT.NONE, NONE: SORT.ASC };
+export type SortState = { anchor_name: SORT; created_at: SORT };
+const defaultSortState = {
+  anchor_name: SORT.NONE,
+  created_at: SORT.NONE,
+};
+const sortCycleOrder: { [key in SORT]: SORT } = {
+  ASC: SORT.DSC,
+  DSC: SORT.NONE,
+  NONE: SORT.ASC,
+};
 
 export const FindAnchorsComponent = () => {
   const { anchors } = useContext(AnchorContext);
@@ -48,8 +55,14 @@ export const FindAnchorsComponent = () => {
     }
     if (param === "created_at") {
       return sortState[param] === SORT.DSC
-        ? anchors.sort((a, b) => Date.parse(a[param] as string) - Date.parse(b[param] as string))
-        : anchors.sort((a, b) => Date.parse(b[param] as string) - Date.parse(a[param] as string));
+        ? anchors.sort(
+            (a, b) =>
+              Date.parse(a[param] as string) - Date.parse(b[param] as string)
+          )
+        : anchors.sort(
+            (a, b) =>
+              Date.parse(b[param] as string) - Date.parse(a[param] as string)
+          );
     } else {
       return sortState[param] === SORT.DSC
         ? anchors.sort((a, b) => a[param].localeCompare(b[param]))
@@ -74,8 +87,12 @@ export const FindAnchorsComponent = () => {
             sortedAnchors()
               .filter(
                 (anchor) =>
-                  (anchor.anchor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    anchor.owner_id.toLowerCase().includes(searchTerm.toLowerCase())) &&
+                  (anchor.anchor_name
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                    anchor.owner.id
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())) &&
                   (!filterByBookmarked || bookmarks.includes(anchor.id))
               )
               .map((anchor, index) => (
@@ -96,17 +113,21 @@ export const FindAnchorsComponent = () => {
                         <IonIcon
                           slot="icon-only"
                           size="default"
-                          icon={bookmarks.includes(anchor.id) ? star : starOutline}
+                          icon={
+                            bookmarks.includes(anchor.id) ? star : starOutline
+                          }
                         ></IonIcon>
                       </IonButton>
                     </IonCardTitle>
-                    <IonCardSubtitle> {anchor.owner_id || "-"}</IonCardSubtitle>
-                    <IonCardSubtitle>{anchor.created_at || "-"}</IonCardSubtitle>
+                    <IonCardSubtitle> {anchor.owner.id || "-"}</IonCardSubtitle>
+                    <IonCardSubtitle>
+                      {anchor.created_at || "-"}
+                    </IonCardSubtitle>
                   </IonCardHeader>
 
                   <IonCardContent>
-                    Here&apos;s a small text description for the card content. Nothing more, nothing
-                    less.
+                    Here&apos;s a small text description for the card content.
+                    Nothing more, nothing less.
                   </IonCardContent>
                 </IonCard>
               ))}
