@@ -1,4 +1,3 @@
-
 // If the anchor type definition is changed, changes need to be applied here as well:
 export const create_mutation = `mutation CreateAnchor($anchor: AnchorInput!){
     createAnchor(anchor: $anchor) {
@@ -85,7 +84,7 @@ export const createBookmarkMutation = `mutation createBookmark($anchorId: String
     user_id
   }
 }
-`
+`;
 
 export const deleteBookmarkMutation = `mutation deleteBookmark($anchorId: String!, $userId: String!) {
   deleteBookmark(anchor_id: $anchorId, user_id: $userId) {
@@ -93,4 +92,4 @@ export const deleteBookmarkMutation = `mutation deleteBookmark($anchorId: String
     user_id
   }
 }
-`
+`;

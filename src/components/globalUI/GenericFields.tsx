@@ -14,7 +14,7 @@ export const createInputs = (
   // FixMe: Define types
   state: any,
   setState: (state: any) => void,
-  config: ConfigInput[]
+  config: ConfigInput[],
 ) => {
   return config.map((entry, index) => (
     <IonInput
@@ -50,7 +50,7 @@ export const createInputs = (
 export const createTextarea = (
   state: any,
   setState: (state: any) => void,
-  config: ConfigInput[]
+  config: ConfigInput[],
 ) => {
   return config.map((entry, index) => (
     <IonTextarea
@@ -82,7 +82,3 @@ export const createTextarea = (
     </IonTextarea>
   ));
 };
-
-
-
-

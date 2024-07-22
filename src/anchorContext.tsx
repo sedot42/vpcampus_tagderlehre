@@ -1,8 +1,6 @@
 import { useState, createContext } from "react";
 
-import {
-  DBAnchor,
-} from "./types/types";
+import { DBAnchor } from "./types/types";
 import { mockState } from "./mockState";
 
 // RESTORE THIS FILE AFTER THE HACKATHON

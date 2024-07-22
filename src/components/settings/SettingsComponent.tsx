@@ -39,10 +39,9 @@ export const SettingsComponent = () => {
   const [filterStringTag, setFilterStringTag] = useState<string>(""); // string to filter the tags
   const storedTags = localStorage.getItem("campus_v_p_selTags"); // load settings from local storage
   const storedTagsParsed = storedTags ? JSON.parse(storedTags) : [];
-  const [listSelectedTag, setListSelectedTag] =
-    useState<string[]>(storedTagsParsed); // list of all selected tags
+  const [listSelectedTag, setListSelectedTag] = useState<string[]>(storedTagsParsed); // list of all selected tags
   const [timeChangeTagSelection, setTimeChangeTagSelection] = useState<number>(
-    Date.now()
+    Date.now(),
   ); // changetime to detect all changes (useEffect)
 
   // functional components for the selection of groups (filter)
@@ -51,8 +50,9 @@ export const SettingsComponent = () => {
   const storedGroupsParsed = storedGroups ? JSON.parse(storedGroups) : [];
   const [listSelectedGroups, setListSelectedGroups] =
     useState<string[]>(storedGroupsParsed); // list of all selected groups
-  const [timeChangeGroupSelection, setTimeChangeGroupSelection] =
-    useState<number>(Date.now()); // changetime to detect all changes (useEffect)
+  const [timeChangeGroupSelection, setTimeChangeGroupSelection] = useState<number>(
+    Date.now(),
+  ); // changetime to detect all changes (useEffect)
 
   // functions (pipelines) for the tag selection
   // ------------------------------------------------------------------------------------------
@@ -78,10 +78,7 @@ export const SettingsComponent = () => {
     if (tagsDB) {
       for (const element of tagsDB) {
         // check whether the element is a string
-        if (
-          typeof element === "string" &&
-          element.startsWith(filterStringTag)
-        ) {
+        if (typeof element === "string" && element.startsWith(filterStringTag)) {
           filteredTags.push(element);
         }
       }
@@ -152,7 +149,7 @@ export const SettingsComponent = () => {
   // closing the dialog (modal) to select tags
   const closeDialogSelectTags = () => {
     var dialogSelectTag = document.getElementById(
-      "dialogSelectTags"
+      "dialogSelectTags",
     ) as HTMLIonModalElement;
     dialogSelectTag.dismiss();
   };
@@ -192,10 +189,7 @@ export const SettingsComponent = () => {
           setTimeChangeTagSelection(Date.now());
         });
         const tagButtonLabel = document.createElement("ion-label");
-        tagButtonLabel.classList.add(
-          "tagContainerButtonLabels",
-          "ion-text-wrap"
-        );
+        tagButtonLabel.classList.add("tagContainerButtonLabels", "ion-text-wrap");
         tagButtonLabel.innerHTML = element;
         const tagButtonIcon = document.createElement("ion-icon");
         tagButtonIcon.setAttribute("icon", trashOutline);
@@ -211,10 +205,7 @@ export const SettingsComponent = () => {
   useEffect(() => {
     updateTagSelectionInput();
     // save on local storage
-    localStorage.setItem(
-      "campus_v_p_selTags",
-      JSON.stringify(listSelectedTag.sort())
-    );
+    localStorage.setItem("campus_v_p_selTags", JSON.stringify(listSelectedTag.sort()));
   }, [listSelectedTag, timeChangeTagSelection]);
 
   // functions (pipelines) for the group selection
@@ -239,10 +230,7 @@ export const SettingsComponent = () => {
     if (groupsDB) {
       for (const element of groupsDB) {
         // check whether the element is a string
-        if (
-          typeof element === "string" &&
-          element.startsWith(filterStringGroup)
-        ) {
+        if (typeof element === "string" && element.startsWith(filterStringGroup)) {
           filteredGroups.push(element);
         }
       }
@@ -280,9 +268,7 @@ export const SettingsComponent = () => {
           }
           // omitted selection -> remove from list
           else {
-            const index = listSelectedGroupValue.indexOf(
-              groupChanges.detail.value
-            );
+            const index = listSelectedGroupValue.indexOf(groupChanges.detail.value);
             if (index > -1) {
               // only splice array when item is found
               listSelectedGroupValue.splice(index, 1); // 2nd parameter means remove one item only
@@ -315,7 +301,7 @@ export const SettingsComponent = () => {
   // closing the dialog (modal) to select groups
   const closeDialogSelectGroups = () => {
     var dialogSelectGroup = document.getElementById(
-      "dialogSelectGroups"
+      "dialogSelectGroups",
     ) as HTMLIonModalElement;
     dialogSelectGroup.dismiss();
   };
@@ -329,9 +315,7 @@ export const SettingsComponent = () => {
     // temporary storage of the current selection for subsequent editing
     var listSelectedGroupValue = [...listSelectedGroups];
     // clearing the current display
-    const selGroupsContainerDiv = document.getElementById(
-      "selectedGroupContainer"
-    )!;
+    const selGroupsContainerDiv = document.getElementById("selectedGroupContainer")!;
     selGroupsContainerDiv.innerHTML = "";
     if (listSelectedGroupValue.length == 0) {
       //nothing to do
@@ -357,10 +341,7 @@ export const SettingsComponent = () => {
           setTimeChangeGroupSelection(Date.now());
         });
         const groupButtonLabel = document.createElement("ion-label");
-        groupButtonLabel.classList.add(
-          "groupContainerButtonLabels",
-          "ion-text-wrap"
-        );
+        groupButtonLabel.classList.add("groupContainerButtonLabels", "ion-text-wrap");
         groupButtonLabel.innerHTML = element;
         const groupButtonIcon = document.createElement("ion-icon");
         groupButtonIcon.setAttribute("icon", trashOutline);
@@ -378,7 +359,7 @@ export const SettingsComponent = () => {
     // save on local storage
     localStorage.setItem(
       "campus_v_p_selGroups",
-      JSON.stringify(listSelectedGroups.sort())
+      JSON.stringify(listSelectedGroups.sort()),
     );
   }, [listSelectedGroups, timeChangeGroupSelection]);
 
@@ -420,9 +401,7 @@ export const SettingsComponent = () => {
                 <IonButton
                   onClick={() => {
                     (
-                      document.getElementById(
-                        "dialogFilterInfo"
-                      )! as HTMLIonModalElement
+                      document.getElementById("dialogFilterInfo")! as HTMLIonModalElement
                     ).dismiss();
                   }}
                 >
@@ -433,20 +412,17 @@ export const SettingsComponent = () => {
           </IonHeader>
           <IonContent className="ion-padding">
             <IonText>
-              An dieser Stelle besteht die Möglichkeit, eine Auswahl relevanter
-              Tags und Gruppen zu treffen. Die innerhalb der Applikation
-              angezeigten Anker beschränken sich in diesem Fall auf die
-              ausgewählten Gruppen und gewählten Stichworte. Liegt keine Auswahl
-              vor, werden alle Anker angezeigt.{" "}
+              An dieser Stelle besteht die Möglichkeit, eine Auswahl relevanter Tags und
+              Gruppen zu treffen. Die innerhalb der Applikation angezeigten Anker
+              beschränken sich in diesem Fall auf die ausgewählten Gruppen und gewählten
+              Stichworte. Liegt keine Auswahl vor, werden alle Anker angezeigt.{" "}
             </IonText>
           </IonContent>
           <IonFooter class="ion-padding">
             <IonButton
               onClick={() => {
                 (
-                  document.getElementById(
-                    "dialogFilterInfo"
-                  )! as HTMLIonModalElement
+                  document.getElementById("dialogFilterInfo")! as HTMLIonModalElement
                 ).dismiss();
               }}
               expand="full"

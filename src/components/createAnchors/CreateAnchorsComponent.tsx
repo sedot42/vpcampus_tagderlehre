@@ -1,23 +1,9 @@
-import {
-  useState,
-  useContext,
-  useEffect,
-  useRef,
-  BaseSyntheticEvent,
-} from "react";
+import { useState, useContext, useEffect, useRef, BaseSyntheticEvent } from "react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import {
-  Anchor,
-  convertFlatAnchorToDBAnchor,
-  DraftAnchor,
-} from "../../types/types";
+import { Anchor, convertFlatAnchorToDBAnchor, DraftAnchor } from "../../types/types";
 import { draftAnchor } from "../../types/defaults";
 import { AnchorContext } from "../../anchorContext";
-import {
-  ConfigInput,
-  createInputs,
-  createTextarea,
-} from "../globalUI/GenericFields";
+import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import {
   IonPage,
   IonButton,
@@ -91,8 +77,7 @@ export const CreateAnchorComponent = () => {
   const [newGroupString, setNewGroupString] = useState<string>(""); // new group as string
   const [temporaryGroupList, setTemporaryGroupList] = useState<string[]>([]); // list with all groups created by user
   const [newGroupError, setNewGroupError] = useState<boolean>(false); // status for permissibility of the created group
-  const [showToastCreateGroup, setShowToastCreateGroup] =
-    useState<boolean>(false); // status for triggering the user information
+  const [showToastCreateGroup, setShowToastCreateGroup] = useState<boolean>(false); // status for triggering the user information
 
   // functional components for the selection of location for an anchor
   const [filterLocationString, setFilterLocationString] = useState<string>(""); // string to filter the locations
@@ -112,8 +97,7 @@ export const CreateAnchorComponent = () => {
   }); // new location_id as string
   const [temporaryLocationList, setTemporaryLocationList] = useState<any[]>([]); // list with all locations created by user
   const [newLocationError, setNewLocationError] = useState<boolean>(false); // status for permissibility of the created location
-  const [showToastCreateLocation, setShowToastCreateLocation] =
-    useState<boolean>(false); // status for triggering the user information
+  const [showToastCreateLocation, setShowToastCreateLocation] = useState<boolean>(false); // status for triggering the user information
 
   const [filterBuildingString, setFilterBuildingString] = useState<string>(""); // string to filter the buildings
   const [selectedBuildingDictionary, setSelectedBuildingDictionary] = useState<{
@@ -124,8 +108,7 @@ export const CreateAnchorComponent = () => {
   }>({ building_id: "", address_string: "", campus_id: "" }); // new user building as dictionary
   const [temporaryBuildingList, setTemporaryBuildingList] = useState<any[]>([]); // list with all buildings created by user
   const [newBuildingError, setNewBuildingError] = useState<boolean>(false); // status for permissibility of the created building
-  const [showToastCreateBuilding, setShowToastCreateBuilding] =
-    useState<boolean>(false); // status for triggering the user information
+  const [showToastCreateBuilding, setShowToastCreateBuilding] = useState<boolean>(false); // status for triggering the user information
 
   const [newPositionLatitude, setNewPositionLatitude] = useState<number>(NaN); // temporary number to save new coordinate - lat
   const [newPositionLongitude, setNewPositionLongitude] = useState<number>(NaN); // temporary number to save new coordinate - lon
@@ -160,8 +143,7 @@ export const CreateAnchorComponent = () => {
       setTemporaryGroupList([]); // group
       setTemporaryLocationList([]); // location
       setTemporaryBuildingList([]); // building
-      const locationContainerDiv =
-        document.getElementById("locationContainer")!;
+      const locationContainerDiv = document.getElementById("locationContainer")!;
       locationContainerDiv.innerHTML = "";
       setSelectedGroupString(""); // group
       const groupContainerDiv = document.getElementById("groupContainer")!;
@@ -324,7 +306,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new tag
   const closeDialogCreateTag = () => {
     var dialogCreateTag = document.getElementById(
-      "dialogCreateTag"
+      "dialogCreateTag",
     ) as HTMLIonModalElement;
     dialogCreateTag.dismiss();
     // update of the listing (tags)
@@ -334,7 +316,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select tags
   const closeDialogSelectTag = () => {
     var dialogSelectTag = document.getElementById(
-      "dialogSelectTag"
+      "dialogSelectTag",
     ) as HTMLIonModalElement;
     dialogSelectTag.dismiss();
   };
@@ -373,10 +355,7 @@ export const CreateAnchorComponent = () => {
           setSelectedTagList(selectedTagListValue);
         });
         const tagButtonLabel = document.createElement("ion-label");
-        tagButtonLabel.classList.add(
-          "tagContainerButtonLabels",
-          "ion-text-wrap"
-        );
+        tagButtonLabel.classList.add("tagContainerButtonLabels", "ion-text-wrap");
         tagButtonLabel.innerHTML = selectedTagList[i];
         const tagButtonIcon = document.createElement("ion-icon");
         tagButtonIcon.setAttribute("icon", trashOutline);
@@ -427,11 +406,8 @@ export const CreateAnchorComponent = () => {
       setLocalAnchor({
         ...localAnchor,
         start_at:
-          anchorStartDate != ""
-            ? (anchorStartDate as string) + ".000Z"
-            : undefined,
-        end_at:
-          anchorEndDate != "" ? (anchorEndDate as string) + ".000Z" : undefined,
+          anchorStartDate != "" ? (anchorStartDate as string) + ".000Z" : undefined,
+        end_at: anchorEndDate != "" ? (anchorEndDate as string) + ".000Z" : undefined,
       });
     } else {
       setLocalAnchor({
@@ -472,13 +448,9 @@ export const CreateAnchorComponent = () => {
       setLocalAnchor({
         ...localAnchor,
         valid_from:
-          anchorStartValid != ""
-            ? (anchorStartValid as string) + ".000Z"
-            : undefined,
+          anchorStartValid != "" ? (anchorStartValid as string) + ".000Z" : undefined,
         valid_until:
-          anchorEndValid != ""
-            ? (anchorEndValid as string) + ".000Z"
-            : undefined,
+          anchorEndValid != "" ? (anchorEndValid as string) + ".000Z" : undefined,
       });
     } else {
       setLocalAnchor({
@@ -528,7 +500,7 @@ export const CreateAnchorComponent = () => {
       campus_id: "",
     };
     const uniqueRowsClear = uniqueRows.filter(
-      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoLocation)
+      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoLocation),
     );
     // return the unique list
     return uniqueRowsClear;
@@ -555,16 +527,11 @@ export const CreateAnchorComponent = () => {
     // temporary storage of the current selection for subsequent editing
     var selectedLocationDictValue = selectedLocationDictionary;
     // clearing the current display
-    var locationFilteredList = document.getElementById(
-      "listFilteredLocations"
-    )!;
+    var locationFilteredList = document.getElementById("listFilteredLocations")!;
     locationFilteredList.innerHTML = "";
     // create the radio group element
     var locationRadioGroup = document.createElement("ion-radio-group");
-    locationRadioGroup.setAttribute(
-      "value",
-      JSON.stringify(selectedLocationDictValue)
-    );
+    locationRadioGroup.setAttribute("value", JSON.stringify(selectedLocationDictValue));
     // create dummy element (no selection)
     var locationItemDummy = document.createElement("ion-item");
     locationItemDummy.setAttribute("key", crypto.randomUUID());
@@ -699,7 +666,7 @@ export const CreateAnchorComponent = () => {
   const readNewLocationInputRoom = (event: CustomEvent) => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary
+      newLocationDictionary,
     );
     newLocationDictValue.room_id = event.detail.value;
     setNewLocationDictionary(newLocationDictValue);
@@ -709,7 +676,7 @@ export const CreateAnchorComponent = () => {
   const readNewLocationInputFloor = (event: CustomEvent) => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary
+      newLocationDictionary,
     );
     if (event.detail.value == "") {
       newLocationDictValue.floor_nr = null;
@@ -756,7 +723,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new location
   const closeDialogCreateLocation = () => {
     var dialogCreateLocation = document.getElementById(
-      "dialogCreateLocation"
+      "dialogCreateLocation",
     ) as HTMLIonModalElement;
     dialogCreateLocation.dismiss();
     // update of the listing (locations)
@@ -766,7 +733,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select locations
   const closeDialogSelectLocation = () => {
     var dialogSelectLocation = document.getElementById(
-      "dialogSelectLocation"
+      "dialogSelectLocation",
     ) as HTMLIonModalElement;
     dialogSelectLocation.dismiss();
   };
@@ -783,10 +750,7 @@ export const CreateAnchorComponent = () => {
     } else {
       // create a new element for the selected location
       const locationButton = document.createElement("ion-button");
-      locationButton.setAttribute(
-        "id",
-        JSON.stringify(selectedLocationDictionary)
-      );
+      locationButton.setAttribute("id", JSON.stringify(selectedLocationDictionary));
       locationButton.setAttribute("class", "locationContainerButton");
       locationButton.setAttribute("color", "medium");
       // add a function to delete the location
@@ -795,10 +759,7 @@ export const CreateAnchorComponent = () => {
         setSelectedLocationDictionary({});
       });
       const locationButtonLabel = document.createElement("ion-label");
-      locationButtonLabel.classList.add(
-        "locationContainerButtonLabels",
-        "ion-text-wrap"
-      );
+      locationButtonLabel.classList.add("locationContainerButtonLabels", "ion-text-wrap");
       var innerHTMLString = "";
       if (selectedLocationDictionary.room_id != "") {
         if (
@@ -821,13 +782,9 @@ export const CreateAnchorComponent = () => {
             selectedLocationDictionary.lon != null
           ) {
             innerHTMLString +=
-              String(
-                Math.round(selectedLocationDictionary.lat * 100000) / 100000
-              ) +
+              String(Math.round(selectedLocationDictionary.lat * 100000) / 100000) +
               " / " +
-              String(
-                Math.round(selectedLocationDictionary.lon * 100000) / 100000
-              );
+              String(Math.round(selectedLocationDictionary.lon * 100000) / 100000);
           } else if (selectedLocationDictionary.floor_nr != null) {
             innerHTMLString += selectedLocationDictionary.floor_nr;
           }
@@ -846,13 +803,9 @@ export const CreateAnchorComponent = () => {
           selectedLocationDictionary.lon != null
         ) {
           innerHTMLString +=
-            String(
-              Math.round(selectedLocationDictionary.lat * 100000) / 100000
-            ) +
+            String(Math.round(selectedLocationDictionary.lat * 100000) / 100000) +
             " / " +
-            String(
-              Math.round(selectedLocationDictionary.lon * 100000) / 100000
-            );
+            String(Math.round(selectedLocationDictionary.lon * 100000) / 100000);
         } else if (selectedLocationDictionary.floor_nr != null) {
           innerHTMLString += selectedLocationDictionary.floor_nr;
         }
@@ -872,15 +825,11 @@ export const CreateAnchorComponent = () => {
     const locationsDB = getLocationsFromDB();
     // cut out the relevant information for the building selection
     const allbuildingsDB = locationsDB.map(
-      (location: {
-        building_id: string;
-        address_string: string;
-        campus_id: string;
-      }) => ({
+      (location: { building_id: string; address_string: string; campus_id: string }) => ({
         building_id: location.building_id,
         address_string: location.address_string,
         campus_id: location.campus_id,
-      })
+      }),
     );
     // filter out the unique buildings
     const buildingsDB = filterUniqueRows(allbuildingsDB);
@@ -891,7 +840,7 @@ export const CreateAnchorComponent = () => {
       campus_id: "",
     };
     const buildingsDBClear = buildingsDB.filter(
-      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoBuilding)
+      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoBuilding),
     );
     // combination of all buildings
     var allBuildings = buildingsDBClear.concat(temporaryBuildingList);
@@ -910,16 +859,11 @@ export const CreateAnchorComponent = () => {
     // temporary storage of the current selection for subsequent editing
     var selectedBuildingDictValue = selectedBuildingDictionary;
     // clearing the current display
-    var buildingFilteredList = document.getElementById(
-      "listFilteredBuildings"
-    )!;
+    var buildingFilteredList = document.getElementById("listFilteredBuildings")!;
     buildingFilteredList.innerHTML = "";
     // create the radio group element
     var buildingRadioGroup = document.createElement("ion-radio-group");
-    buildingRadioGroup.setAttribute(
-      "value",
-      JSON.stringify(selectedBuildingDictValue)
-    );
+    buildingRadioGroup.setAttribute("value", JSON.stringify(selectedBuildingDictValue));
     // create dummy element (no selection)
     var buildingItemDummy = document.createElement("ion-item");
     buildingItemDummy.setAttribute("key", crypto.randomUUID());
@@ -953,9 +897,7 @@ export const CreateAnchorComponent = () => {
           var innerHTMLString = "";
           if (value.building_id != "") {
             innerHTMLString +=
-              '<span style="font-weight: bold">' +
-              value.building_id +
-              "</span> ";
+              '<span style="font-weight: bold">' + value.building_id + "</span> ";
           }
           if (value.campus_id != "") {
             innerHTMLString += "(";
@@ -1013,12 +955,11 @@ export const CreateAnchorComponent = () => {
     // save the building selection in the new location dictionary
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary
+      newLocationDictionary,
     );
     if (Object.keys(selectedBuildingDictionary).length > 0) {
       newLocationDictValue.building_id = selectedBuildingDictionary.building_id;
-      newLocationDictValue.address_string =
-        selectedBuildingDictionary.address_string;
+      newLocationDictValue.address_string = selectedBuildingDictionary.address_string;
       newLocationDictValue.campus_id = selectedBuildingDictionary.campus_id;
       setNewLocationDictionary(newLocationDictValue);
     } else {
@@ -1052,7 +993,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputBuilding = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary
+      newBuildingDictionary,
     );
     newBuildingDictValue.building_id = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1062,7 +1003,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputAddress = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary
+      newBuildingDictionary,
     );
     newBuildingDictValue.address_string = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1072,7 +1013,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputCampus = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary
+      newBuildingDictionary,
     );
     newBuildingDictValue.campus_id = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1106,7 +1047,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new location
   const closeDialogCreateBuilding = () => {
     var dialogCreateBuilding = document.getElementById(
-      "dialogCreateBuilding"
+      "dialogCreateBuilding",
     ) as HTMLIonModalElement;
     dialogCreateBuilding.dismiss();
     // update of the listing (locations)
@@ -1116,7 +1057,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select locations
   const closeDialogSelectBuilding = () => {
     var dialogSelectBuilding = document.getElementById(
-      "dialogSelectBuilding"
+      "dialogSelectBuilding",
     ) as HTMLIonModalElement;
     dialogSelectBuilding.dismiss();
   };
@@ -1133,10 +1074,7 @@ export const CreateAnchorComponent = () => {
     } else {
       // create a new element for the selected building
       const buildingButton = document.createElement("ion-button");
-      buildingButton.setAttribute(
-        "id",
-        JSON.stringify(selectedBuildingDictionary)
-      );
+      buildingButton.setAttribute("id", JSON.stringify(selectedBuildingDictionary));
       buildingButton.setAttribute("class", "buildingContainerButton");
       buildingButton.setAttribute("color", "medium");
       // add a function to delete the building
@@ -1145,10 +1083,7 @@ export const CreateAnchorComponent = () => {
         setSelectedBuildingDictionary({});
       });
       const buildingButtonLabel = document.createElement("ion-label");
-      buildingButtonLabel.classList.add(
-        "buildingContainerButtonLabels",
-        "ion-text-wrap"
-      );
+      buildingButtonLabel.classList.add("buildingContainerButtonLabels", "ion-text-wrap");
       var innerHTMLString = "";
       if (selectedBuildingDictionary.building_id != "") {
         if (
@@ -1217,15 +1152,11 @@ export const CreateAnchorComponent = () => {
 
   // save the selected coordinates from the map
   const saveClickedLocation = () => {
-    if (
-      !Number.isNaN(newPositionLatitude) &&
-      !Number.isNaN(newPositionLongitude)
-    ) {
+    if (!Number.isNaN(newPositionLatitude) && !Number.isNaN(newPositionLongitude)) {
       // save the coordinates in the new location
 
       // get container for displaying selection
-      const locationContainerDiv =
-        document.getElementById("positionContainer")!;
+      const locationContainerDiv = document.getElementById("positionContainer")!;
       locationContainerDiv.innerHTML = "";
 
       // create a new element for the selected position
@@ -1241,14 +1172,9 @@ export const CreateAnchorComponent = () => {
         setNewPositionLongitude(NaN);
       });
       const locationButtonLabel = document.createElement("ion-label");
-      locationButtonLabel.classList.add(
-        "positionContainerButtonLabels",
-        "ion-text-wrap"
-      );
+      locationButtonLabel.classList.add("positionContainerButtonLabels", "ion-text-wrap");
       var innerHTMLString =
-        newPositionLatitude.toFixed(5) +
-        " / " +
-        newPositionLongitude.toFixed(5);
+        newPositionLatitude.toFixed(5) + " / " + newPositionLongitude.toFixed(5);
       locationButtonLabel.innerHTML = innerHTMLString;
       const locationButtonIcon = document.createElement("ion-icon");
       locationButtonIcon.setAttribute("icon", trashOutline);
@@ -1258,9 +1184,7 @@ export const CreateAnchorComponent = () => {
     }
     // close modal
     {
-      (
-        document.getElementById("dialogSelectPosition")! as HTMLIonModalElement
-      ).dismiss();
+      (document.getElementById("dialogSelectPosition")! as HTMLIonModalElement).dismiss();
     }
   };
 
@@ -1268,7 +1192,7 @@ export const CreateAnchorComponent = () => {
   useEffect(() => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary
+      newLocationDictionary,
     );
     newLocationDictValue.lat = Number.isNaN(newPositionLatitude)
       ? undefined
@@ -1286,9 +1210,7 @@ export const CreateAnchorComponent = () => {
     setNewPositionLongitude(NaN);
     // close modal
     {
-      (
-        document.getElementById("dialogSelectPosition")! as HTMLIonModalElement
-      ).dismiss();
+      (document.getElementById("dialogSelectPosition")! as HTMLIonModalElement).dismiss();
     }
   };
 
@@ -1462,7 +1384,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new group
   const closeDialogCreateGroup = () => {
     var dialogCreateGroup = document.getElementById(
-      "dialogCreateGroup"
+      "dialogCreateGroup",
     ) as HTMLIonModalElement;
     dialogCreateGroup.dismiss();
     // update of the listing (groups)
@@ -1472,7 +1394,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select groups
   const closeDialogSelectGroup = () => {
     var dialogSelectGroup = document.getElementById(
-      "dialogSelectGroup"
+      "dialogSelectGroup",
     ) as HTMLIonModalElement;
     dialogSelectGroup.dismiss();
   };
@@ -1498,10 +1420,7 @@ export const CreateAnchorComponent = () => {
         setSelectedGroupString("");
       });
       const groupButtonLabel = document.createElement("ion-label");
-      groupButtonLabel.classList.add(
-        "groupContainerButtonLabels",
-        "ion-text-wrap"
-      );
+      groupButtonLabel.classList.add("groupContainerButtonLabels", "ion-text-wrap");
       groupButtonLabel.innerHTML = selectedGroupString;
       const groupButtonIcon = document.createElement("ion-icon");
       groupButtonIcon.setAttribute("icon", trashOutline);
@@ -1566,10 +1485,7 @@ export const CreateAnchorComponent = () => {
         setSelectedFileList(selectedFileListValue);
       });
       const documentButtonLabel = document.createElement("ion-label");
-      documentButtonLabel.classList.add(
-        "documentContainerButtonLabels",
-        "ion-text-wrap"
-      );
+      documentButtonLabel.classList.add("documentContainerButtonLabels", "ion-text-wrap");
       documentButtonLabel.innerHTML = selectedFileList[i];
       const documentButtonIcon = document.createElement("ion-icon");
       documentButtonIcon.setAttribute("icon", trashOutline);
@@ -1609,11 +1525,7 @@ export const CreateAnchorComponent = () => {
             <IonLabel id="openDialogSelectTagLabel" class="ion-text-wrap">
               Tags
             </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
+            <IonIcon icon={addCircleOutline} size="large" aria-hidden="true"></IonIcon>
           </div>
         </IonButton>
         <div id="tagContainer">{/* container for showing the selection */}</div>
@@ -1648,11 +1560,7 @@ export const CreateAnchorComponent = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonButton
-                    id="openDialogCreateTag"
-                    expand="full"
-                    color="primary"
-                  >
+                  <IonButton id="openDialogCreateTag" expand="full" color="primary">
                     Neues Tag
                   </IonButton>
                 </IonCol>
@@ -1732,11 +1640,7 @@ export const CreateAnchorComponent = () => {
         </IonModal>
 
         {/* part for entering date */}
-        <IonItem
-          lines="none"
-          id="useDateToggle"
-          style={{ margin: "16px 0 0 0" }}
-        >
+        <IonItem lines="none" id="useDateToggle" style={{ margin: "16px 0 0 0" }}>
           <IonToggle onIonChange={addDate} labelPlacement="start">
             Termin
           </IonToggle>
@@ -1745,23 +1649,15 @@ export const CreateAnchorComponent = () => {
           <IonItem lines="none">
             <IonLabel>Start</IonLabel>
             <IonDatetimeButton datetime="starttime">
-              {anchorStartDate === "" && (
-                <IonLabel slot="date-target">Datum</IonLabel>
-              )}
-              {anchorStartDate === "" && (
-                <IonLabel slot="time-target">Zeit</IonLabel>
-              )}
+              {anchorStartDate === "" && <IonLabel slot="date-target">Datum</IonLabel>}
+              {anchorStartDate === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
             </IonDatetimeButton>
           </IonItem>
           <IonItem lines="none">
             <IonLabel>Ende</IonLabel>
             <IonDatetimeButton datetime="endtime">
-              {anchorEndDate === "" && (
-                <IonLabel slot="date-target">Datum</IonLabel>
-              )}
-              {anchorEndDate === "" && (
-                <IonLabel slot="time-target">Zeit</IonLabel>
-              )}
+              {anchorEndDate === "" && <IonLabel slot="date-target">Datum</IonLabel>}
+              {anchorEndDate === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
             </IonDatetimeButton>
           </IonItem>
           <IonModal keepContentsMounted={true} id="dialogSelectDateStart">
@@ -1773,7 +1669,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectDateStart"
+                          "dialogSelectDateStart",
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1793,7 +1689,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectDateStart"
+                      "dialogSelectDateStart",
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -1813,7 +1709,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectDateEnd"
+                          "dialogSelectDateEnd",
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1832,9 +1728,7 @@ export const CreateAnchorComponent = () => {
               <IonButton
                 onClick={() => {
                   (
-                    document.getElementById(
-                      "dialogSelectDateEnd"
-                    )! as HTMLIonModalElement
+                    document.getElementById("dialogSelectDateEnd")! as HTMLIonModalElement
                   ).dismiss();
                 }}
                 expand="full"
@@ -1847,11 +1741,7 @@ export const CreateAnchorComponent = () => {
         </div>
 
         {/* part for entering the validity */}
-        <IonItem
-          lines="none"
-          id="useValidToggle"
-          style={{ margin: "16px 0 0 0" }}
-        >
+        <IonItem lines="none" id="useValidToggle" style={{ margin: "16px 0 0 0" }}>
           <IonToggle onIonChange={addValid} labelPlacement="start">
             Gültigkeit
           </IonToggle>
@@ -1860,23 +1750,15 @@ export const CreateAnchorComponent = () => {
           <IonItem lines="none">
             <IonLabel>Start</IonLabel>
             <IonDatetimeButton datetime="starttimevalid">
-              {anchorStartValid === "" && (
-                <IonLabel slot="date-target">Datum</IonLabel>
-              )}
-              {anchorStartValid === "" && (
-                <IonLabel slot="time-target">Zeit</IonLabel>
-              )}
+              {anchorStartValid === "" && <IonLabel slot="date-target">Datum</IonLabel>}
+              {anchorStartValid === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
             </IonDatetimeButton>
           </IonItem>
           <IonItem lines="none">
             <IonLabel>Ende</IonLabel>
             <IonDatetimeButton datetime="endtimevalid">
-              {anchorEndValid === "" && (
-                <IonLabel slot="date-target">Datum</IonLabel>
-              )}
-              {anchorEndValid === "" && (
-                <IonLabel slot="time-target">Zeit</IonLabel>
-              )}
+              {anchorEndValid === "" && <IonLabel slot="date-target">Datum</IonLabel>}
+              {anchorEndValid === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
             </IonDatetimeButton>
           </IonItem>
           <IonModal keepContentsMounted={true} id="dialogSelectValidStart">
@@ -1888,7 +1770,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectValidStart"
+                          "dialogSelectValidStart",
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1908,7 +1790,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectValidStart"
+                      "dialogSelectValidStart",
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -1928,7 +1810,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectValidEnd"
+                          "dialogSelectValidEnd",
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1948,7 +1830,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectValidEnd"
+                      "dialogSelectValidEnd",
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -1973,16 +1855,10 @@ export const CreateAnchorComponent = () => {
             <IonLabel id="openDialogSelectLocationLabel" class="ion-text-wrap">
               Ort
             </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
+            <IonIcon icon={addCircleOutline} size="large" aria-hidden="true"></IonIcon>
           </div>
         </IonButton>
-        <div id="locationContainer">
-          {/* container for showing the selection */}
-        </div>
+        <div id="locationContainer">{/* container for showing the selection */}</div>
         {/* overlay (modal) for the selection of a location */}
         <IonModal
           id="dialogSelectLocation"
@@ -2036,10 +1912,7 @@ export const CreateAnchorComponent = () => {
               </IonRow>
             </IonGrid>
             {/* overlay (modal) for the creation of locations */}
-            <IonModal
-              id="dialogCreateLocation"
-              trigger="openDialogCreateLocation"
-            >
+            <IonModal id="dialogCreateLocation" trigger="openDialogCreateLocation">
               <IonHeader>
                 <IonToolbar>
                   <IonTitle slot="start">Ort erstellen</IonTitle>
@@ -2100,13 +1973,8 @@ export const CreateAnchorComponent = () => {
                           <IonToolbar>
                             <IonTitle slot="start">Position wählen</IonTitle>
                             <IonButtons slot="end">
-                              <IonButton
-                                onClick={() => closeLocationSelectionMap()}
-                              >
-                                <IonIcon
-                                  icon={closeOutline}
-                                  size="large"
-                                ></IonIcon>
+                              <IonButton onClick={() => closeLocationSelectionMap()}>
+                                <IonIcon icon={closeOutline} size="large"></IonIcon>
                               </IonButton>
                             </IonButtons>
                           </IonToolbar>
@@ -2207,10 +2075,7 @@ export const CreateAnchorComponent = () => {
                             <IonTitle slot="start">Gebäude auswählen</IonTitle>
                             <IonButtons slot="end">
                               <IonButton onClick={closeDialogSelectBuilding}>
-                                <IonIcon
-                                  icon={closeOutline}
-                                  size="large"
-                                ></IonIcon>
+                                <IonIcon icon={closeOutline} size="large"></IonIcon>
                               </IonButton>
                             </IonButtons>
                           </IonToolbar>
@@ -2257,17 +2122,10 @@ export const CreateAnchorComponent = () => {
                           >
                             <IonHeader>
                               <IonToolbar>
-                                <IonTitle slot="start">
-                                  Gebäude erstellen
-                                </IonTitle>
+                                <IonTitle slot="start">Gebäude erstellen</IonTitle>
                                 <IonButtons slot="end">
-                                  <IonButton
-                                    onClick={closeDialogCreateBuilding}
-                                  >
-                                    <IonIcon
-                                      icon={closeOutline}
-                                      size="large"
-                                    ></IonIcon>
+                                  <IonButton onClick={closeDialogCreateBuilding}>
+                                    <IonIcon icon={closeOutline} size="large"></IonIcon>
                                   </IonButton>
                                 </IonButtons>
                               </IonToolbar>
@@ -2385,16 +2243,10 @@ export const CreateAnchorComponent = () => {
             <IonLabel id="openDialogSelectGroupLabel" class="ion-text-wrap">
               Gruppe
             </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
+            <IonIcon icon={addCircleOutline} size="large" aria-hidden="true"></IonIcon>
           </div>
         </IonButton>
-        <div id="groupContainer">
-          {/* container for showing the selection */}
-        </div>
+        <div id="groupContainer">{/* container for showing the selection */}</div>
         {/* overlay (modal) for the selection of a group */}
         <IonModal
           id="dialogSelectGroup"
@@ -2426,11 +2278,7 @@ export const CreateAnchorComponent = () => {
             <IonGrid>
               <IonRow>
                 <IonCol>
-                  <IonButton
-                    id="openDialogCreateGroup"
-                    expand="full"
-                    color="primary"
-                  >
+                  <IonButton id="openDialogCreateGroup" expand="full" color="primary">
                     Neue Gruppe
                   </IonButton>
                 </IonCol>
@@ -2472,8 +2320,7 @@ export const CreateAnchorComponent = () => {
                         placeholder="Gruppe"
                       >
                         <div slot="label">
-                          Gruppe{" "}
-                          <IonText color="danger"> (Pflichtfeld) </IonText>
+                          Gruppe <IonText color="danger"> (Pflichtfeld) </IonText>
                         </div>
                       </IonInput>
                     </IonCol>
@@ -2537,16 +2384,10 @@ export const CreateAnchorComponent = () => {
             <IonLabel id="openDialogSelectDocumentLabel" class="ion-text-wrap">
               Dokumente
             </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
+            <IonIcon icon={addCircleOutline} size="large" aria-hidden="true"></IonIcon>
           </div>
         </IonButton>
-        <div id="documentContainer">
-          {/* container for showing the selection */}
-        </div>
+        <div id="documentContainer">{/* container for showing the selection */}</div>
       </IonContent>
 
       <IonFooter

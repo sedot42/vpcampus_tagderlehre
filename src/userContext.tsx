@@ -23,7 +23,7 @@ type Props = { children: React.ReactElement | React.ReactElement[] };
 export const UserProvider = ({ children }: Props) => {
   const [bookmarks, setBookmarks] = useState<UserContextType["bookmarks"]>([]);
   const [userId, setUserId] = useState<UserContextType["userId"]>(
-    "550e8400-e29b-41d4-a716-446655440000"
+    "550e8400-e29b-41d4-a716-446655440000",
   );
   const fetchUser = (userId: Anchor["owner_id"]) => {
     fetch("http://localhost:5000/", {
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }: Props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        if(res.errors) throw new Error(res.errors[0].message);
+        if (res.errors) throw new Error(res.errors[0].message);
         setBookmarks(res.data.user.bookmarked_anchors.map((a: DBAnchor) => a.id));
       })
       .catch((e) => {
@@ -49,7 +49,10 @@ export const UserProvider = ({ children }: Props) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: createBookmarkMutation, variables: { anchorId, userId } }),
+      body: JSON.stringify({
+        query: createBookmarkMutation,
+        variables: { anchorId, userId },
+      }),
     })
       .then((response) => response.json())
       .then((res) => {
@@ -62,11 +65,14 @@ export const UserProvider = ({ children }: Props) => {
     fetch("http://localhost:5000/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: deleteBookmarkMutation, variables: { anchorId, userId } }),
+      body: JSON.stringify({
+        query: deleteBookmarkMutation,
+        variables: { anchorId, userId },
+      }),
     })
       .then((response) => response.json())
       .then((res) => {
-        if(res.errors) throw new Error(res.errors[0].message);
+        if (res.errors) throw new Error(res.errors[0].message);
         // add bookmark
         setBookmarks(bookmarks.filter((b) => b !== res.data.deleteBookmark.anchor_id));
       });
@@ -78,7 +84,7 @@ export const UserProvider = ({ children }: Props) => {
         createBookmark,
         deleteBookmark,
         bookmarks,
-        userId
+        userId,
       }}
     >
       {children}

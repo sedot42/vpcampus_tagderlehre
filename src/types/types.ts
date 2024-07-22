@@ -15,10 +15,10 @@ export type DraftAnchor<T extends Anchor | DBAnchor> = Omit<T, "id"> &
 // overload so TS infers the correct type. begin with most narrow to widest.
 export function convertFlatAnchorToDBAnchor(anchor: Anchor): DBAnchor;
 export function convertFlatAnchorToDBAnchor(
-  anchor: DraftAnchor<Anchor>
+  anchor: DraftAnchor<Anchor>,
 ): DraftAnchor<DBAnchor>;
 export function convertFlatAnchorToDBAnchor(
-  anchor: Anchor | DraftAnchor<Anchor>
+  anchor: Anchor | DraftAnchor<Anchor>,
 ): DBAnchor | DraftAnchor<DBAnchor> {
   const { owner_id, ...dbAnchor } = anchor;
   return {
@@ -31,7 +31,7 @@ export function convertFlatAnchorToDBAnchor(
 
 export function convertDBAnchorToFlatAnchor(anchor: DBAnchor): Anchor;
 export function convertDBAnchorToFlatAnchor(
-  anchor: DraftAnchor<DBAnchor> | DBAnchor
+  anchor: DraftAnchor<DBAnchor> | DBAnchor,
 ): DraftAnchor<Anchor> | Anchor {
   const { owner, ...flatAnchor } = anchor;
   return {

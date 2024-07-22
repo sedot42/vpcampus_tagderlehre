@@ -77,11 +77,7 @@ const App: React.FC = () => {
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
-                <IonIcon
-                  aria-hidden="true"
-                  icon={calendarOutline}
-                  size="large"
-                />
+                <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
@@ -97,11 +93,7 @@ const App: React.FC = () => {
                 <IonLabel>Verwalten</IonLabel>
               </IonTabButton>
               <IonTabButton tab="settings" href="/settings">
-                <IonIcon
-                  aria-hidden="true"
-                  icon={settingsOutline}
-                  size="large"
-                />
+                <IonIcon aria-hidden="true" icon={settingsOutline} size="large" />
                 <IonLabel>Optionen</IonLabel>
               </IonTabButton>
             </IonTabBar>

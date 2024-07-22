@@ -41,10 +41,8 @@ export const MapAnchorComponent = () => {
   const mapContainerRef = useRef<LeafletMap | null>(null); // reference map display
   const [mapIsLoad, setMapIsLoad] = useState<boolean>(false); // status whether map is loaded
 
-  const [layerSettingsVisible, setLayerSettingVisible] =
-    useState<boolean>(false); // status whether background settings visible
-  const [layerFloorplanVisible, setLayerFloorplanVisible] =
-    useState<boolean>(false); // status whether floorplan visible
+  const [layerSettingsVisible, setLayerSettingVisible] = useState<boolean>(false); // status whether background settings visible
+  const [layerFloorplanVisible, setLayerFloorplanVisible] = useState<boolean>(false); // status whether floorplan visible
 
   // functional components for filtering
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date()); // day
@@ -52,8 +50,7 @@ export const MapAnchorComponent = () => {
   const [startTimeFilter, setStartTimeFilter] = useState<number>(7); // starttime
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18); // endtime
 
-  const [showToastAnchorNoPos, setShowToastAnchorNoPos] =
-    useState<boolean>(false); // status for warning with anchor without spatial assignment
+  const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false); // status for warning with anchor without spatial assignment
 
   // by entering the view resize
   useIonViewDidEnter(() => {
@@ -103,19 +100,16 @@ export const MapAnchorComponent = () => {
 
   // definition of the connection to the floorplans (wms)
   function backgroundLayerFloorplan(floor: number) {
-    const bgLayerFloorPlan = tileLayer.wms(
-      "http://localhost:8080/geoserver/wms?",
-      {
-        layers: "campus-v-p:floor_" + floor.toString() + "_modifiziert",
-        format: "image/png",
-        transparent: true,
-        version: "1.1.0",
-        minZoom: 18,
-        maxZoom: 22,
-        attribution:
-          "<a href = 'https://www.baudokumentation.ch/projekt/fhnw-campus-muttenz/734718'>Schweizer Baudokumentation</a>",
-      }
-    );
+    const bgLayerFloorPlan = tileLayer.wms("http://localhost:8080/geoserver/wms?", {
+      layers: "campus-v-p:floor_" + floor.toString() + "_modifiziert",
+      format: "image/png",
+      transparent: true,
+      version: "1.1.0",
+      minZoom: 18,
+      maxZoom: 22,
+      attribution:
+        "<a href = 'https://www.baudokumentation.ch/projekt/fhnw-campus-muttenz/734718'>Schweizer Baudokumentation</a>",
+    });
     return bgLayerFloorPlan;
   }
 
@@ -130,7 +124,7 @@ export const MapAnchorComponent = () => {
         minZoom: 7.5,
         maxZoom: 22,
         attribution: "<a href = 'https://www.geodienste.ch/'>geodienste.ch</a>",
-      }
+      },
     );
     return bgLayerAmtlicheVermessung;
   }
@@ -182,10 +176,10 @@ export const MapAnchorComponent = () => {
     for (const anchor of serverAnchorData) {
       // filter for selected tags / for selected groups
       const tagFilter: any = JSON.parse(
-        localStorage.getItem("campus_v_p_selTags") || "[]"
+        localStorage.getItem("campus_v_p_selTags") || "[]",
       );
       const groupFilter: any = JSON.parse(
-        localStorage.getItem("campus_v_p_selGroups") || "[]"
+        localStorage.getItem("campus_v_p_selGroups") || "[]",
       );
       if (
         anchor?.tags?.some((element: string) => tagFilter.includes(element)) ||
@@ -211,10 +205,7 @@ export const MapAnchorComponent = () => {
             selectedDayFilter.getDate() === endDate.getDate()
               ? endDate.getHours() + endDate.getMinutes() / 60
               : 23.999;
-          if (
-            anchorStartTime < endTimeFilter &&
-            anchorEndTime > startTimeFilter
-          ) {
+          if (anchorStartTime < endTimeFilter && anchorEndTime > startTimeFilter) {
             // filter for selected floor
             if (anchor.floor_nr === selectedFloor) {
               filteredAnchorListHasDate.push(anchor);
@@ -239,10 +230,7 @@ export const MapAnchorComponent = () => {
             selectedDayFilter.getDate() === endValid.getDate()
               ? endValid.getHours() + endValid.getMinutes() / 60
               : 23.999;
-          if (
-            anchorStartValid < endTimeFilter &&
-            anchorEndValid > startTimeFilter
-          ) {
+          if (anchorStartValid < endTimeFilter && anchorEndValid > startTimeFilter) {
             // filter for selected floor
             if (anchor.floor_nr === selectedFloor) {
               filteredAnchorListIsValid.push(anchor);
@@ -258,18 +246,17 @@ export const MapAnchorComponent = () => {
     // ensure that anchors are not displayed twice
     // remove anchors that have an appointment in the selected time and are valid
     const idsInFilteredAnchorListHasDate = new Set(
-      filteredAnchorListHasDate.map((d: any) => d.id)
+      filteredAnchorListHasDate.map((d: any) => d.id),
     );
     filteredAnchorListIsValid = filteredAnchorListIsValid.filter(
-      (d: any) => !idsInFilteredAnchorListHasDate.has(d.id)
+      (d: any) => !idsInFilteredAnchorListHasDate.has(d.id),
     );
     const idsInFilteredAnchorListHasDateWrongFloor = new Set(
-      filteredAnchorListHasDateWrongFloor.map((d: any) => d.id)
+      filteredAnchorListHasDateWrongFloor.map((d: any) => d.id),
     );
-    filteredAnchorListIsValidWrongFloor =
-      filteredAnchorListIsValidWrongFloor.filter(
-        (d: any) => !idsInFilteredAnchorListHasDateWrongFloor.has(d.id)
-      );
+    filteredAnchorListIsValidWrongFloor = filteredAnchorListIsValidWrongFloor.filter(
+      (d: any) => !idsInFilteredAnchorListHasDateWrongFloor.has(d.id),
+    );
     // retrun lists
     return [
       filteredAnchorListHasDate,
@@ -289,7 +276,7 @@ export const MapAnchorComponent = () => {
     color: string = "#44a2fa",
     rotation: string = "45deg",
     uidAnchor: string = "",
-    size: number = 3
+    size: number = 3,
   ) => {
     const customMarkerStyle = `
       background-color: ${color};
@@ -319,11 +306,10 @@ export const MapAnchorComponent = () => {
     mapBoundLeft: number,
     mapBoundRight: number,
     mapBoundTop: number,
-    mapBoundBottom: number
+    mapBoundBottom: number,
   ) => {
     const rotation =
-      (Math.atan2(mapCenter.lng - anchor.lon, mapCenter.lat - anchor.lat) /
-        Math.PI) *
+      (Math.atan2(mapCenter.lng - anchor.lon, mapCenter.lat - anchor.lat) / Math.PI) *
         180 +
       45;
     const positionLon = () => {
@@ -353,7 +339,7 @@ export const MapAnchorComponent = () => {
     mapCenter: any,
     mapBounds: any,
     color: string,
-    size: number
+    size: number,
   ) => {
     // check if lat and lon exists
     if (anchor.lat != null && anchor.lon != null) {
@@ -406,19 +392,11 @@ export const MapAnchorComponent = () => {
           mapBoundLeft,
           mapBoundRight,
           mapBoundTop,
-          mapBoundBottom
+          mapBoundBottom,
         );
-        var mapPositionMarker = new Marker(
-          [markerOrientation[0], markerOrientation[1]],
-          {
-            icon: createMarkerStyle(
-              color,
-              markerOrientation[2] + "deg",
-              anchor.id,
-              size
-            ),
-          }
-        );
+        var mapPositionMarker = new Marker([markerOrientation[0], markerOrientation[1]], {
+          icon: createMarkerStyle(color, markerOrientation[2] + "deg", anchor.id, size),
+        });
         mapPositionMarker.addEventListener("click", (e) => {
           mapContainerRef.current!.panTo([anchor.lat, anchor.lon]);
         });
@@ -443,15 +421,11 @@ export const MapAnchorComponent = () => {
     // if the floorplan is not displayed
     if (layerFloorplanVisible === false) {
       // anchor with a validity in the selected period (no appointment!)
-      for (const anchor of filteredAnchorData[3].concat(
-        filteredAnchorData[5]
-      )) {
+      for (const anchor of filteredAnchorData[3].concat(filteredAnchorData[5])) {
         addMarkerToMap(anchor, mapCenter, mapBounds, "#9c9c9c", 4);
       }
       //anchor with a date within the selected time period (possibly also a validity)
-      for (const anchor of filteredAnchorData[0].concat(
-        filteredAnchorData[2]
-      )) {
+      for (const anchor of filteredAnchorData[0].concat(filteredAnchorData[2])) {
         addMarkerToMap(anchor, mapCenter, mapBounds, "#44a2fa", 4);
       }
     }
@@ -482,8 +456,7 @@ export const MapAnchorComponent = () => {
     const filteredAnchorData = filterAnchorFromServer(anchors);
     //show the information overlay
     //setShowModal(true);
-    const informationContentModal =
-      document.getElementById("dialogAnchorInfo")!;
+    const informationContentModal = document.getElementById("dialogAnchorInfo")!;
     informationContentModal.innerHTML = "";
     // add header to the modal
     const header = document.createElement("ion-header");
@@ -515,10 +488,7 @@ export const MapAnchorComponent = () => {
     // list anchor which have an appointment in the time
     for (const anchor of filteredAnchorData[0].concat(filteredAnchorData[2])) {
       // all anchors on this position
-      if (
-        anchor.lat == markerposition.lat &&
-        anchor.lon == markerposition.lng
-      ) {
+      if (anchor.lat == markerposition.lat && anchor.lon == markerposition.lng) {
         // create a item for display all information
         const anchorInfo = document.createElement("ion-grid");
         anchorInfo.style.color = "#000000";
@@ -556,8 +526,7 @@ export const MapAnchorComponent = () => {
         anchorInfoStartLabel.innerHTML = "Start:";
         anchorInfoStartLabel.setAttribute("size", "4");
         const anchorInfoStartValue = document.createElement("ion-col");
-        const startDate =
-          anchor.start_at != undefined ? new Date(anchor.start_at) : "";
+        const startDate = anchor.start_at != undefined ? new Date(anchor.start_at) : "";
         anchorInfoStartValue.innerHTML =
           startDate == ""
             ? ""
@@ -580,8 +549,7 @@ export const MapAnchorComponent = () => {
         anchorInfoEndLabel.innerHTML = "Ende:";
         anchorInfoEndLabel.setAttribute("size", "4");
         const anchorInfoEndValue = document.createElement("ion-col");
-        const endDate =
-          anchor.end_at != undefined ? new Date(anchor.end_at) : "";
+        const endDate = anchor.end_at != undefined ? new Date(anchor.end_at) : "";
         anchorInfoEndValue.innerHTML =
           endDate == ""
             ? ""
@@ -674,10 +642,7 @@ export const MapAnchorComponent = () => {
     // list anchor which have a validity in the time
     for (const anchor of filteredAnchorData[3].concat(filteredAnchorData[5])) {
       // all anchors on this position
-      if (
-        anchor.lat == markerposition.lat &&
-        anchor.lon == markerposition.lng
-      ) {
+      if (anchor.lat == markerposition.lat && anchor.lon == markerposition.lng) {
         // create a item for display all information
         const anchorInfo = document.createElement("ion-grid");
         anchorInfo.style.color = "#8c8c8c";
@@ -715,8 +680,7 @@ export const MapAnchorComponent = () => {
         anchorInfoStartLabel.innerHTML = "Start:";
         anchorInfoStartLabel.setAttribute("size", "4");
         const anchorInfoStartValue = document.createElement("ion-col");
-        const startDate =
-          anchor.start_at != undefined ? new Date(anchor.start_at) : "";
+        const startDate = anchor.start_at != undefined ? new Date(anchor.start_at) : "";
         anchorInfoStartValue.innerHTML =
           startDate == ""
             ? ""
@@ -739,8 +703,7 @@ export const MapAnchorComponent = () => {
         anchorInfoEndLabel.innerHTML = "Ende:";
         anchorInfoEndLabel.setAttribute("size", "4");
         const anchorInfoEndValue = document.createElement("ion-col");
-        const endDate =
-          anchor.end_at != undefined ? new Date(anchor.end_at) : "";
+        const endDate = anchor.end_at != undefined ? new Date(anchor.end_at) : "";
         anchorInfoEndValue.innerHTML =
           endDate == ""
             ? ""
@@ -866,17 +829,19 @@ export const MapAnchorComponent = () => {
   const switchLayerSelection = () => {
     if (layerSettingsVisible) {
       setLayerSettingVisible(false);
-      (
-        document.getElementById("layerMenuButton")! as HTMLIonButtonElement
-      ).setAttribute("color", "primary");
+      (document.getElementById("layerMenuButton")! as HTMLIonButtonElement).setAttribute(
+        "color",
+        "primary",
+      );
       document.getElementById("layerMenuButtonST")!.style.zIndex = "-400";
       document.getElementById("layerMenuButtonFP")!.style.zIndex = "-400";
       document.getElementById("layerMenuFloorSlider")!.style.zIndex = "-400";
     } else {
       setLayerSettingVisible(true);
-      (
-        document.getElementById("layerMenuButton")! as HTMLIonButtonElement
-      ).setAttribute("color", "tertiary");
+      (document.getElementById("layerMenuButton")! as HTMLIonButtonElement).setAttribute(
+        "color",
+        "tertiary",
+      );
       document.getElementById("layerMenuButtonST")!.style.zIndex = "400";
       document.getElementById("layerMenuButtonFP")!.style.zIndex = "400";
       if (layerFloorplanVisible) {
@@ -981,9 +946,7 @@ export const MapAnchorComponent = () => {
     const filteredTimeAnchor = filterAnchorFromServer(anchors)[0];
     const filteredTimeAnchorWrongTime = filterAnchorFromServer(anchors)[1];
     const filteredTimeAnchorWrongFloor = filterAnchorFromServer(anchors)[2];
-    const anchorInTimeSelection = filteredTimeAnchor.concat(
-      filteredTimeAnchorWrongFloor
-    );
+    const anchorInTimeSelection = filteredTimeAnchor.concat(filteredTimeAnchorWrongFloor);
     const anchorOutTimeSelection = filteredTimeAnchorWrongTime;
     // sorting the anchors into an optimal layer structure with a minimum number of stacked layers
     function prepareDictForLayering(dictAnchors: any, displayTyp: string) {
@@ -1014,14 +977,14 @@ export const MapAnchorComponent = () => {
     // retrieving all information for displaying the anchors in the timeline
     const anchorInTimeSelectionLayering = prepareDictForLayering(
       anchorInTimeSelection,
-      "inTime"
+      "inTime",
     );
     const anchorOutTimeSelectionLayering = prepareDictForLayering(
       anchorOutTimeSelection,
-      "outTime"
+      "outTime",
     );
     const dictListForLayering = anchorInTimeSelectionLayering.concat(
-      anchorOutTimeSelectionLayering
+      anchorOutTimeSelectionLayering,
     );
     const displayLayering = arrangeDictionaries(dictListForLayering);
     const numberOfLayer = displayLayering.length;
@@ -1062,28 +1025,19 @@ export const MapAnchorComponent = () => {
             anchorObj.display == "inTime" ? "#44a2fa" : "#ffffff";
           anchorObjButton.style.borderRadius = "2px";
           anchorObjButton.style.border =
-            anchorObj.display == "inTime"
-              ? "2px solid #ffffff"
-              : "2px dashed #44a2fa";
+            anchorObj.display == "inTime" ? "2px solid #ffffff" : "2px dashed #44a2fa";
           anchorObjButton.style.height =
             (60 - (numberOfLayer - 1) * 6) / numberOfLayer + "px";
           anchorObjButton.style.width =
-            (335 / 24) *
-              (Number(anchorObj.endTime) - Number(anchorObj.startTime)) +
-            "px";
+            (335 / 24) * (Number(anchorObj.endTime) - Number(anchorObj.startTime)) + "px";
           anchorObjButton.style.top =
             i * ((60 - (numberOfLayer - 1) * 6) / numberOfLayer + 6) + "px";
-          anchorObjButton.style.left =
-            (335 / 24) * Number(anchorObj.startTime) + "px";
+          anchorObjButton.style.left = (335 / 24) * Number(anchorObj.startTime) + "px";
           anchorObjButton.style.padding = "0px";
           anchorObjButton.style.margin = "0px";
           if (anchorObj.display == "inTime") {
             anchorObjButton.onclick = () => {
-              zoomToSelectedAnchor(
-                anchorObj.lat,
-                anchorObj.lon,
-                anchorObj.floor
-              );
+              zoomToSelectedAnchor(anchorObj.lat, anchorObj.lon, anchorObj.floor);
             };
           }
           timelineContainer.appendChild(anchorObjButton);
@@ -1189,17 +1143,13 @@ export const MapAnchorComponent = () => {
                     floorSliderOnInput(e);
                   }}
                   // onBlur={() => floorSliderOnBlur()} -> don't work with touch
-                  onMouseDown={() =>
-                    mapContainerRef.current!.dragging.disable()
-                  }
+                  onMouseDown={() => mapContainerRef.current!.dragging.disable()}
                   onMouseUp={() => {
                     mapContainerRef.current!.dragging.enable();
                     floorSliderOnBlur();
                   }}
                   onMouseOut={() => mapContainerRef.current!.dragging.enable()}
-                  onTouchStart={() =>
-                    mapContainerRef.current!.dragging.disable()
-                  }
+                  onTouchStart={() => mapContainerRef.current!.dragging.disable()}
                   onTouchEnd={() => {
                     mapContainerRef.current!.dragging.enable();
                     floorSliderOnBlur();
@@ -1285,7 +1235,7 @@ export const MapAnchorComponent = () => {
                   onClick={() =>
                     (
                       document.getElementById(
-                        "dialogSelectFilterDate"
+                        "dialogSelectFilterDate",
                       ) as HTMLIonModalElement
                     ).dismiss()
                   }
@@ -1298,16 +1248,14 @@ export const MapAnchorComponent = () => {
           <IonDatetime
             id="datetime"
             presentation="date"
-            onIonChange={(e) =>
-              setSelectedDayFilter(new Date(e.target.value + ".000Z"))
-            }
+            onIonChange={(e) => setSelectedDayFilter(new Date(e.target.value + ".000Z"))}
           ></IonDatetime>
           <IonFooter class="ion-padding">
             <IonButton
               onClick={() => {
                 (
                   document.getElementById(
-                    "dialogSelectFilterDate"
+                    "dialogSelectFilterDate",
                   )! as HTMLIonModalElement
                 ).dismiss();
               }}

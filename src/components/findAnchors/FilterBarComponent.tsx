@@ -1,18 +1,12 @@
 import { IonRow } from "@ionic/react";
-import {
-  IonButton,
-  IonIcon,
-  IonContent,
-  IonPopover,
-  IonSearchbar,
-} from "@ionic/react";
+import { IonButton, IonIcon, IonContent, IonPopover, IonSearchbar } from "@ionic/react";
 import {
   arrowUpOutline,
   arrowDownOutline,
   swapVerticalOutline,
   search,
   star,
-  starOutline
+  starOutline,
 } from "ionicons/icons";
 import { SortState, SORT } from "./FindAnchorsComponent";
 
@@ -89,19 +83,12 @@ export const FilterBar = ({
           fill={sortState["owner_id"] === SORT.NONE ? "clear" : "solid"}
           onClick={() => setSort("owner_id")}
         >
-          <IonIcon
-            slot="end"
-            icon={sortStateToIconMap[sortState["owner_id"]]}
-          ></IonIcon>
+          <IonIcon slot="end" icon={sortStateToIconMap[sortState["owner_id"]]}></IonIcon>
           Wer
         </IonButton>
       </div>
       <div style={{ marginRight: 4 }}>
-        <IonButton
-          id="search-trigger"
-          size="small"
-          fill="clear"
-        >
+        <IonButton id="search-trigger" size="small" fill="clear">
           Suche
           <IonIcon slot="end" icon={search}></IonIcon>
         </IonButton>
