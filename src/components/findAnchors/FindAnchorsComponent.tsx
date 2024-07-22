@@ -16,16 +16,22 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { FilterBar } from "./FilterBarComponent";
 import { AnchorContext } from "../../anchorContext";
 import { UserContext } from "../../userContext";
+import {
+  Anchor,
+  convertDBAnchorToFlatAnchor,
+  convertFlatAnchorToDBAnchor,
+} from "../../types/types";
 
 export enum SORT {
   ASC = "ASC",
   DSC = "DSC",
   NONE = "NONE",
 }
-export type SortState = { anchor_name: SORT; created_at: SORT };
-const defaultSortState = {
+export type SortState = { anchor_name: SORT; created_at: SORT; owner_id: SORT };
+const defaultSortState: SortState = {
   anchor_name: SORT.NONE,
   created_at: SORT.NONE,
+  owner_id: SORT.NONE,
 };
 const sortCycleOrder: { [key in SORT]: SORT } = {
   ASC: SORT.DSC,
@@ -46,28 +52,30 @@ export const FindAnchorsComponent = () => {
   };
 
   const sortedAnchors = () => {
+    const flatAnchors = anchors.map(convertDBAnchorToFlatAnchor);
+    let sortedAnchors: Anchor[];
     const param: keyof SortState = Object.keys(sortState).find(
       (key) => sortState[key as keyof typeof sortState] !== SORT.NONE
     ) as keyof SortState;
 
     if (!param) {
-      return anchors;
-    }
-    if (param === "created_at") {
-      return sortState[param] === SORT.DSC
-        ? anchors.sort(
-            (a, b) =>
-              Date.parse(a[param] as string) - Date.parse(b[param] as string)
-          )
-        : anchors.sort(
-            (a, b) =>
-              Date.parse(b[param] as string) - Date.parse(a[param] as string)
-          );
+      sortedAnchors = flatAnchors;
+    } else if (param === "created_at") {
+      sortedAnchors =
+        sortState[param] === SORT.DSC
+          ? flatAnchors.sort(
+              (a, b) => Date.parse(a[param] as string) - Date.parse(b[param] as string)
+            )
+          : flatAnchors.sort(
+              (a, b) => Date.parse(b[param] as string) - Date.parse(a[param] as string)
+            );
     } else {
-      return sortState[param] === SORT.DSC
-        ? anchors.sort((a, b) => a[param].localeCompare(b[param]))
-        : anchors.sort((a, b) => b[param].localeCompare(a[param]));
+      sortedAnchors =
+        sortState[param] === SORT.DSC
+          ? flatAnchors.sort((a, b) => a[param].localeCompare(b[param]))
+          : flatAnchors.sort((a, b) => b[param].localeCompare(a[param]));
     }
+    return sortedAnchors.map((a) => convertFlatAnchorToDBAnchor(a));
   };
 
   return (
@@ -87,12 +95,8 @@ export const FindAnchorsComponent = () => {
             sortedAnchors()
               .filter(
                 (anchor) =>
-                  (anchor.anchor_name
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()) ||
-                    anchor.owner.id
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())) &&
+                  (anchor.anchor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    anchor.owner.id.toLowerCase().includes(searchTerm.toLowerCase())) &&
                   (!filterByBookmarked || bookmarks.includes(anchor.id))
               )
               .map((anchor, index) => (
@@ -113,21 +117,17 @@ export const FindAnchorsComponent = () => {
                         <IonIcon
                           slot="icon-only"
                           size="default"
-                          icon={
-                            bookmarks.includes(anchor.id) ? star : starOutline
-                          }
+                          icon={bookmarks.includes(anchor.id) ? star : starOutline}
                         ></IonIcon>
                       </IonButton>
                     </IonCardTitle>
                     <IonCardSubtitle> {anchor.owner.id || "-"}</IonCardSubtitle>
-                    <IonCardSubtitle>
-                      {anchor.created_at || "-"}
-                    </IonCardSubtitle>
+                    <IonCardSubtitle>{anchor.created_at || "-"}</IonCardSubtitle>
                   </IonCardHeader>
 
                   <IonCardContent>
-                    Here&apos;s a small text description for the card content.
-                    Nothing more, nothing less.
+                    Here&apos;s a small text description for the card content. Nothing
+                    more, nothing less.
                   </IonCardContent>
                 </IonCard>
               ))}
