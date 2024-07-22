@@ -13,7 +13,7 @@ import { trashOutline, build } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 
-import { Anchor } from "../../types/types";
+import { Anchor, convertDBAnchorToFlatAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 
 export const ManageAnchorComponent = () => {
@@ -36,7 +36,7 @@ export const ManageAnchorComponent = () => {
                     {anchor.anchor_name}
                   </div>
                   <IonNote color="medium">
-                    Von: {anchor.owner_id}
+                    Von: {anchor.owner.id}
                     <br />
                     Um: {anchor.created_at || "-"}
                   </IonNote>
@@ -48,7 +48,7 @@ export const ManageAnchorComponent = () => {
                   color="primary"
                   fill="clear"
                   onClick={() => {
-                    setModalData(anchor);
+                    setModalData(convertDBAnchorToFlatAnchor(anchor));
                     setOpenModal(true);
                   }}
                 >

@@ -142,7 +142,8 @@ export const CreateAnchorComponent = () => {
     console.log(localAnchor);
     if (localAnchor.anchor_name) {
       setError(false);
-      createOneAnchor(localAnchor);
+      const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
+      createOneAnchor(dbAnchor);
       setLocalAnchor(draftAnchor);
       // reset all
       setSelectedTagList([]); // tags
