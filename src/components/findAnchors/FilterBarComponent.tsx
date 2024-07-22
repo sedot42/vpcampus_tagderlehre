@@ -101,7 +101,6 @@ export const FilterBar = ({
           id="search-trigger"
           size="small"
           fill="clear"
-          onClick={() => setSort("owner_id")}
         >
           Suche
           <IonIcon slot="end" icon={search}></IonIcon>
