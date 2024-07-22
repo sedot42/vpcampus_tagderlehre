@@ -188,7 +188,7 @@ export const MapAnchorComponent = () => {
         localStorage.getItem("campus_v_p_selGroups") || "[]"
       );
       if (
-        anchor.tags.some((element: string) => tagFilter.includes(element)) ||
+        anchor?.tags?.some((element: string) => tagFilter.includes(element)) ||
         groupFilter.includes(anchor.group_id) ||
         (tagFilter.length == 0 && groupFilter.length == 0)
       ) {
