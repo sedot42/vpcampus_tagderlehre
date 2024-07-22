@@ -1,18 +1,8 @@
-import { useState, createContext, useEffect } from "react";
-import { query } from "./requests/queries";
-import {
-  create_mutation,
-  delete_mutation,
-  update_mutation,
-} from "./requests/mutations";
+import { useState, createContext } from "react";
 
 import {
-  Anchor,
   DBAnchor,
-  DraftAnchor,
-  convertDBAnchorToFlatAnchor,
 } from "./types/types";
-import { draftAnchor } from "./types/defaults";
 import { mockState } from "./mockState";
 
 // RESTORE THIS FILE AFTER THE HACKATHON
@@ -35,11 +25,6 @@ type Props = { children: React.ReactElement | React.ReactElement[] };
 
 export const AnchorProvider = ({ children }: Props) => {
   const [anchors, setAnchors] = useState<DBAnchor[]>(mockState);
-
-  // Don`t expose this method outside this component. It is used to populate state, share state instead.
-  const fetchAnchors = () => {
-    return anchors;
-  };
 
   const createOneAnchor: AnchorContextType["createOneAnchor"] = (anchor) => {
     setAnchors([...anchors, anchor]);
