@@ -14,7 +14,7 @@ import {
   IonText,
   IonItemDivider,
 } from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
+import { closeOutline, trashOutline } from "ionicons/icons";
 import { Config, createInputs } from "../globalUI/GenericFields";
 import { AnchorContext } from "../../anchorContext";
 
@@ -30,13 +30,8 @@ export const UpdateModal = ({
   setOpenModal: (openModal: boolean) => void;
 }) => {
   const { updateOneAnchor } = useContext(AnchorContext);
+  const { deleteOneAnchor } = useContext(AnchorContext);
   const config: Config[] = [
-    {
-      required: true,
-      property: "owner_id",
-      placeholder: "Owner",
-      label: "Owner",
-    },
     {
       required: true,
       property: "anchor_name",
@@ -44,9 +39,19 @@ export const UpdateModal = ({
       label: "Anchor",
     },
   ];
+  for (const key in modalData) {
+    if (key !== "anchor_name" && key !== "id") {
+      config.push({
+        required: false,
+        property: key,
+        placeholder: "",
+        label: key,
+      });
+    }
+  }
 
   return (
-    <IonModal isOpen={openModal}>
+    <IonModal isOpen={openModal} onWillDismiss={() => setOpenModal(false)}>
       <IonHeader>
         <IonToolbar>
           <IonIcon size="large" slot="start"></IonIcon>
@@ -58,11 +63,24 @@ export const UpdateModal = ({
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding ion-text-wrap">
         {createInputs(modalData, setModalData, config)}
+
+        <IonButton
+          fill="clear"
+          color="danger"
+          onClick={() => {
+            deleteOneAnchor(modalData.id);
+            setOpenModal(false);
+          }}
+        >
+          <IonIcon aria-hidden="true" icon={trashOutline} /> Anker löschen
+        </IonButton>
         <IonItemDivider />
         <br />
         <IonText color="medium">ID: {modalData.id}</IonText>
+        <br />
+        <IonText color="medium">Owner ID: {modalData.owner_id}</IonText>
         <br />
         <IonText color="medium">Created: {modalData.created_at}</IonText>
         <br />
