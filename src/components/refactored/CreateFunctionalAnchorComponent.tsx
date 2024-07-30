@@ -163,18 +163,6 @@ export const CreateFunctionalAnchorComponent = () => {
           anchorEndValid={anchorEndValid}
           setAnchorEndValid={setAnchorEndValid}
         />
-
-        <CreateGroupComponent
-          anchors={anchors}
-          localAnchor={localAnchor}
-          setLocalAnchor={setLocalAnchor}
-          setNewGroupError={setNewGroupError}
-          setShowToastCreateGroup={setShowToastCreateGroup}
-          temporaryGroupList={temporaryGroupList}
-          setTemporaryGroupList={setTemporaryGroupList}
-          selectedGroupString={selectedGroupString}
-          setSelectedGroupString={setSelectedGroupString}
-        />
         <CreateLocationComponent
           anchors={anchors}
           localAnchor={localAnchor}
@@ -195,6 +183,17 @@ export const CreateFunctionalAnchorComponent = () => {
           setTemporaryLocationList={setTemporaryLocationList}
           temporaryBuildingList={temporaryBuildingList}
           setTemporaryBuildingList={setTemporaryBuildingList}
+        />
+        <CreateGroupComponent
+          anchors={anchors}
+          localAnchor={localAnchor}
+          setLocalAnchor={setLocalAnchor}
+          setNewGroupError={setNewGroupError}
+          setShowToastCreateGroup={setShowToastCreateGroup}
+          temporaryGroupList={temporaryGroupList}
+          setTemporaryGroupList={setTemporaryGroupList}
+          selectedGroupString={selectedGroupString}
+          setSelectedGroupString={setSelectedGroupString}
         />
         <CreateDocumentComponent
           localAnchor={localAnchor}
