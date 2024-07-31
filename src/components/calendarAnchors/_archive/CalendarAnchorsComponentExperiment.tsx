@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IonPage, IonButton, IonContent } from "@ionic/react";
-import { StatusHeader } from "../globalUI/StatusHeader";
+import { StatusHeader } from "../../globalUI/StatusHeader";
 import { IonDatetime } from "@ionic/react";
 import { DisplayDateTestComponent } from "./DisplayDateTestComponent";
 

@@ -1,5 +1,5 @@
 import { IonPage, IonContent } from "@ionic/react";
-import { StatusHeader } from "../globalUI/StatusHeader";
+import { StatusHeader } from "../../globalUI/StatusHeader";
 
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
