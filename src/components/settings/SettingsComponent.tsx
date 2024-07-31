@@ -28,6 +28,7 @@ import {
   informationCircleOutline,
   trashOutline,
 } from "ionicons/icons";
+import { SettingsComponentCalendar } from "./SettingsComponentsCalendar";
 
 type SettingsProps = undefined;
 
@@ -41,7 +42,7 @@ export const SettingsComponent = () => {
   const storedTagsParsed = storedTags ? JSON.parse(storedTags) : [];
   const [listSelectedTag, setListSelectedTag] = useState<string[]>(storedTagsParsed); // list of all selected tags
   const [timeChangeTagSelection, setTimeChangeTagSelection] = useState<number>(
-    Date.now(),
+    Date.now()
   ); // changetime to detect all changes (useEffect)
 
   // functional components for the selection of groups (filter)
@@ -51,7 +52,7 @@ export const SettingsComponent = () => {
   const [listSelectedGroups, setListSelectedGroups] =
     useState<string[]>(storedGroupsParsed); // list of all selected groups
   const [timeChangeGroupSelection, setTimeChangeGroupSelection] = useState<number>(
-    Date.now(),
+    Date.now()
   ); // changetime to detect all changes (useEffect)
 
   // functions (pipelines) for the tag selection
@@ -149,7 +150,7 @@ export const SettingsComponent = () => {
   // closing the dialog (modal) to select tags
   const closeDialogSelectTags = () => {
     var dialogSelectTag = document.getElementById(
-      "dialogSelectTags",
+      "dialogSelectTags"
     ) as HTMLIonModalElement;
     dialogSelectTag.dismiss();
   };
@@ -301,7 +302,7 @@ export const SettingsComponent = () => {
   // closing the dialog (modal) to select groups
   const closeDialogSelectGroups = () => {
     var dialogSelectGroup = document.getElementById(
-      "dialogSelectGroups",
+      "dialogSelectGroups"
     ) as HTMLIonModalElement;
     dialogSelectGroup.dismiss();
   };
@@ -359,7 +360,7 @@ export const SettingsComponent = () => {
     // save on local storage
     localStorage.setItem(
       "campus_v_p_selGroups",
-      JSON.stringify(listSelectedGroups.sort()),
+      JSON.stringify(listSelectedGroups.sort())
     );
   }, [listSelectedGroups, timeChangeGroupSelection]);
 
@@ -379,7 +380,7 @@ export const SettingsComponent = () => {
           }}
         >
           <IonText class="ion-text-wrap">
-            <h3>Filteroptionen für relevante Tags und Gruppen</h3>
+            <h4>Filteroptionen für relevante Tags und Gruppen</h4>
           </IonText>
           <IonButton
             id="openFilterInfo"
@@ -566,6 +567,7 @@ export const SettingsComponent = () => {
             </IonButton>
           </IonFooter>
         </IonModal>
+        <SettingsComponentCalendar></SettingsComponentCalendar>
       </IonContent>
     </IonPage>
   );

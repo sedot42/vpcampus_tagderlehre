@@ -14,6 +14,7 @@ export const CalendarAnchorComponent = () => {
   };
 
   const [displayWeekends, setDisplayWeekends] = useState(true);
+  // const [initialView, setInitialView] = setState("dayGridMonth");
 
   return (
     <IonPage>
@@ -23,12 +24,31 @@ export const CalendarAnchorComponent = () => {
         <FullCalendar
           height="auto" //"100%"  Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
           plugins={[dayGridPlugin, interactionPlugin]}
+          // Define Header Toolbar Elements
+          headerToolbar={{
+            right: "today prev,next",
+            left: "title",
+          }}
+          // Define Footer Toolbar Elements
+          footerToolbar={{
+            right: "dayGridMonth,dayGridWeek,dayGridDay",
+          }}
+          // Define text of buttons (hardcoded here)
+          buttonText={{
+            today: "Heute",
+            month: "Monat",
+            week: "Woche",
+            day: "Tag",
+          }}
           dateClick={handleDateClick}
           initialView="dayGridMonth"
           weekends={displayWeekends}
         />
         {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
-        <IonToggle onClick={() => setDisplayWeekends(displayWeekends ? false : true)}>
+        <IonToggle
+          className="ion-padding"
+          onClick={() => setDisplayWeekends(displayWeekends ? false : true)}
+        >
           Ganze Woche / Arbeitswoche
         </IonToggle>
       </IonContent>
