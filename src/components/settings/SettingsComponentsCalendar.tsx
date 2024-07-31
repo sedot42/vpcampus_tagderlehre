@@ -14,6 +14,8 @@ export const SettingsComponentCalendar = () => {
         <h4>Kalender Einstellungen (Platzhalter)</h4>
         <p>- Calendar Inital View: Month, Week, Day </p>
         <p>- Display full week/work week</p>
+        <p>- Start of day time (slotMinTime)</p>
+        <p>- End of day time (slotMaxTime)</p>
       </IonText>
     </IonItem>
   );

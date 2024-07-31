@@ -4,8 +4,10 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 // Fullcalendar imports
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
 import { useState } from "react";
+import { NowIndicatorContainer } from "@fullcalendar/core/internal";
 
 export const CalendarAnchorComponent = () => {
   const handleDateClick = (date: DateClickArg) => {
@@ -14,7 +16,21 @@ export const CalendarAnchorComponent = () => {
   };
 
   const [displayWeekends, setDisplayWeekends] = useState(true);
-  // const [initialView, setInitialView] = setState("dayGridMonth");
+
+  const timeGridSettings = {
+    type: "timeGrid",
+    slotMinTime: "06:00:00",
+    slotMaxTime: "18:00:00",
+    scrollTime: "06:00:00",
+    nowIndicator: true,
+  };
+
+  const buttonTextSettings = {
+    today: "Heute",
+    month: "Monat",
+    week: "Woche",
+    day: "Tag",
+  };
 
   return (
     <IonPage>
@@ -23,22 +39,24 @@ export const CalendarAnchorComponent = () => {
       <IonContent className="ion-padding">
         <FullCalendar
           height="auto" //"100%"  Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
-          plugins={[dayGridPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           // Define Header Toolbar Elements
+          stickyHeaderDates={true}
+          weekNumbers={true}
           headerToolbar={{
             right: "today prev,next",
-            left: "title",
+            left: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           // Define Footer Toolbar Elements
           footerToolbar={{
-            right: "dayGridMonth,dayGridWeek,dayGridDay",
+            right: "",
           }}
-          // Define text of buttons (hardcoded here)
-          buttonText={{
-            today: "Heute",
-            month: "Monat",
-            week: "Woche",
-            day: "Tag",
+          // Define text of buttons (hardcoded in variable above)
+          buttonText={buttonTextSettings}
+          // Load view settings which are defined above (Should later be defined in Options)
+          views={{
+            timeGridWeek: timeGridSettings,
+            timeGridDay: timeGridSettings,
           }}
           dateClick={handleDateClick}
           initialView="dayGridMonth"
