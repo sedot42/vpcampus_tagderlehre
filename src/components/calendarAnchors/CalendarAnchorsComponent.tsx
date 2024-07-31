@@ -8,6 +8,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
 import { useState } from "react";
 
+import { events } from "./calendarAnchorTransformComponent";
+
 export const CalendarAnchorComponent = () => {
   const handleDateClick = (date: DateClickArg) => {
     //Don't know why this is wrong -> If i define arg: string then datestr is not of this type.
@@ -30,30 +32,6 @@ export const CalendarAnchorComponent = () => {
     week: "Woche",
     day: "Tag",
   };
-
-  // Test interface for events
-  interface Event {
-    id: string;
-    title: string;
-    start: string;
-    end: string;
-  }
-
-  // Two test events as Fullcalendar objects
-  const events: Event[] = [
-    {
-      id: "a",
-      title: "testevent",
-      start: "2024-07-31T12:15:00",
-      end: "2024-07-31T16:30:00",
-    },
-    {
-      id: "b",
-      title: "test meeting",
-      start: "2024-08-02T08:15:00",
-      end: "2024-08-02T11:30:00",
-    },
-  ];
 
   return (
     <IonPage>
