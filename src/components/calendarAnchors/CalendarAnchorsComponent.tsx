@@ -7,7 +7,6 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
 import { useState } from "react";
-import { NowIndicatorContainer } from "@fullcalendar/core/internal";
 
 export const CalendarAnchorComponent = () => {
   const handleDateClick = (date: DateClickArg) => {
@@ -31,6 +30,30 @@ export const CalendarAnchorComponent = () => {
     week: "Woche",
     day: "Tag",
   };
+
+  // Test interface for events
+  interface Event {
+    id: string;
+    title: string;
+    start: string;
+    end: string;
+  }
+
+  // Two test events as Fullcalendar objects
+  const events: Event[] = [
+    {
+      id: "a",
+      title: "testevent",
+      start: "2024-07-31T12:15:00",
+      end: "2024-07-31T16:30:00",
+    },
+    {
+      id: "b",
+      title: "test meeting",
+      start: "2024-08-02T08:15:00",
+      end: "2024-08-02T11:30:00",
+    },
+  ];
 
   return (
     <IonPage>
@@ -59,8 +82,9 @@ export const CalendarAnchorComponent = () => {
             timeGridDay: timeGridSettings,
           }}
           dateClick={handleDateClick}
-          initialView="dayGridMonth"
+          initialView="dayGridWeek"
           weekends={displayWeekends}
+          events={events}
         />
         {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
         <IonToggle
