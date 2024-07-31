@@ -8,11 +8,11 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
 import { useState } from "react";
 
-import { events } from "./calendarAnchorTransformComponent";
+import { events, transformEvent } from "./calendarAnchorTransformComponent";
+import { mockState } from "../../mockState";
 
 export const CalendarAnchorComponent = () => {
   const handleDateClick = (date: DateClickArg) => {
-    //Don't know why this is wrong -> If i define arg: string then datestr is not of this type.
     alert(date.dateStr);
   };
 
@@ -60,9 +60,9 @@ export const CalendarAnchorComponent = () => {
             timeGridDay: timeGridSettings,
           }}
           dateClick={handleDateClick}
-          initialView="dayGridWeek"
+          initialView="timeGridWeek"
           weekends={displayWeekends}
-          events={events}
+          events={transformEvent(mockState)} //mockState.map(transformEvent)}
         />
         {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
         <IonToggle
