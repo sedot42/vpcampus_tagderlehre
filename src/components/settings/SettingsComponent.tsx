@@ -7,21 +7,37 @@ import {
   IonIcon,
   IonText,
   IonItem,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { addCircleOutline, informationCircleOutline } from "ionicons/icons";
 import { SelectionModal } from "./SelectionModal";
+import { ProfileModal, ProfileSelection } from "./ProfileSelection";
 
 export enum SettingsGroup {
   TAGS = "TAGS",
   GROUPS = "GROUPS",
 }
 
+export enum Profile {
+  STUDIERENDE = "Studierende",
+  LEHRENDE = "Lehrende",
+  EXTERNE = "Externe",
+  NONE = "NONE",
+}
+
 export const SettingsComponent = () => {
   const { anchors } = useContext(AnchorContext);
   const [tagsModalOpen, setTagsModalOpen] = useState(false);
   const [groupsModalOpen, setGroupsModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [profile, setProfile] = useState(Profile.NONE);
+
+  useEffect(() => {
+    profile !== Profile.NONE && setProfileModalOpen(true);
+  }, [profile]);
 
   const tagList =
     anchors && [...new Set(anchors.flatMap((anchor) => anchor.tags))].sort();
@@ -29,8 +45,8 @@ export const SettingsComponent = () => {
   return (
     <IonPage>
       <StatusHeader titleText="Optionen" />
+
       <IonContent className="ion-padding" fullscreen>
-        {/* part for title and information */}
         <IonItem
           lines="none"
           style={{
@@ -54,6 +70,8 @@ export const SettingsComponent = () => {
             <IonIcon icon={informationCircleOutline} size="large"></IonIcon>
           </IonButton>
         </IonItem>
+
+        <ProfileSelection profile={profile} setProfile={setProfile} />
 
         <IonButton
           id="selectTagButton"
@@ -121,6 +139,11 @@ export const SettingsComponent = () => {
           searchFunction={(x) => console.log(x)}
           selectionList={[]}
           settingsGroup={SettingsGroup.GROUPS}
+        />
+        <ProfileModal
+          profile={profile}
+          isOpen={profileModalOpen}
+          closeModal={() => setProfileModalOpen(false)}
         />
       </IonContent>
     </IonPage>
