@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useContext, useMemo, useEffect } from "react";
 import {
@@ -19,10 +20,10 @@ import { AnchorContext } from "../../anchorContext";
 import { Anchor, convertDBAnchorToFlatAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 import { get, update, del } from "idb-keyval";
-import Fuse from "fuse.js"; // Import Fuse.js for fuzzy search
+import Fuse from "fuse.js";
+import { mockState } from "../../mockState"; // Import mockState
 
 export const ManageAnchorComponent: React.FC = () => {
-  // Context and state declarations
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
 
   const [openModal, setOpenModal] = useState(false);
@@ -32,41 +33,38 @@ export const ManageAnchorComponent: React.FC = () => {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
-  // Load search history when component mounts
+  // Extract keys dynamically from the first item in mockState
+  const keys = mockState.length > 0 ? Object.keys(mockState[0]) : [];
+
   useEffect(() => {
     get("searchHistory").then((history) => {
       if (history) setSearchHistory(history);
     });
   }, []);
 
-  // Configure Fuse.js options for fuzzy search
   const fuse = useMemo(
     () =>
       new Fuse(anchors, {
-        keys: ["anchor_name"], // Fields to search in
-        threshold: 0.6, // Adjust the threshold for fuzziness (0.0 = perfect match, 1.0 = match anything)
+        keys: keys, // Use dynamically extracted keys
+        threshold: 0.8,
+        includeScore: true,
       }),
-    [anchors]
+    [anchors, keys]
   );
 
-  // Filter anchors based on search query using Fuse.js
   const filteredAnchors = useMemo(() => {
-    const terms = searchQuery
+    if (searchQuery.trim() === "") return anchors;
+
+    const searchTerms = searchQuery
       .toLowerCase()
       .split(/\s+/)
       .filter((term) => term.length > 0);
-    if (terms.length === 0) return anchors;
+    const searchPattern = searchTerms.map((term) => `'${term}`).join(" ");
 
-    // Collect results for each term and merge
-    const results = terms.flatMap((term) => fuse.search(term).map(({ item }) => item));
-
-    // Remove duplicates
-    const uniqueResults = Array.from(new Set(results));
-
-    return uniqueResults;
+    const results = fuse.search(searchPattern);
+    return results.map((result) => result.item);
   }, [anchors, searchQuery, fuse]);
 
-  // Handle search input change
   const handleSearch = (event: CustomEvent) => {
     const target = event.target as HTMLIonSearchbarElement;
     const query = target.value || "";
@@ -76,24 +74,24 @@ export const ManageAnchorComponent: React.FC = () => {
     if (query.trim() === "") {
       setSuggestions([]);
     } else {
-      const terms = query
+      const searchTerms = query
         .toLowerCase()
         .split(/\s+/)
         .filter((term) => term.length > 0);
-      const results = terms.flatMap((term) => fuse.search(term).map(({ item }) => item));
-      const uniqueSuggestions = Array.from(new Set(results))
+      const searchPattern = searchTerms.map((term) => `'${term}`).join(" ");
+
+      const results = fuse.search(searchPattern);
+      const uniqueSuggestions = Array.from(new Set(results.map((result) => result.item)))
         .slice(0, 5)
         .map(convertDBAnchorToFlatAnchor);
       setSuggestions(uniqueSuggestions);
     }
   };
 
-  // Show search history when the search bar is focused
   const handleSearchFocus = () => {
     setShowHistory(true);
   };
 
-  // Add a search query to search history
   const addToSearchHistory = (query: string) => {
     if (query.trim() !== "") {
       update("searchHistory", (history: string[] = []) => {
@@ -107,14 +105,12 @@ export const ManageAnchorComponent: React.FC = () => {
     }
   };
 
-  // Handle search form submission
   const handleSearchSubmit = (event: CustomEvent) => {
     event.preventDefault();
     addToSearchHistory(searchQuery);
     setShowHistory(false);
   };
 
-  // Clear search history
   const clearSearchHistory = () => {
     setSearchHistory([]);
     del("searchHistory");

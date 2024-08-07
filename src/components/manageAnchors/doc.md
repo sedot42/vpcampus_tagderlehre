@@ -1,7 +1,7 @@
-Explanation
-Context (useContext):
 
+Context (useContext):
 AnchorContext provides anchors and deleteOneAnchor.
+
 State (useState):
 
 openModal: Manages the state of the modal (open/close).
@@ -37,66 +37,66 @@ The main structure of the component, including IonPage, IonContent, IonSearchbar
          +--------------------------------------+--------------------------------------+
          |                                      |                                      |
          v                                      v                                      v
++----------------------+      +---------------------------+      +-----------------------------+
+|      useContext      |      |       useState            |      |          useEffect          |
+|  (AnchorContext)     |      |---------------------------|      |-----------------------------|
+|----------------------|      | - openModal               |      | - Load search history from  |
+| - anchors            |      | - modalData               |      |   IndexedDB using `get`     |
+| - deleteOneAnchor    |      | - searchQuery             |      | - Set searchHistory state   |
++----------------------+      | - suggestions             |      +-----------------------------+
+                              | - searchHistory           |                       |
+                              | - showHistory             |                       v
+                              +---------------------------+       +---------------------------------+
+                                                                  |           useMemo               |
+                                                                  |---------------------------------|
+                                                                  | - Configure Fuse.js for fuzzy   |
+                                                                  |   search with anchors as input  |
+                                                                  +---------------------------------+
+                                                                                     |
+                                                                                     v
+                                                                 +---------------------------------+
+                                                                 |           useMemo               |
+                                                                 |---------------------------------|
+                                                                 | - filteredAnchors: Filter anchors|
+                                                                 |   based on search query using    |
+                                                                 |   Fuse.js                        |
+                                                                 +---------------------------------+
+                                                                                     |
+                                                                                     v
+                                                                  +---------------------------------+
+                                                                  |     Event Handlers (useCallback)|
+                                                                  |---------------------------------|
+                                                                  | - handleSearch                  |
+                                                                  | - handleSearchFocus             |
+                                                                  | - handleSearchSubmit            |
+                                                                  | - clearSearchHistory            |
+                                                                  +---------------------------------+
+                                                                                     |
+                                                                                     v
+                                                                      +--------------------------+
+                                                                      |   Conditional Rendering   |
+                                                                      |--------------------------|
+                                                                      | - Search bar             |
+                                                                      | - Search history list    |
+                                                                      | - Suggestions list       |
+                                                                      | - Filtered anchors list  |
+                                                                      | - Update modal           |
+                                                                      +--------------------------+
+                                                                                     |
+                                                                                     v
+                                                                     +---------------------------+
+                                                                     |     JSX Elements          |
+                                                                     |---------------------------|
+                                                                     | - IonPage                 |
+                                                                     | - IonContent              |
+                                                                     | - IonSearchbar            |
+                                                                     | - IonList                 |
+                                                                     | - IonItem                 |
+                                                                     | - IonLabel                |
+                                                                     | - IonButton               |
+                                                                     | - IonIcon                 |
+                                                                     | - IonNote                 |
+                                                                     | - StatusHeader            |
+                                                                     | - UpdateModal             |
+                                                                     +---------------------------+
 
-+----------------------+ +---------------------------+ +-----------------------------+
-| useContext | | useState | | useEffect |
-| (AnchorContext) | |---------------------------| |-----------------------------|
-|----------------------| | - openModal | | - Load search history from |
-| - anchors | | - modalData | | IndexedDB using `get` |
-| - deleteOneAnchor | | - searchQuery | | - Set searchHistory state |
-+----------------------+ | - suggestions | +-----------------------------+
-| - searchHistory | |
-| - showHistory | v
-+---------------------------+ +---------------------------------+
-| useMemo |
-|---------------------------------|
-| - Configure Fuse.js for fuzzy |
-| search with anchors as input |
-+---------------------------------+
-|
-v
-+---------------------------------+
-| useMemo |
-|---------------------------------|
-| - filteredAnchors: Filter anchors|
-| based on search query using |
-| Fuse.js |
-+---------------------------------+
-|
-v
-+---------------------------------+
-| Event Handlers (useCallback)|
-|---------------------------------|
-| - handleSearch |
-| - handleSearchFocus |
-| - handleSearchSubmit |
-| - clearSearchHistory |
-+---------------------------------+
-|
-v
-+--------------------------+
-| Conditional Rendering |
-|--------------------------|
-| - Search bar |
-| - Search history list |
-| - Suggestions list |
-| - Filtered anchors list |
-| - Update modal |
-+--------------------------+
-|
-v
-+---------------------------+
-| JSX Elements |
-|---------------------------|
-| - IonPage |
-| - IonContent |
-| - IonSearchbar |
-| - IonList |
-| - IonItem |
-| - IonLabel |
-| - IonButton |
-| - IonIcon |
-| - IonNote |
-| - StatusHeader |
-| - UpdateModal |
-+---------------------------+
