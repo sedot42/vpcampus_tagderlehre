@@ -15,6 +15,7 @@ import {
   IonItem,
   IonCheckbox,
 } from "@ionic/react";
+import { CheckboxChangeEventDetail, IonCheckboxCustomEvent } from "@ionic/core";
 import { closeOutline } from "ionicons/icons";
 import { SettingsGroup } from "./SettingsComponent";
 
@@ -41,7 +42,7 @@ export const SelectionModal = ({
     localStorage.setItem(settingsGroup, JSON.stringify([...newList]));
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: IonCheckboxCustomEvent<CheckboxChangeEventDetail>) => {
     const isChecked = event?.target.checked;
     if (isChecked) {
       setCheckedBoxes([...checkedBoxes, event.target.value]);
@@ -50,7 +51,12 @@ export const SelectionModal = ({
     }
   };
   return (
-    <IonModal id="dialogFilterInfo" trigger="openFilterInfo" isOpen={isOpen}>
+    <IonModal
+      id="dialogFilterInfo"
+      isOpen={isOpen}
+      onDidDismiss={() => closeModal()}
+      style={{ "--min-height": "100vh", "--min-width": "100vw" }}
+    >
       <IonHeader>
         <IonToolbar>
           <IonTitle slot="start">{headerText}</IonTitle>
