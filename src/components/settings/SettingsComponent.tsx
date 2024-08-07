@@ -5,23 +5,27 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
-  IonList,
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonSearchbar,
-  IonInfiniteScroll,
-  IonFooter,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonText,
   IonItem,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
+import { SelectionModal } from "./SelectionModal";
+import { ProfileModal, ProfileSelection } from "./ProfileSelection";
+
+export enum SettingsGroup {
+  TAGS = "TAGS",
+  GROUPS = "GROUPS",
+}
+
+export enum Profile {
+  STUDIERENDE = "Studierende",
+  LEHRENDE = "Lehrende",
+  EXTERNE = "Externe",
+  NONE = "NONE",
+}
 import {
   addCircleOutline,
   closeOutline,
@@ -33,7 +37,6 @@ import { SettingsComponentCalendar } from "./SettingsComponentsCalendar";
 type SettingsProps = undefined;
 
 export const SettingsComponent = () => {
-  // anchors from the server (database)
   const { anchors } = useContext(AnchorContext);
 
   // functional components for the selection of tags (filter)
@@ -135,6 +138,11 @@ export const SettingsComponent = () => {
   };
 
   // whenever the filter (search) is changed, the listing is updated
+  const [tagsModalOpen, setTagsModalOpen] = useState(false);
+  const [groupsModalOpen, setGroupsModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [profile, setProfile] = useState(Profile.NONE);
+
   useEffect(() => {
     // check if list is displayed
     if (document.getElementById("listAllFilteredTags") != null) {
@@ -366,11 +374,18 @@ export const SettingsComponent = () => {
 
   // HTML output
   // ------------------------------------------------------------------------------------------
+  useEffect(() => {
+    profile !== Profile.NONE && setProfileModalOpen(true);
+  }, [profile]);
+
+  const tagList =
+    anchors && [...new Set(anchors.flatMap((anchor) => anchor.tags))].sort();
+
   return (
     <IonPage>
       <StatusHeader titleText="Optionen" />
+
       <IonContent className="ion-padding" fullscreen>
-        {/* part for title and information */}
         <IonItem
           lines="none"
           style={{
@@ -394,47 +409,9 @@ export const SettingsComponent = () => {
             <IonIcon icon={informationCircleOutline} size="large"></IonIcon>
           </IonButton>
         </IonItem>
-        <IonModal id="dialogFilterInfo" trigger="openFilterInfo">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle slot="start">Filteroptionen</IonTitle>
-              <IonButtons slot="end">
-                <IonButton
-                  onClick={() => {
-                    (
-                      document.getElementById("dialogFilterInfo")! as HTMLIonModalElement
-                    ).dismiss();
-                  }}
-                >
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <IonText>
-              An dieser Stelle besteht die Möglichkeit, eine Auswahl relevanter Tags und
-              Gruppen zu treffen. Die innerhalb der Applikation angezeigten Anker
-              beschränken sich in diesem Fall auf die ausgewählten Gruppen und gewählten
-              Stichworte. Liegt keine Auswahl vor, werden alle Anker angezeigt.{" "}
-            </IonText>
-          </IonContent>
-          <IonFooter class="ion-padding">
-            <IonButton
-              onClick={() => {
-                (
-                  document.getElementById("dialogFilterInfo")! as HTMLIonModalElement
-                ).dismiss();
-              }}
-              expand="full"
-              color="primary"
-            >
-              Ok
-            </IonButton>
-          </IonFooter>
-        </IonModal>
 
-        {/* part for the selection of tags */}
+        <ProfileSelection profile={profile} setProfile={setProfile} />
+
         <IonButton
           id="selectTagButton"
           className="buttonAddElements"
@@ -442,6 +419,7 @@ export const SettingsComponent = () => {
           color="light"
           fill="solid"
           size="default"
+          onClick={() => setTagsModalOpen(true)}
         >
           <div>
             <IonLabel
@@ -459,49 +437,7 @@ export const SettingsComponent = () => {
             ></IonIcon>
           </div>
         </IonButton>
-        <div id="selectedTagContainer">
-          {/* container for showing the tag selection */}
-        </div>
-        {/* overlay (modal) for the selection of tags */}
-        <IonModal
-          id="dialogSelectTags"
-          trigger="selectTagButton"
-          onDidPresent={showTagsOnSelection}
-          onDidDismiss={() => updateTagSelectionInput(true)}
-        >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle slot="start">Tags auswählen</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={closeDialogSelectTags}>
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-            <IonSearchbar
-              onIonInput={updateFilterTag}
-              color="light"
-              id="tagSearchBar"
-            ></IonSearchbar>
-          </IonHeader>
-          <IonContent>
-            <IonInfiniteScroll>
-              <IonList id="listAllFilteredTags"></IonList>
-            </IonInfiniteScroll>
-          </IonContent>
-          <IonFooter class="ion-padding">
-            <IonButton
-              onClick={closeDialogSelectTags}
-              id="cancelSelectTag"
-              expand="full"
-              color="primary"
-            >
-              Speichern
-            </IonButton>
-          </IonFooter>
-        </IonModal>
 
-        {/* part for the selection of groups */}
         <IonButton
           id="selectGroupButton"
           className="buttonAddElements"
@@ -509,6 +445,7 @@ export const SettingsComponent = () => {
           color="light"
           fill="solid"
           size="default"
+          onClick={() => setGroupsModalOpen(true)}
         >
           <div>
             <IonLabel
@@ -526,47 +463,27 @@ export const SettingsComponent = () => {
             ></IonIcon>
           </div>
         </IonButton>
-        <div id="selectedGroupContainer">
-          {/* container for showing the group selection */}
-        </div>
-        {/* overlay (modal) for the selection of groups */}
-        <IonModal
-          id="dialogSelectGroups"
-          trigger="selectGroupButton"
-          onDidPresent={showGroupsOnSelection}
-          onDidDismiss={() => updateGroupSelectionInput(true)}
-        >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle slot="start">Gruppen auswählen</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onClick={closeDialogSelectGroups}>
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-            <IonSearchbar
-              onIonInput={updateFilterGroup}
-              color="light"
-              id="groupSearchBar"
-            ></IonSearchbar>
-          </IonHeader>
-          <IonContent>
-            <IonInfiniteScroll>
-              <IonList id="listAllFilteredGroups"></IonList>
-            </IonInfiniteScroll>
-          </IonContent>
-          <IonFooter class="ion-padding">
-            <IonButton
-              onClick={closeDialogSelectGroups}
-              id="cancelSelectGroup"
-              expand="full"
-              color="primary"
-            >
-              Speichern
-            </IonButton>
-          </IonFooter>
-        </IonModal>
+        <SelectionModal
+          closeModal={() => setTagsModalOpen(false)}
+          isOpen={tagsModalOpen}
+          headerText="Tags auswählen"
+          searchFunction={(x) => console.log(x)}
+          selectionList={tagList}
+          settingsGroup={SettingsGroup.TAGS}
+        />
+        <SelectionModal
+          closeModal={() => setGroupsModalOpen(false)}
+          isOpen={groupsModalOpen}
+          headerText="Gruppen auswählen"
+          searchFunction={(x) => console.log(x)}
+          selectionList={[]}
+          settingsGroup={SettingsGroup.GROUPS}
+        />
+        <ProfileModal
+          profile={profile}
+          isOpen={profileModalOpen}
+          closeModal={() => setProfileModalOpen(false)}
+        />
         <SettingsComponentCalendar></SettingsComponentCalendar>
       </IonContent>
     </IonPage>
