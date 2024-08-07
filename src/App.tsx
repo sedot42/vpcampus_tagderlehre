@@ -41,6 +41,7 @@ import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAn
 import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
