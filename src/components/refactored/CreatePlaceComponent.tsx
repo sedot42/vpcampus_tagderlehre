@@ -544,11 +544,11 @@ export const CreatePlaceComponent = ({
       lat:
         selectedLocationDictionary.lat === null
           ? undefined
-          : Math.round(selectedLocationDictionary.lat * 1_000_000),
+          : selectedLocationDictionary.lat,
       lon:
         selectedLocationDictionary.lon === null
           ? undefined
-          : Math.round(selectedLocationDictionary.lon * 1_000_000),
+          : selectedLocationDictionary.lon,
       floor_nr:
         selectedLocationDictionary.floor_nr === null
           ? undefined

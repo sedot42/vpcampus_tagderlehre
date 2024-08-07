@@ -48,6 +48,7 @@ import { AnchorProvider } from "./anchorContext";
 import { UserProvider } from "./userContext";
 
 import { CreateFunctionalAnchorComponent } from "./components/refactored/CreateFunctionalAnchorComponent";
+import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
 
 setupIonicReact();
 
@@ -64,10 +65,13 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapAnchorComponent />
               </Route>
-              <Route exact path="/createAnchors2">
-                <CreateFunctionalAnchorComponent />
+              <Route exact path="/mapAnchors2">
+                <MapComponent />
               </Route>
               <Route exact path="/createAnchors">
+                <CreateFunctionalAnchorComponent />
+              </Route>
+              <Route exact path="/createAnchorsX">
                 <CreateAnchorComponent />
               </Route>
               <Route path="/manageAnchors">
@@ -89,12 +93,10 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
-              {/* TESTING for refactoring */}
-              <IonTabButton tab="createAnchors2" href="/createAnchors2">
-                <IonIcon aria-hidden="true" icon={addOutline} size="large" />
-                <IonLabel>Erstellen_Ref</IonLabel>
+              <IonTabButton tab="mapAnchors2" href="/mapAnchors2">
+                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
+                <IonLabel>Karte2</IonLabel>
               </IonTabButton>
-              {/* TESTING */}
               <IonTabButton tab="createAnchors" href="/createAnchors">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />
                 <IonLabel>Erstellen</IonLabel>

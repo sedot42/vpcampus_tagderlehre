@@ -1,0 +1,68 @@
+#footerTimeLineFilter {
+    position: relative;
+  }
+  
+  #filterMenuTimeSlider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #TimeSliderControl {
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  #TimeStampeLeftMarker,
+  #TimeStampeRightMarker {
+    position: absolute;
+    top: -50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    transform: translateY(-70px) scale(1);
+    transition: transform 0.2s;
+  }
+  
+  #TimeStampLeftNumber,
+  #TimeStampRightNumber {
+    font-size: 12px;
+  }
+  
+  #filterMenuDateSelection {
+    margin-bottom: 10px;
+  }
+  
+  #dialogSelectFilterDate {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  ion-range::part(pin) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20%;
+    transform: scale(1.01);
+    top: -20px;
+    min-width: 28px;
+    height: 28px;
+    transition: transform 120ms ease, background 120ms ease;
+    --bar-border-radius: 10px;
+  }
+ 
+  ion-range {
+    --bar-height: 8px;
+    --bar-border-radius: 8px;
+    --knob-size: 40px;
+
+  }
