@@ -48,10 +48,6 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
   return (
     <>
       <IonFooter id="footerTimeLineFilter" className="ion-padding">
-        <IonDatetimeButton
-          id="filterMenuDateSelection"
-          datetime="datetime"
-        ></IonDatetimeButton>
         <IonRange
           dualKnobs={true}
           min={0}
@@ -71,6 +67,11 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
             setEndTimeFilter(upper);
           }}
         />
+        <IonDatetimeButton
+          id="filterMenuDateSelection"
+          datetime="datetime"
+        ></IonDatetimeButton>
+
         <IonModal keepContentsMounted={true} id="dialogSelectFilterDate">
           <IonHeader>
             <IonToolbar>
