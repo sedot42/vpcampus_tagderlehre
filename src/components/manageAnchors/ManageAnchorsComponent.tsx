@@ -24,8 +24,8 @@ import Fuse from "fuse.js";
 import { mockState } from "../../mockState"; // Import mockState
 
 export const ManageAnchorComponent: React.FC = () => {
+  // Context and state initialization
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
-
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,22 +36,25 @@ export const ManageAnchorComponent: React.FC = () => {
   // Extract keys dynamically from the first item in mockState
   const keys = mockState.length > 0 ? Object.keys(mockState[0]) : [];
 
+  // Load search history from IndexedDB on component mount
   useEffect(() => {
     get("searchHistory").then((history) => {
       if (history) setSearchHistory(history);
     });
   }, []);
 
+  // Initialize Fuse.js for fuzzy search
   const fuse = useMemo(
     () =>
       new Fuse(anchors, {
         keys: keys, // Use dynamically extracted keys
-        threshold: 0.8,
+        threshold: 0.9,
         includeScore: true,
       }),
     [anchors, keys]
   );
 
+  // Filter anchors based on search query
   const filteredAnchors = useMemo(() => {
     if (searchQuery.trim() === "") return anchors;
 
@@ -65,6 +68,7 @@ export const ManageAnchorComponent: React.FC = () => {
     return results.map((result) => result.item);
   }, [anchors, searchQuery, fuse]);
 
+  // Handle search input
   const handleSearch = (event: CustomEvent) => {
     const target = event.target as HTMLIonSearchbarElement;
     const query = target.value || "";
@@ -88,10 +92,12 @@ export const ManageAnchorComponent: React.FC = () => {
     }
   };
 
+  // Show search history when search bar is focused
   const handleSearchFocus = () => {
     setShowHistory(true);
   };
 
+  // Add search query to history
   const addToSearchHistory = (query: string) => {
     if (query.trim() !== "") {
       update("searchHistory", (history: string[] = []) => {
@@ -105,12 +111,14 @@ export const ManageAnchorComponent: React.FC = () => {
     }
   };
 
+  // Handle search submission
   const handleSearchSubmit = (event: CustomEvent) => {
     event.preventDefault();
     addToSearchHistory(searchQuery);
     setShowHistory(false);
   };
 
+  // Clear search history
   const clearSearchHistory = () => {
     setSearchHistory([]);
     del("searchHistory");
@@ -120,6 +128,7 @@ export const ManageAnchorComponent: React.FC = () => {
     <IonPage>
       <StatusHeader titleText="Verwalten" />
       <IonContent fullscreen>
+        {/* Search bar */}
         <IonSearchbar
           value={searchQuery}
           onIonInput={handleSearch}
@@ -127,6 +136,8 @@ export const ManageAnchorComponent: React.FC = () => {
           onIonChange={handleSearchSubmit}
           placeholder="Search anchors..."
         />
+
+        {/* Search history */}
         {showHistory && searchHistory.length > 0 && (
           <IonList>
             <IonListHeader>
@@ -152,6 +163,8 @@ export const ManageAnchorComponent: React.FC = () => {
             <IonItemDivider />
           </IonList>
         )}
+
+        {/* Search suggestions */}
         {suggestions.length > 0 && (
           <IonList>
             <IonListHeader>
@@ -173,6 +186,8 @@ export const ManageAnchorComponent: React.FC = () => {
             <IonItemDivider />
           </IonList>
         )}
+
+        {/* List of anchors */}
         <IonList>
           {filteredAnchors.length > 0 ? (
             filteredAnchors.map((anchor, index) => (
@@ -187,6 +202,7 @@ export const ManageAnchorComponent: React.FC = () => {
                     Um: {anchor.created_at || "-"}
                   </IonNote>
                 </IonLabel>
+                {/* Edit button */}
                 <IonButton
                   id={"open-modal-" + index}
                   expand="block"
@@ -199,6 +215,7 @@ export const ManageAnchorComponent: React.FC = () => {
                 >
                   <IonIcon aria-hidden="true" icon={build} />
                 </IonButton>
+                {/* Delete button */}
                 <IonButton
                   fill="clear"
                   color="danger"
@@ -213,6 +230,7 @@ export const ManageAnchorComponent: React.FC = () => {
           ) : searchQuery.trim() !== "" ? (
             <IonItem>No matching anchors found</IonItem>
           ) : null}
+          {/* Update modal */}
           {modalData && (
             <UpdateModal
               modalData={modalData}
