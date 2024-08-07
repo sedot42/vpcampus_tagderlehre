@@ -15,7 +15,6 @@ import {
   calendarOutline,
   createOutline,
   mapOutline,
-  searchOutline,
   settingsOutline,
 } from "ionicons/icons";
 
@@ -38,14 +37,12 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import { Anchor } from "./types/types";
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
 import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
-import { UserProvider } from "./userContext";
 
 setupIonicReact();
 
