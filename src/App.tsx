@@ -41,8 +41,12 @@ import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAn
 import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
+
+import { CreateFunctionalAnchorComponent } from "./components/refactored/CreateFunctionalAnchorComponent";
+import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
 
 setupIonicReact();
 
@@ -59,7 +63,13 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapAnchorComponent />
               </Route>
+              <Route exact path="/mapAnchors2">
+                <MapComponent />
+              </Route>
               <Route exact path="/createAnchors">
+                <CreateFunctionalAnchorComponent />
+              </Route>
+              <Route exact path="/createAnchorsX">
                 <CreateAnchorComponent />
               </Route>
               <Route path="/manageAnchors">
@@ -80,6 +90,10 @@ const App: React.FC = () => {
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="mapAnchors2" href="/mapAnchors2">
+                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
+                <IonLabel>Karte2</IonLabel>
               </IonTabButton>
               <IonTabButton tab="createAnchors" href="/createAnchors">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />

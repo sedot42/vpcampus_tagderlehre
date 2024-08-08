@@ -49,12 +49,12 @@ export const CreateAnchorComponent = () => {
   // anchors from the server (database)
   const { anchors } = useContext(AnchorContext);
 
-  const [localAnchor, setLocalAnchor] = useState<DraftAnchor>(draftAnchor);
+  const [localAnchor, setLocalAnchor] = useState(draftAnchor);
   const { createOneAnchor } = useContext(AnchorContext);
   const [error, setError] = useState(false);
 
   // functional components for the selection of tags for an anchor
-  const [filterTagString, setFilterTagString] = useState<string>(""); // string to filter the tags
+  const [filterTagString, setFilterTagString] = useState(""); // string to filter the tags
   const [selectedTagList, setSelectedTagList] = useState<string[]>([]); // list of all selected tags
   const [newTagString, setNewTagString] = useState<string>(""); // new tag as string
   const [temporaryTagList, setTemporaryTagList] = useState<string[]>([]); // list with all tags created by user
@@ -306,7 +306,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new tag
   const closeDialogCreateTag = () => {
     var dialogCreateTag = document.getElementById(
-      "dialogCreateTag",
+      "dialogCreateTag"
     ) as HTMLIonModalElement;
     dialogCreateTag.dismiss();
     // update of the listing (tags)
@@ -316,7 +316,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select tags
   const closeDialogSelectTag = () => {
     var dialogSelectTag = document.getElementById(
-      "dialogSelectTag",
+      "dialogSelectTag"
     ) as HTMLIonModalElement;
     dialogSelectTag.dismiss();
   };
@@ -500,7 +500,7 @@ export const CreateAnchorComponent = () => {
       campus_id: "",
     };
     const uniqueRowsClear = uniqueRows.filter(
-      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoLocation),
+      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoLocation)
     );
     // return the unique list
     return uniqueRowsClear;
@@ -666,7 +666,7 @@ export const CreateAnchorComponent = () => {
   const readNewLocationInputRoom = (event: CustomEvent) => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary,
+      newLocationDictionary
     );
     newLocationDictValue.room_id = event.detail.value;
     setNewLocationDictionary(newLocationDictValue);
@@ -676,7 +676,7 @@ export const CreateAnchorComponent = () => {
   const readNewLocationInputFloor = (event: CustomEvent) => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary,
+      newLocationDictionary
     );
     if (event.detail.value == "") {
       newLocationDictValue.floor_nr = null;
@@ -723,7 +723,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new location
   const closeDialogCreateLocation = () => {
     var dialogCreateLocation = document.getElementById(
-      "dialogCreateLocation",
+      "dialogCreateLocation"
     ) as HTMLIonModalElement;
     dialogCreateLocation.dismiss();
     // update of the listing (locations)
@@ -733,7 +733,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select locations
   const closeDialogSelectLocation = () => {
     var dialogSelectLocation = document.getElementById(
-      "dialogSelectLocation",
+      "dialogSelectLocation"
     ) as HTMLIonModalElement;
     dialogSelectLocation.dismiss();
   };
@@ -829,7 +829,7 @@ export const CreateAnchorComponent = () => {
         building_id: location.building_id,
         address_string: location.address_string,
         campus_id: location.campus_id,
-      }),
+      })
     );
     // filter out the unique buildings
     const buildingsDB = filterUniqueRows(allbuildingsDB);
@@ -840,7 +840,7 @@ export const CreateAnchorComponent = () => {
       campus_id: "",
     };
     const buildingsDBClear = buildingsDB.filter(
-      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoBuilding),
+      (dict: {}) => JSON.stringify(dict) !== JSON.stringify(dictNoBuilding)
     );
     // combination of all buildings
     var allBuildings = buildingsDBClear.concat(temporaryBuildingList);
@@ -955,7 +955,7 @@ export const CreateAnchorComponent = () => {
     // save the building selection in the new location dictionary
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary,
+      newLocationDictionary
     );
     if (Object.keys(selectedBuildingDictionary).length > 0) {
       newLocationDictValue.building_id = selectedBuildingDictionary.building_id;
@@ -993,7 +993,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputBuilding = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary,
+      newBuildingDictionary
     );
     newBuildingDictValue.building_id = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1003,7 +1003,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputAddress = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary,
+      newBuildingDictionary
     );
     newBuildingDictValue.address_string = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1013,7 +1013,7 @@ export const CreateAnchorComponent = () => {
   const readNewBuildingInputCampus = (event: CustomEvent) => {
     const newBuildingDictValue: { [key: string]: any } = Object.assign(
       {},
-      newBuildingDictionary,
+      newBuildingDictionary
     );
     newBuildingDictValue.campus_id = event.detail.value;
     setNewBuildingDictionary(newBuildingDictValue);
@@ -1047,7 +1047,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new location
   const closeDialogCreateBuilding = () => {
     var dialogCreateBuilding = document.getElementById(
-      "dialogCreateBuilding",
+      "dialogCreateBuilding"
     ) as HTMLIonModalElement;
     dialogCreateBuilding.dismiss();
     // update of the listing (locations)
@@ -1057,7 +1057,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select locations
   const closeDialogSelectBuilding = () => {
     var dialogSelectBuilding = document.getElementById(
-      "dialogSelectBuilding",
+      "dialogSelectBuilding"
     ) as HTMLIonModalElement;
     dialogSelectBuilding.dismiss();
   };
@@ -1192,7 +1192,7 @@ export const CreateAnchorComponent = () => {
   useEffect(() => {
     const newLocationDictValue: { [key: string]: any } = Object.assign(
       {},
-      newLocationDictionary,
+      newLocationDictionary
     );
     newLocationDictValue.lat = Number.isNaN(newPositionLatitude)
       ? undefined
@@ -1384,7 +1384,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to enter a new group
   const closeDialogCreateGroup = () => {
     var dialogCreateGroup = document.getElementById(
-      "dialogCreateGroup",
+      "dialogCreateGroup"
     ) as HTMLIonModalElement;
     dialogCreateGroup.dismiss();
     // update of the listing (groups)
@@ -1394,7 +1394,7 @@ export const CreateAnchorComponent = () => {
   // closing the dialog (modal) to select groups
   const closeDialogSelectGroup = () => {
     var dialogSelectGroup = document.getElementById(
-      "dialogSelectGroup",
+      "dialogSelectGroup"
     ) as HTMLIonModalElement;
     dialogSelectGroup.dismiss();
   };
@@ -1669,7 +1669,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectDateStart",
+                          "dialogSelectDateStart"
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1689,7 +1689,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectDateStart",
+                      "dialogSelectDateStart"
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -1709,7 +1709,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectDateEnd",
+                          "dialogSelectDateEnd"
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1770,7 +1770,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectValidStart",
+                          "dialogSelectValidStart"
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1790,7 +1790,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectValidStart",
+                      "dialogSelectValidStart"
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -1810,7 +1810,7 @@ export const CreateAnchorComponent = () => {
                     onClick={() =>
                       (
                         document.getElementById(
-                          "dialogSelectValidEnd",
+                          "dialogSelectValidEnd"
                         ) as HTMLIonModalElement
                       ).dismiss()
                     }
@@ -1830,7 +1830,7 @@ export const CreateAnchorComponent = () => {
                 onClick={() => {
                   (
                     document.getElementById(
-                      "dialogSelectValidEnd",
+                      "dialogSelectValidEnd"
                     )! as HTMLIonModalElement
                   ).dismiss();
                 }}
@@ -2388,6 +2388,11 @@ export const CreateAnchorComponent = () => {
           </div>
         </IonButton>
         <div id="documentContainer">{/* container for showing the selection */}</div>
+
+        <IonItem lines="none" id="privateToggle" style={{ margin: "16px 0 0 0" }}>
+          <IonToggle labelPlacement="start">Privater Eintrag?</IonToggle>
+          {/*onIonChange={addPrivacy} DEFINED LATER*/}
+        </IonItem>
       </IonContent>
 
       <IonFooter

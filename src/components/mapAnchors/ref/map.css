@@ -1,0 +1,21 @@
+
+  
+  ion-range::part(pin) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10%;
+    transform: scale(1.01);
+    top: -15px;
+    min-width: 20px;
+    height: 28px;
+    transition: transform 120ms ease, background 120ms ease;
+    --bar-border-radius: 10px;
+  }
+ 
+  ion-range {
+    --bar-height: 6px;
+    --bar-border-radius: 6px;
+    --knob-size: 30px;
+
+  }

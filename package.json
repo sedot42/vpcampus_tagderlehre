@@ -27,6 +27,8 @@
     "@ionic/react-router": "^7.0.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "fuse.js": "^7.0.0",
+    "idb-keyval": "^6.2.1",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",
