@@ -2,7 +2,7 @@ export const timeGridSettings = {
   type: "timeGrid",
   slotMinTime: "00:00:00",
   slotMaxTime: "24:00:00",
-  scrollTime: "06:00:00",
+  scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
   nowIndicator: true,
 };
 
