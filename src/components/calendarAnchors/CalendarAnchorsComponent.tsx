@@ -8,7 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
 import { useState } from "react";
 
-import { events, transformEvent } from "./CalendarAnchorTransformComponent";
+import { transformEvent } from "./CalendarAnchorTransform";
 import { mockState } from "../../mockState";
 
 export const CalendarAnchorComponent = () => {
@@ -62,7 +62,7 @@ export const CalendarAnchorComponent = () => {
           dateClick={handleDateClick}
           initialView="timeGridWeek"
           weekends={displayWeekends}
-          events={mockState.map(transformEvent)} //mockState.map(transformEvent)}
+          events={mockState.map(transformEvent)}
         />
         {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
         <IonToggle
