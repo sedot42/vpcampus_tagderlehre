@@ -9,6 +9,11 @@ import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // 
 import { useState } from "react";
 
 import { transformEvent } from "./CalendarAnchorTransform";
+import {
+  businessHoursSettings,
+  buttonTextSettings,
+  timeGridSettings,
+} from "./CalendarAnchorSettings";
 import { mockState } from "../../mockState";
 
 export const CalendarAnchorComponent = () => {
@@ -17,21 +22,6 @@ export const CalendarAnchorComponent = () => {
   };
 
   const [displayWeekends, setDisplayWeekends] = useState(true);
-
-  const timeGridSettings = {
-    type: "timeGrid",
-    slotMinTime: "06:00:00",
-    slotMaxTime: "18:00:00",
-    scrollTime: "06:00:00",
-    nowIndicator: true,
-  };
-
-  const buttonTextSettings = {
-    today: "Heute",
-    month: "Monat",
-    week: "Woche",
-    day: "Tag",
-  };
 
   return (
     <IonPage>
@@ -59,11 +49,13 @@ export const CalendarAnchorComponent = () => {
             timeGridWeek: timeGridSettings,
             timeGridDay: timeGridSettings,
           }}
+          businessHours={businessHoursSettings}
           dateClick={handleDateClick}
           initialView="timeGridWeek"
           weekends={displayWeekends}
           events={mockState.map(transformEvent)}
         />
+
         {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
         <IonToggle
           className="ion-padding"

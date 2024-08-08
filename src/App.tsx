@@ -37,7 +37,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
+import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorComponent";
 import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
