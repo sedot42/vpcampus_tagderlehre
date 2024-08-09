@@ -118,7 +118,7 @@ export const mockState = [
     private_anchor: true,
   },
   {
-    id: "5888f33f-90e2-2219-9ccc-d8316f0bd727",
+    id: "5888f33f-90e2-2219-9ccc-d8316f0bd555",
     anchor_name: "Test",
     lat: 47.534730782168, 
     lon: 7.6422768226032,
@@ -129,8 +129,19 @@ export const mockState = [
   },
 
   {
-    id: "5888f33f-90e2-2219-9ccc-d8316f0bd727",
+    id: "5888f33f-90e2-2219-9ccc-d8316f0b6667",
     anchor_name: "Test2",
+    lat: 47.534730782168, 
+    lon: 7.6422768226032,
+    created_at: "2024-07-06T15:54:35.991Z",
+    start_at: "2024-08-06T02:54:35.991Z",
+    end_at: "2024-08-06T12:54:35.991Z",
+    owner: { id: "998ef44f-00e2-4119-9ccc-d8316f0bd700" },
+  },
+
+  {
+    id: "5888f33f-90e2-2219-9ccc-d8316777d727",
+    anchor_name: "Test3",
     lat: 47.534730782168, 
     lon: 7.6422768226032,
     created_at: "2024-07-06T15:54:35.991Z",
