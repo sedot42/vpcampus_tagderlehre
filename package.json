@@ -25,6 +25,7 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@ionic/react": "^7.0.0",
     "@ionic/react-router": "^7.0.0",
+    "@tabler/icons-react": "^3.11.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "fuse.js": "^7.0.0",
@@ -35,8 +36,10 @@
     "react-big-calendar": "^1.13.1",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {
     "@capacitor/cli": "5.3.0",
