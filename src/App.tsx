@@ -39,13 +39,13 @@ import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
 import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
-import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { CreateFunctionalAnchorComponent } from "./components/refactored/CreateFunctionalAnchorComponent";
+import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
 import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
 
 setupIonicReact();
@@ -60,6 +60,9 @@ const App: React.FC = () => {
               <Route exact path="/calendarAnchors">
                 <CalendarAnchorComponent />
               </Route>
+              <Route exact path="/calendarHeatmap">
+                <CalendarHeatMapComponent />
+              </Route>
               <Route exact path="/mapAnchors">
                 <MapAnchorComponent />
               </Route>
@@ -68,9 +71,6 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/createAnchors">
                 <CreateFunctionalAnchorComponent />
-              </Route>
-              <Route exact path="/createAnchorsX">
-                <CreateAnchorComponent />
               </Route>
               <Route path="/manageAnchors">
                 <ManageAnchorComponent />

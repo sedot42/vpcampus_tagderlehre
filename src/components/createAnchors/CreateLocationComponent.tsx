@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { addCircleOutline, trashOutline, closeOutline } from "ionicons/icons";
 import "leaflet/dist/leaflet.css";
-import "../../theme/styles.css";
 
 import {
   IonButton,

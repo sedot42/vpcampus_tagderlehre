@@ -4,7 +4,7 @@ import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
 import { divIcon, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
-
+import { LocateControl } from "../mapAnchors/ref/LocateControl";
 import {
   IonButton,
   IonFooter,
@@ -25,7 +25,6 @@ import {
   IonSearchbar,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
-import "../../theme/styles.css";
 
 export const CreatePlaceComponent = ({
   localAnchor,
@@ -657,6 +656,8 @@ export const CreatePlaceComponent = ({
                         attribution="Map by <a href = 'https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>"
                       />
                       <GetPosClickDisplayedMap />
+                      {/* Geolocation Control */}
+                      <LocateControl />
                     </MapContainer>
                   </IonContent>
                   <IonFooter>
