@@ -64,9 +64,6 @@ const App: React.FC = () => {
                 <CalendarHeatMapComponent />
               </Route>
               <Route exact path="/mapAnchors">
-                <MapAnchorComponent />
-              </Route>
-              <Route exact path="/mapAnchors2">
                 <MapComponent />
               </Route>
               <Route exact path="/createAnchors">
@@ -90,10 +87,6 @@ const App: React.FC = () => {
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="mapAnchors2" href="/mapAnchors2">
-                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
-                <IonLabel>Karte2</IonLabel>
               </IonTabButton>
               <IonTabButton tab="createAnchors" href="/createAnchors">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />
