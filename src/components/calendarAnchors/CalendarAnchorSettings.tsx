@@ -6,6 +6,64 @@ export const timeGridSettings = {
   nowIndicator: true,
 };
 
+// Define View range of custom Week View
+const currentDate: Date = new Date();
+function defineWeekVisibleRange(currentDate: Date) {
+  const startDate =
+    currentDate.getFullYear() +
+    "-" +
+    currentDate.getMonth() +
+    "-" +
+    currentDate.getDate();
+  const endDate =
+    currentDate.getFullYear() +
+    "-" +
+    currentDate.getMonth() +
+    "-" +
+    (currentDate.getDate() + 7);
+
+  return { start: startDate, end: endDate };
+}
+
+// Define View range of custom Month View
+function defineMonthVisibleRange(currentDate: Date) {
+  const startDate =
+    currentDate.getFullYear() +
+    "-" +
+    currentDate.getMonth() +
+    "-" +
+    currentDate.getDate();
+  const endDate =
+    currentDate.getFullYear() +
+    "-" +
+    currentDate.getMonth() +
+    "-" +
+    (currentDate.getDate() + 28);
+
+  return { start: startDate, end: endDate };
+}
+
+export const viewsSettings = {
+  //timeGridWeek: timeGridSettings,
+  //timeGridDay: timeGridSettings,
+
+  // Create Custom View for Week
+  timeGridWeekCustom: {
+    type: "timeGrid",
+    duration: { days: 7 },
+    buttonText: "Woche",
+    visibleRange: defineWeekVisibleRange(currentDate),
+  },
+  // Create Custom View for Month
+  dayGridMonthCustom: {
+    type: "dayGrid",
+    duration: { weeks: 4 },
+    buttonText: "Monat",
+    visibleRange: defineMonthVisibleRange(currentDate),
+  },
+};
+
+// Rename buttonTexts when using standard Views
 export const buttonTextSettings = {
   today: "Heute",
   month: "Monat",

@@ -12,7 +12,7 @@ import {
   businessHoursSettings,
   buttonTextSettings,
   eventTimeFormatSetting,
-  timeGridSettings,
+  viewsSettings,
 } from "./CalendarAnchorSettings";
 import { mockState } from "../../mockState";
 import { RefObject, useRef, useState } from "react";
@@ -26,7 +26,7 @@ export const CalendarAnchorComponent = () => {
     alert(date.dateStr);
   };
 
-  //
+  // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
     if (calendarRef.current !== null) {
       const calendarApi = calendarRef.current.getApi();
@@ -49,7 +49,7 @@ export const CalendarAnchorComponent = () => {
           // Define Header Toolbar Elements
           headerToolbar={{
             right: "today prev,next",
-            left: "dayGridMonth,timeGridWeek,timeGridDay",
+            left: "dayGridMonthCustom,timeGridWeekCustom,timeGridDay",
           }}
           // Define Footer Toolbar Elements
           footerToolbar={{
@@ -58,14 +58,12 @@ export const CalendarAnchorComponent = () => {
           // Define text of buttons (hardcoded in variable above)
 
           // Load view settings which are defined above (Should later be defined in Options)
-          views={{
-            timeGridWeek: timeGridSettings,
-            timeGridDay: timeGridSettings,
-          }}
+          views={viewsSettings}
+          initialView="timeGridWeekCustom"
           dateClick={handleDateClick}
           events={mockState.map(transformEvent)} // Load and transform events
           // Customization
-          initialView="timeGridWeek"
+
           weekNumbers={true}
           weekends={displayWeekends}
           eventTimeFormat={eventTimeFormatSetting} // Load event time format settings
