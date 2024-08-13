@@ -18,3 +18,10 @@ export const businessHoursSettings = {
   startTime: "08:00", // a start time
   endTime: "18:00", // an end time
 };
+
+export const eventTimeFormatSetting: Intl.DateTimeFormatOptions = {
+  // like '14:30:00'
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+};

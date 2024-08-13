@@ -1,16 +1,17 @@
-import { IonButton, IonContent, IonPage, IonToggle } from "@ionic/react";
+import { IonContent, IonPage, IonToggle } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 
 // Fullcalendar imports
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dayClick
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dateClick
 
 import { transformEvent } from "./CalendarAnchorTransform";
 import {
   businessHoursSettings,
   buttonTextSettings,
+  eventTimeFormatSetting,
   timeGridSettings,
 } from "./CalendarAnchorSettings";
 import { mockState } from "../../mockState";
@@ -46,8 +47,6 @@ export const CalendarAnchorComponent = () => {
           height="100%" // Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           // Define Header Toolbar Elements
-          ///stickyHeaderDates={true}
-          weekNumbers={true}
           headerToolbar={{
             right: "today prev,next",
             left: "dayGridMonth,timeGridWeek,timeGridDay",
@@ -57,22 +56,23 @@ export const CalendarAnchorComponent = () => {
             right: "",
           }}
           // Define text of buttons (hardcoded in variable above)
-          buttonText={buttonTextSettings}
+
           // Load view settings which are defined above (Should later be defined in Options)
           views={{
             timeGridWeek: timeGridSettings,
             timeGridDay: timeGridSettings,
           }}
-          businessHours={businessHoursSettings}
           dateClick={handleDateClick}
+          events={mockState.map(transformEvent)} // Load and transform events
+          // Customization
           initialView="timeGridWeek"
+          weekNumbers={true}
           weekends={displayWeekends}
-          events={mockState.map(transformEvent)}
+          eventTimeFormat={eventTimeFormatSetting} // Load event time format settings
+          businessHours={businessHoursSettings}
+          buttonText={buttonTextSettings}
         />
       </IonContent>
-      <IonButton className="ion-padding" onClick={() => updateCalendarSize(calendarRef)}>
-        UpdateSize
-      </IonButton>
       {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
       <IonToggle
         className="ion-padding"
