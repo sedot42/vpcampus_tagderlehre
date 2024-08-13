@@ -2,14 +2,23 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, WMSTileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { IonFab, IonFabButton, IonIcon, IonLabel, IonList, IonItem } from "@ionic/react";
+import {
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  IonLabel,
+  IonList,
+  IonItem,
+  IonButton,
+} from "@ionic/react";
 import { locateOutline } from "ionicons/icons";
 import "./map.css";
 
 export const LocateControl = () => {
   const map = useMap();
 
-  const handleLocate = () => {
+  const handleLocate = (e) => {
+    e.stopPropagation();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -27,10 +36,8 @@ export const LocateControl = () => {
   };
 
   return (
-    <div className="locate-control">
-      <button className="locate-button" onClick={handleLocate}>
-        <IonIcon icon={locateOutline} />
-      </button>
-    </div>
+    <IonButton className="locate-control" shape="round" onClick={handleLocate}>
+      <IonIcon slot="icon-only" icon={locateOutline} />
+    </IonButton>
   );
 };
