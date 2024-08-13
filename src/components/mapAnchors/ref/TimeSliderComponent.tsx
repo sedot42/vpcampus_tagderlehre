@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -15,21 +16,8 @@ import {
 import "leaflet/dist/leaflet.css";
 import { closeOutline, alertCircleOutline } from "ionicons/icons";
 import "./map.css";
-import { useState } from "react";
 
-interface TimeSliderComponentProps {
-  anchors: any[];
-  startTimeFilter: number;
-  endTimeFilter: number;
-  setStartTimeFilter: (value: number) => void;
-  setEndTimeFilter: (value: number) => void;
-  setSelectedDayFilter: (date: Date) => void;
-  showToastAnchorNoPos: boolean;
-  setShowToastAnchorNoPos: (value: boolean) => void;
-}
-
-export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
-  anchors,
+export const TimeSliderComponent = ({
   startTimeFilter,
   endTimeFilter,
   setStartTimeFilter,
@@ -38,12 +26,22 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
   showToastAnchorNoPos,
   setShowToastAnchorNoPos,
 }) => {
-  if (!startTimeFilter) {
-    startTimeFilter = 7;
-  }
-  if (!endTimeFilter) {
-    endTimeFilter = 18;
-  }
+  // Default values if not provided
+  const defaultStartTime = 7;
+  const defaultEndTime = 18;
+
+  // Function to handle time changes from the range slider
+  const handleTimeChange = (e) => {
+    const { lower, upper } = e.detail.value;
+    setStartTimeFilter(lower);
+    setEndTimeFilter(upper);
+  };
+
+  // Function to handle date selection from IonDatetime
+  const handleDateChange = (e) => {
+    const selectedDate = new Date(e.detail.value);
+    setSelectedDayFilter(selectedDate);
+  };
 
   return (
     <>
@@ -56,16 +54,12 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
           pin={true}
           ticks={true}
           snaps={true}
-          pinFormatter={(value: number) => `${value}:00`}
-          value={{ lower: startTimeFilter, upper: endTimeFilter }}
-          onIonChange={(e) => {
-            const { lower, upper } = e.detail.value as {
-              lower: number;
-              upper: number;
-            };
-            setStartTimeFilter(lower);
-            setEndTimeFilter(upper);
+          pinFormatter={(value) => `${value}:00`}
+          value={{
+            lower: startTimeFilter ?? defaultStartTime,
+            upper: endTimeFilter ?? defaultEndTime,
           }}
+          onIonChange={handleTimeChange}
         />
         <IonDatetimeButton
           id="filterMenuDateSelection"
@@ -75,36 +69,22 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
         <IonModal keepContentsMounted={true} id="dialogSelectFilterDate">
           <IonHeader>
             <IonToolbar>
-              <IonTitle slot="start">Datum auswählen</IonTitle>
+              <IonTitle>Datum auswählen</IonTitle>
               <IonButtons slot="end">
                 <IonButton
                   onClick={() =>
-                    (
-                      document.getElementById(
-                        "dialogSelectFilterDate"
-                      ) as HTMLIonModalElement
-                    ).dismiss()
+                    document.getElementById("dialogSelectFilterDate").dismiss()
                   }
                 >
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
+                  <IonIcon icon={closeOutline} size="large" />
                 </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-          <IonDatetime
-            id="datetime"
-            presentation="date"
-            onIonChange={(e) => setSelectedDayFilter(new Date(e.detail.value! + ".000Z"))}
-          ></IonDatetime>
+          <IonDatetime id="datetime" presentation="date" onIonChange={handleDateChange} />
           <IonFooter className="ion-padding">
             <IonButton
-              onClick={() =>
-                (
-                  document.getElementById(
-                    "dialogSelectFilterDate"
-                  )! as HTMLIonModalElement
-                ).dismiss()
-              }
+              onClick={() => document.getElementById("dialogSelectFilterDate").dismiss()}
               expand="full"
               color="primary"
             >
@@ -112,16 +92,17 @@ export const TimeSliderComponent: React.FC<TimeSliderComponentProps> = ({
             </IonButton>
           </IonFooter>
         </IonModal>
+
         <IonToast
           isOpen={showToastAnchorNoPos}
           onDidDismiss={() => setShowToastAnchorNoPos(false)}
           style={{ height: 80 }}
-          color={"warning"}
+          color="warning"
           position="top"
-          message={"Anker verfügt über keine räumliche Zuordnung."}
+          message="Anker verfügt über keine räumliche Zuordnung."
           duration={1200}
           icon={alertCircleOutline}
-        ></IonToast>
+        />
       </IonFooter>
     </>
   );

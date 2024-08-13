@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { addCircleOutline, trashOutline, closeOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  trashOutline,
+  closeOutline,
+  qrCodeOutline,
+} from "ionicons/icons";
 import "leaflet/dist/leaflet.css";
 
 import {
@@ -385,6 +390,20 @@ export const CreateLocationComponent = ({
             <IonList id="listFilteredLocations"></IonList>
           </IonInfiniteScroll>
         </IonContent>
+        <div style={{ position: "relative", width: "100%" }}>
+          <IonButton
+            onClick={() => alert("Ready for QR-Scanning?")}
+            shape="round"
+            style={{
+              position: "absolute",
+              right: "2px",
+              bottom: "2px",
+            }}
+          >
+            <IonIcon icon={qrCodeOutline} slot="icon-only" size="large"></IonIcon>
+          </IonButton>
+        </div>
+
         <IonFooter>
           <IonGrid>
             <IonRow>
@@ -415,30 +434,18 @@ export const CreateLocationComponent = ({
             localAnchor={localAnchor}
             setLocalAnchor={setLocalAnchor}
             setShowToastCreateLocation={setShowToastCreateLocation}
-            setShowToastCreateBuilding={setShowToastCreateBuilding}
             setNewLocationError={setNewLocationError}
-            setNewBuildingError={setNewBuildingError}
             setNewPositionLatitude={setNewPositionLatitude}
             newPositionLatitude={newPositionLatitude}
             setNewPositionLongitude={setNewPositionLongitude}
             newPositionLongitude={newPositionLongitude}
             selectedLocationDictionary={selectedLocationDictionary}
-            selectedBuildingDictionary={selectedBuildingDictionary}
-            setSelectedBuildingDictionary={setSelectedBuildingDictionary}
             temporaryLocationList={temporaryLocationList}
             setTemporaryLocationList={setTemporaryLocationList}
-            temporaryBuildingList={temporaryBuildingList}
-            setTemporaryBuildingList={setTemporaryBuildingList}
             getLocationsFromFilter={getLocationsFromFilter}
             filterLocationString={filterLocationString}
             newLocationDictionary={newLocationDictionary}
             setNewLocationDictionary={setNewLocationDictionary}
-            getLocationsFromDB={getLocationsFromDB}
-            filterUniqueRows={filterUniqueRows}
-            filterBuildingString={filterBuildingString}
-            setFilterBuildingString={setFilterBuildingString}
-            newBuildingDictionary={newBuildingDictionary}
-            setNewBuildingDictionary={setNewBuildingDictionary}
             updateLocationsInput={updateLocationsInput}
           />
         </IonFooter>
