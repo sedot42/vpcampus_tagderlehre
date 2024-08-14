@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonToggle } from "@ionic/react";
+import { IonContent, IonPage, IonToggle, useIonViewDidEnter } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 
 // Fullcalendar imports
@@ -16,26 +16,41 @@ import {
 } from "./CalendarAnchorSettings";
 import { mockState } from "../../mockState";
 import { RefObject, useRef, useState } from "react";
+import { CalendarAnchorCreate } from "./CalendarAnchorCreate";
+import { DateSelectArg } from "@fullcalendar/core";
 
 export const CalendarAnchorComponent = () => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
+
   // Create reference to the calendar (Needs to be checked against 0)
   const calendarRef = useRef<FullCalendar>(null);
 
+  // Function for simple click interaction
   const handleDateClick = (date: DateClickArg) => {
     alert(date.dateStr);
   };
+
+  // Function for select interaction
+  const handleSelect = (eventInfo: DateSelectArg) => {
+    const start = eventInfo.startStr;
+    const end = eventInfo.endStr;
+    setShowCreate(true);
+  };
+  const [showCreate, setShowCreate] = useState<boolean>(false);
 
   // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
     if (calendarRef.current !== null) {
       const calendarApi = calendarRef.current.getApi();
       calendarApi.updateSize();
-      console.log("display update");
     }
   }
 
-  setTimeout(() => updateCalendarSize(calendarRef), 50); // Hack because FullCalendar currently displays the initial view wrong!
+  // Hack because FullCalendar currently renders wrong on ionic component load
+  // When Ion component is entered, the calendar size should be updated
+  useIonViewDidEnter(() => {
+    updateCalendarSize(calendarRef);
+  });
 
   return (
     <IonPage>
@@ -45,8 +60,10 @@ export const CalendarAnchorComponent = () => {
         <FullCalendar
           ref={calendarRef}
           locale="ch" // Time and Date formatting according to locale
+          events={mockState.map(transformEvent)} // Load and transform events
           height="100%" // Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          //
           // Define Header Toolbar Elements
           headerToolbar={{
             right: "today prev,next",
@@ -56,6 +73,8 @@ export const CalendarAnchorComponent = () => {
           footerToolbar={{
             right: "",
           }}
+          //
+          // Define Views and Layout of Calendar
           views={{
             day: {
               // Applies to all day views, MUST BE DEFINED HERE DUE TO A TYPE BUG IN FULLCALENDAR!
@@ -69,15 +88,21 @@ export const CalendarAnchorComponent = () => {
             ...viewsSettings, // Load all other settings from external file
           }}
           initialView="timeGridWeekCustom"
-          dateClick={handleDateClick}
-          events={mockState.map(transformEvent)} // Load and transform events
-          // Customization
-
           weekNumbers={true}
           weekends={displayWeekends}
           eventTimeFormat={eventTimeFormatSetting} // Load event time format settings
           businessHours={businessHoursSettings}
           buttonText={buttonTextSettings}
+          //
+          // Interaction
+          //dateClick={handleDateClick}
+          editable={false} //events cannot be edited directly in calendar
+          droppable={false} // events cannot be dragged and dropped (edited) in the calendar view)
+          longPressDelay={50}
+          selectLongPressDelay={150}
+          selectable={true}
+          selectMirror={true}
+          select={handleSelect}
         />
       </IonContent>
       {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
@@ -87,6 +112,10 @@ export const CalendarAnchorComponent = () => {
       >
         Ganze Woche / Arbeitswoche
       </IonToggle>
+      <CalendarAnchorCreate
+        showCreate={showCreate}
+        setShowCreate={setShowCreate}
+      ></CalendarAnchorCreate>
     </IonPage>
   );
 };
