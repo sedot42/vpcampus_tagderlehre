@@ -70,7 +70,7 @@ export const CalendarAnchorComponent = () => {
             },
           }} */
           views={viewsSettings}
-          initialView="timeGridDay"
+          initialView="timeGridWeekCustom"
           dateClick={handleDateClick}
           events={mockState.map(transformEvent)} // Load and transform events
           // Customization
