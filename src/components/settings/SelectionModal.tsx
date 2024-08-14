@@ -18,6 +18,7 @@ import {
 import { CheckboxChangeEventDetail, IonCheckboxCustomEvent } from "@ionic/core";
 import { closeOutline } from "ionicons/icons";
 import { SettingsGroup } from "./SettingsComponent";
+import { UniversalSearchBar } from "../shared/UniversalSearchBar";
 
 type SelectionModalProps = {
   closeModal: () => void;
@@ -70,33 +71,26 @@ export const SelectionModal = ({
             </IonButton>
           </IonButtons>
         </IonToolbar>
-        <IonSearchbar
-          onIonInput={(e) => console.log(e.target.value || "")}
-          color="light"
-          id="tagSearchBar"
-        ></IonSearchbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonInfiniteScroll>
-          <IonList id="listAllFilteredTags">
-            {selectionList &&
-              selectionList.length > 0 &&
-              selectionList.map((item, index) => (
-                <IonItem key={index}>
-                  <IonCheckbox
-                    justify="space-between"
-                    key={index}
-                    value={item}
-                    aria-label="item"
-                    checked={checkedBoxes.includes(item)}
-                    onIonChange={(e) => handleChange(e)}
-                  >
-                    {item}
-                  </IonCheckbox>
-                </IonItem>
-              ))}
-          </IonList>
-        </IonInfiniteScroll>
+        <UniversalSearchBar
+          entitiesToBeSearched={storedValues}
+          historyKeyName={"searchHistoryAnchors"}
+          renderItem={(anchor, index) => (
+            <IonItem key={index}>
+              <IonCheckbox
+                justify="space-between"
+                key={index}
+                value={storedValues}
+                aria-label="item"
+                checked={checkedBoxes.includes(storedValues)}
+                onIonChange={(e) => handleChange(e)}
+              >
+                {storedValues}
+              </IonCheckbox>
+            </IonItem>
+          )}
+        />
       </IonContent>
       <IonFooter class="ion-padding">
         <IonButton

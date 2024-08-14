@@ -10,6 +10,7 @@ import {
   IonListHeader,
   IonItemDivider,
   IonSearchbar,
+  IonInfiniteScroll,
 } from "@ionic/react";
 import { closeCircleOutline, timeOutline } from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
@@ -183,15 +184,17 @@ export const UniversalSearchBar = ({
           <IonItemDivider />
         </IonList>
       )}
-      <IonList>
-        {filteredEntities.length > 0 ? (
-          filteredEntities.map((entity, index) => {
-            return renderItem(entity, index);
-          })
-        ) : searchQuery.trim() !== "" ? (
-          <IonItem>No matching anchors found</IonItem>
-        ) : null}
-      </IonList>
+      <IonInfiniteScroll>
+        <IonList>
+          {filteredEntities.length > 0 ? (
+            filteredEntities.map((entity, index) => {
+              return renderItem(entity, index);
+            })
+          ) : searchQuery.trim() !== "" ? (
+            <IonItem>No matching anchors found</IonItem>
+          ) : null}
+        </IonList>
+      </IonInfiniteScroll>
     </>
   );
 };
