@@ -13,29 +13,35 @@ import {
   IonInfiniteScroll,
 } from "@ionic/react";
 import { closeCircleOutline, timeOutline } from "ionicons/icons";
-import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { get, update, del } from "idb-keyval";
 import Fuse from "fuse.js";
-import { mockState } from "../../mockState";
+
+type GenericObject = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+};
 
 type UniversalSearchBarProps = {
-  entitiesToBeSearched: DBAnchor[];
-  historyKeyName: string;
-  renderItem: (entityToBeSearched: DBAnchor, index: number) => React.ReactElement;
+  entitiesToBeSearched: GenericObject[]; // What to be searched with the search bar
+  historyKeyName: string; // An arbitrary key name that is used to store the history in chache
+  titlePropertyName: string; // Property that is used to display a name or title in the results
+  renderItem: (entityToBeSearched: GenericObject, index: number) => React.ReactElement;
 };
 
 export const UniversalSearchBar = ({
   entitiesToBeSearched,
   historyKeyName,
   renderItem,
+  titlePropertyName,
 }: UniversalSearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Anchor[]>([]);
+  const [suggestions, setSuggestions] = useState<GenericObject[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
   // Extract keys dynamically from the first item in mockState
-  const keys = mockState.length > 0 ? Object.keys(mockState[0]) : [];
+  const keys =
+    entitiesToBeSearched.length > 0 ? Object.keys(entitiesToBeSearched[0]) : [];
 
   // Load search history from IndexedDB on component mount
   useEffect(() => {
@@ -86,9 +92,9 @@ export const UniversalSearchBar = ({
       const searchPattern = searchTerms.map((term) => `'${term}`).join(" ");
 
       const results = fuse.search(searchPattern);
-      const uniqueSuggestions = Array.from(new Set(results.map((result) => result.item)))
-        .slice(0, 5)
-        .map(convertDBAnchorToFlatAnchor);
+      const uniqueSuggestions = Array.from(
+        new Set(results.map((result) => result.item))
+      ).slice(0, 5);
       setSuggestions(uniqueSuggestions);
     }
   };
@@ -132,7 +138,7 @@ export const UniversalSearchBar = ({
         onIonInput={handleSearch}
         onIonFocus={handleSearchFocus}
         onIonChange={handleSearchSubmit}
-        placeholder="Search anchors..."
+        placeholder="Search..."
       />
 
       {/* Search history */}
@@ -155,7 +161,7 @@ export const UniversalSearchBar = ({
               }}
             >
               <IonIcon icon={timeOutline} slot="start" />
-              <IonLabel>{item}</IonLabel>
+              <IonLabel style={{ color: "#a2a2a2" }}>{item}</IonLabel>
             </IonItem>
           ))}
           <IonItemDivider />
@@ -170,15 +176,16 @@ export const UniversalSearchBar = ({
           </IonListHeader>
           {suggestions.map((suggestion, index) => (
             <IonItem
+              style={{ fontStyle: "italic" }}
               key={index}
               button
               onClick={() => {
-                setSearchQuery(suggestion.anchor_name);
+                setSearchQuery(suggestion[titlePropertyName]);
                 setSuggestions([]);
-                addToSearchHistory(suggestion.anchor_name);
+                addToSearchHistory(suggestion[titlePropertyName]);
               }}
             >
-              <IonLabel>{suggestion.anchor_name}</IonLabel>
+              <IonLabel>{suggestion[titlePropertyName]}</IonLabel>
             </IonItem>
           ))}
           <IonItemDivider />
@@ -191,7 +198,7 @@ export const UniversalSearchBar = ({
               return renderItem(entity, index);
             })
           ) : searchQuery.trim() !== "" ? (
-            <IonItem>No matching anchors found</IonItem>
+            <IonItem>No matches found</IonItem>
           ) : null}
         </IonList>
       </IonInfiniteScroll>

@@ -16,7 +16,7 @@ import {
 import { pin, trash, share } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
-import { Anchor, convertDBAnchorToFlatAnchor } from "../../types/types";
+import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 import { UniversalSearchBar } from "../shared/UniversalSearchBar";
 
@@ -31,6 +31,7 @@ export const ManageAnchorComponent: React.FC = () => {
         <UniversalSearchBar
           entitiesToBeSearched={anchors}
           historyKeyName={"searchHistoryAnchors"}
+          titlePropertyName={"anchor_name"}
           renderItem={(anchor, index) => (
             <IonCard key={index} style={{ cursor: "pointer" }}>
               <IonItemSliding>
@@ -38,7 +39,7 @@ export const ManageAnchorComponent: React.FC = () => {
                   lines="none"
                   id={"open-modal-" + index}
                   onClick={() => {
-                    setModalData(convertDBAnchorToFlatAnchor(anchor));
+                    setModalData(convertDBAnchorToFlatAnchor(anchor as DBAnchor));
                     setOpenModal(true);
                   }}
                 >

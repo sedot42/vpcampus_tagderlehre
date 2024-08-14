@@ -8,10 +8,7 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
-  IonSearchbar,
   IonFooter,
-  IonInfiniteScroll,
-  IonList,
   IonItem,
   IonCheckbox,
 } from "@ionic/react";
@@ -51,6 +48,8 @@ export const SelectionModal = ({
       setCheckedBoxes(checkedBoxes.filter((i) => i !== event.target.value));
     }
   };
+
+  const listForSearch = selectionList.map((item: string) => ({ name: item }));
   return (
     <IonModal
       id="dialogFilterInfo"
@@ -74,19 +73,20 @@ export const SelectionModal = ({
       </IonHeader>
       <IonContent className="ion-padding">
         <UniversalSearchBar
-          entitiesToBeSearched={storedValues}
-          historyKeyName={"searchHistoryAnchors"}
-          renderItem={(anchor, index) => (
+          entitiesToBeSearched={listForSearch}
+          historyKeyName={"searchHistoryTags"}
+          titlePropertyName={"name"}
+          renderItem={(tag, index) => (
             <IonItem key={index}>
               <IonCheckbox
                 justify="space-between"
                 key={index}
-                value={storedValues}
+                value={tag.name}
                 aria-label="item"
-                checked={checkedBoxes.includes(storedValues)}
+                checked={checkedBoxes.includes(tag.name)}
                 onIonChange={(e) => handleChange(e)}
               >
-                {storedValues}
+                {tag.name}
               </IonCheckbox>
             </IonItem>
           )}
