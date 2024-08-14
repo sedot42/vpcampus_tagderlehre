@@ -1,11 +1,3 @@
-export const timeGridSettings = {
-  type: "timeGrid",
-  slotMinTime: "00:00:00",
-  slotMaxTime: "24:00:00",
-  scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
-  nowIndicator: true,
-};
-
 // Define View range of custom Week View
 const currentDate: Date = new Date();
 function defineWeekVisibleRange(currentDate: Date) {
@@ -43,18 +35,28 @@ function defineMonthVisibleRange(currentDate: Date) {
   return { start: startDate, end: endDate };
 }
 
+// Set the Views which can be displayed
 export const viewsSettings = {
-  //timeGridWeek: timeGridSettings,
-  //timeGridDay: timeGridSettings,
-
-  // Create Custom View for Week
+  // cannot define type of const View, ViewOptions or ViewOptionsRefiner (do not exist?!) -> Defined locally!
+  day: {
+    // Applies to all day views
+    dayHeaderFormat: { day: "numeric", month: "long", weekday: "long" },
+  },
+  timeGrid: {
+    // Applies to all timeGrids
+    slotMinTime: "00:00:00",
+    slotMaxTime: "24:00:00",
+    scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
+    nowIndicator: true,
+  },
+  // Create new custom Week view which starts with current day
   timeGridWeekCustom: {
     type: "timeGrid",
     duration: { days: 7 },
     buttonText: "Woche",
     visibleRange: defineWeekVisibleRange(currentDate),
   },
-  // Create Custom View for Month
+  // Create custom Month view which starts with current week
   dayGridMonthCustom: {
     type: "dayGrid",
     duration: { weeks: 4 },

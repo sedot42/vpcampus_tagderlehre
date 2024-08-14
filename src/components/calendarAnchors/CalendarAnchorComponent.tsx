@@ -44,6 +44,7 @@ export const CalendarAnchorComponent = () => {
       <IonContent className="ion-padding">
         <FullCalendar
           ref={calendarRef}
+          locale="ch" // Time and Date formatting according to locale
           height="100%" // Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           // Define Header Toolbar Elements
@@ -58,8 +59,18 @@ export const CalendarAnchorComponent = () => {
           // Define text of buttons (hardcoded in variable above)
 
           // Load view settings which are defined above (Should later be defined in Options)
+          /* views={{
+            timeGridDay: {
+              type: "timeGrid",
+              slotMinTime: "00:00:00",
+              slotMaxTime: "24:00:00",
+              scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
+              nowIndicator: true,
+              dayHeaderFormat: { day: "numeric", month: "long", weekday: "long" },
+            },
+          }} */
           views={viewsSettings}
-          initialView="timeGridWeekCustom"
+          initialView="timeGridDay"
           dateClick={handleDateClick}
           events={mockState.map(transformEvent)} // Load and transform events
           // Customization
