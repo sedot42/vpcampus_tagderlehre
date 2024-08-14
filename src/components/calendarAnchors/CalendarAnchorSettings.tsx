@@ -1,6 +1,6 @@
 // Define View range of custom Week View
 const currentDate: Date = new Date();
-function defineWeekVisibleRange(currentDate: Date) {
+function defineWeekVisibleRange(currentDate: Date, dayDuration: number) {
   const startDate =
     currentDate.getFullYear() +
     "-" +
@@ -12,13 +12,13 @@ function defineWeekVisibleRange(currentDate: Date) {
     "-" +
     currentDate.getMonth() +
     "-" +
-    (currentDate.getDate() + 7);
+    (currentDate.getDate() + dayDuration);
 
   return { start: startDate, end: endDate };
 }
 
 // Define View range of custom Month View
-function defineMonthVisibleRange(currentDate: Date) {
+function defineMonthVisibleRange(currentDate: Date, dayDuration: number) {
   const startDate =
     currentDate.getFullYear() +
     "-" +
@@ -30,7 +30,7 @@ function defineMonthVisibleRange(currentDate: Date) {
     "-" +
     currentDate.getMonth() +
     "-" +
-    (currentDate.getDate() + 28);
+    (currentDate.getDate() + dayDuration);
 
   return { start: startDate, end: endDate };
 }
@@ -38,10 +38,7 @@ function defineMonthVisibleRange(currentDate: Date) {
 // Set the Views which can be displayed
 export const viewsSettings = {
   // cannot define type of const View, ViewOptions or ViewOptionsRefiner (do not exist?!) -> Defined locally!
-  day: {
-    // Applies to all day views
-    dayHeaderFormat: { day: "numeric", month: "long", weekday: "long" },
-  },
+
   timeGrid: {
     // Applies to all timeGrids
     slotMinTime: "00:00:00",
@@ -54,14 +51,14 @@ export const viewsSettings = {
     type: "timeGrid",
     duration: { days: 7 },
     buttonText: "Woche",
-    visibleRange: defineWeekVisibleRange(currentDate),
+    visibleRange: defineWeekVisibleRange(currentDate, 7),
   },
   // Create custom Month view which starts with current week
   dayGridMonthCustom: {
     type: "dayGrid",
     duration: { weeks: 4 },
     buttonText: "Monat",
-    visibleRange: defineMonthVisibleRange(currentDate),
+    visibleRange: defineMonthVisibleRange(currentDate, 28),
   },
 };
 

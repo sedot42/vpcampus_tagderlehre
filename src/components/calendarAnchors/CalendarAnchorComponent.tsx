@@ -56,20 +56,18 @@ export const CalendarAnchorComponent = () => {
           footerToolbar={{
             right: "",
           }}
-          // Define text of buttons (hardcoded in variable above)
-
-          // Load view settings which are defined above (Should later be defined in Options)
-          /* views={{
-            timeGridDay: {
-              type: "timeGrid",
-              slotMinTime: "00:00:00",
-              slotMaxTime: "24:00:00",
-              scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
-              nowIndicator: true,
-              dayHeaderFormat: { day: "numeric", month: "long", weekday: "long" },
+          views={{
+            day: {
+              // Applies to all day views, MUST BE DEFINED HERE DUE TO A TYPE BUG IN FULLCALENDAR!
+              dayHeaderFormat: {
+                day: "numeric",
+                month: "long",
+                weekday: "long",
+                year: "numeric",
+              },
             },
-          }} */
-          views={viewsSettings}
+            ...viewsSettings, // Load all other settings from external file
+          }}
           initialView="timeGridWeekCustom"
           dateClick={handleDateClick}
           events={mockState.map(transformEvent)} // Load and transform events
