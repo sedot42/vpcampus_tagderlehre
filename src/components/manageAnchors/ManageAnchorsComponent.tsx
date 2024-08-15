@@ -18,7 +18,7 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
-import { UniversalSearchBar } from "../shared/UniversalSearchBar";
+import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 
 export const ManageAnchorComponent: React.FC = () => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);

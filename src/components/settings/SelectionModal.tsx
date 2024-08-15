@@ -15,7 +15,7 @@ import {
 import { CheckboxChangeEventDetail, IonCheckboxCustomEvent } from "@ionic/core";
 import { closeOutline } from "ionicons/icons";
 import { SettingsGroup } from "./SettingsComponent";
-import { UniversalSearchBar } from "../shared/UniversalSearchBar";
+import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 
 type SelectionModalProps = {
   closeModal: () => void;
