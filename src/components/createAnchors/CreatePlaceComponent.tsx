@@ -4,7 +4,7 @@ import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
 import { divIcon, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
-import { LocateControl } from "../mapAnchors/ref/LocateControl";
+import { LocateControl } from "../mapAnchors/LocateControl";
 import {
   IonButton,
   IonFooter,
