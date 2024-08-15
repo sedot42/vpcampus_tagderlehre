@@ -1,13 +1,19 @@
-import { IonButton, IonContent, IonIcon, IonLabel, IonModal } from "@ionic/react";
-import { addOutline } from "ionicons/icons";
+import { EventInput } from "@fullcalendar/core";
+import { IonButton, IonContent, IonLabel, IonModal } from "@ionic/react";
 
 export const CalendarAnchorEvent = ({
   showEvent,
   setShowEvent,
+  event,
 }: {
   showEvent: boolean;
   setShowEvent: React.Dispatch<React.SetStateAction<boolean>>;
+  event: EventInput;
 }) => {
+  console.log("LOG");
+
+  const event_id = event.event.id;
+  console.log(event_id);
   return (
     <IonContent>
       <IonModal
@@ -17,7 +23,8 @@ export const CalendarAnchorEvent = ({
         onIonModalDidDismiss={() => setShowEvent(false)}
       >
         <IonContent className="ion-padding">
-          <IonLabel>Anker Information</IonLabel>
+          <IonLabel>{event.event.title}</IonLabel>
+
           {/* <IonButton
             routerLink="/createAnchors" // go to create Anchor
             routerDirection="forward" // forward movement

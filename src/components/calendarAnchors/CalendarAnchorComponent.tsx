@@ -6,6 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { EventInput } from "@fullcalendar/core";
 
 import { transformEvent } from "./CalendarAnchorTransform";
 import {
@@ -37,10 +38,19 @@ export const CalendarAnchorComponent = () => {
   const [createEnd, setCreateEnd] = useState<string>("");
 
   // function for event interaction
-  function handleEvent() {
+  function handleEvent(event: EventInput) {
     setShowEvent(true);
+    setEvent(event);
+    //console.log(event.event);
   }
   const [showEvent, setShowEvent] = useState<boolean>(false);
+  const [event, setEvent] = useState<EventInput>([
+    {
+      id: "a",
+      title: "my event",
+      start: "2018-09-01",
+    },
+  ]);
 
   // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
@@ -119,6 +129,7 @@ export const CalendarAnchorComponent = () => {
         <CalendarAnchorEvent
           showEvent={showEvent}
           setShowEvent={setShowEvent}
+          event={event}
         ></CalendarAnchorEvent>
       </IonContent>
 
