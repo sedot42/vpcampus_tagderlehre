@@ -38,7 +38,6 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
-import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
@@ -46,7 +45,7 @@ import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
 import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
-import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
+import { MapComponent } from "./components/mapAnchors/MapComponent";
 
 setupIonicReact();
 
