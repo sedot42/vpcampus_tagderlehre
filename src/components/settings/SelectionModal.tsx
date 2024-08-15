@@ -24,6 +24,7 @@ type SelectionModalProps = {
   searchFunction: (term: string) => void;
   selectionList: string[];
   settingsGroup: SettingsGroup;
+  modalConfirmAction: () => void;
 };
 
 export const SelectionModal = ({
@@ -32,13 +33,10 @@ export const SelectionModal = ({
   headerText,
   selectionList,
   settingsGroup,
+  modalConfirmAction,
 }: SelectionModalProps) => {
   const storedValues = JSON.parse(localStorage.getItem(settingsGroup) || "[]");
   const [checkedBoxes, setCheckedBoxes] = useState<string[]>(storedValues);
-
-  const saveToLocalStorage = (newList: string[]) => {
-    localStorage.setItem(settingsGroup, JSON.stringify([...newList]));
-  };
 
   const handleChange = (event: IonCheckboxCustomEvent<CheckboxChangeEventDetail>) => {
     const isChecked = event?.target.checked;

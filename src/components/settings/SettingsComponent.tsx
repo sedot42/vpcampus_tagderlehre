@@ -1,13 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonLabel,
-  IonButton,
-  IonIcon,
-  IonText,
-  IonItem,
-} from "@ionic/react";
+import { IonPage, IonContent, IonButton, IonIcon, IonText, IonItem } from "@ionic/react";
 import { addCircleOutline, informationCircleOutline } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
@@ -28,6 +20,7 @@ export enum Profile {
 }
 
 import { SettingsComponentCalendar } from "./SettingsComponentsCalendar";
+import { ModalButton } from "../globalUI/Buttons";
 
 export const SettingsComponent = () => {
   const { anchors } = useContext(AnchorContext);
@@ -47,6 +40,10 @@ export const SettingsComponent = () => {
     [...new Set(anchors.flatMap((anchor) => anchor.tags))]
       .sort()
       .filter((tag) => tag !== undefined);
+
+  const saveToLocalStorage = (newList: string[], settingsGroup: SettingsGroup) => {
+    localStorage.setItem(settingsGroup, JSON.stringify([...newList]));
+  };
 
   return (
     <IonPage>
@@ -76,7 +73,7 @@ export const SettingsComponent = () => {
           </IonButton>
         </IonItem>
         <ProfileSelection setProfile={setProfile} />
-        <IonButton
+        {/* <IonButton
           id="selectTagButton"
           className="buttonAddElements"
           expand="block"
@@ -100,49 +97,40 @@ export const SettingsComponent = () => {
               aria-hidden="true"
             ></IonIcon>
           </div>
-        </IonButton>
+        </IonButton> */}
 
-        <IonButton
-          id="selectGroupButton"
-          className="buttonAddElements"
-          expand="block"
-          color="light"
-          fill="solid"
-          size="default"
+        <ModalButton
+          id="openGroupModal"
+          text="Tags"
+          icon={addCircleOutline}
+          onClick={() => setTagsModalOpen(true)}
+        />
+        <ModalButton
+          id="openTagModal"
+          text="Gruppen"
+          icon={addCircleOutline}
           onClick={() => setGroupsModalOpen(true)}
-        >
-          <div>
-            <IonLabel
-              id="selectGroupButtonLabel"
-              class="ion-text-wrap"
-              className="buttonAddElementsLabel"
-            >
-              Gruppen
-            </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              className="buttonAddElementsIcon"
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
-          </div>
-        </IonButton>
+        />
+
         <SelectionModal
           headerText="Tags auswählen"
-          isOpen={tagsModalOpen}
           closeModal={() => setTagsModalOpen(false)}
+          isOpen={tagsModalOpen}
           searchFunction={() => console.log("Nicht implementiert")}
           selectionList={tagList}
           settingsGroup={SettingsGroup.TAGS}
+          modalConfirmAction={}
         />
+
         <SelectionModal
           headerText="Gruppen auswählen"
-          isOpen={groupsModalOpen}
           closeModal={() => setGroupsModalOpen(false)}
+          isOpen={groupsModalOpen}
           searchFunction={() => console.log("Nicht implementiert")}
           selectionList={[]}
           settingsGroup={SettingsGroup.GROUPS}
         />
+
         <ProfileModal
           profile={profile}
           isOpen={profileModalOpen}

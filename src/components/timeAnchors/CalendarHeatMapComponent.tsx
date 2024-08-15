@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Heatmap.css"; // Import the CSS file
+import "./heatmap.css"; // Import the CSS file
 
 type HeatmapProps = {
   data: number[][]; // 2D array of numbers representing activity intensity for each 1-minute block per hour
