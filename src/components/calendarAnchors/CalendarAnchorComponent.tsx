@@ -3,9 +3,9 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 
 // Fullcalendar imports
 import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction"; // needed for dateClick
+import interactionPlugin from "@fullcalendar/interaction";
 
 import { transformEvent } from "./CalendarAnchorTransform";
 import {
@@ -18,6 +18,7 @@ import { mockState } from "../../mockState";
 import { RefObject, useRef, useState } from "react";
 import { CalendarAnchorCreate } from "./CalendarAnchorCreate";
 import { DateSelectArg } from "@fullcalendar/core";
+import { CalendarAnchorEvent } from "./CalendarAnchorEvent";
 
 export const CalendarAnchorComponent = () => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
@@ -25,18 +26,21 @@ export const CalendarAnchorComponent = () => {
   // Create reference to the calendar (Needs to be checked against 0)
   const calendarRef = useRef<FullCalendar>(null);
 
-  // Function for simple click interaction
-  const handleDateClick = (date: DateClickArg) => {
-    alert(date.dateStr);
-  };
-
   // Function for select interaction
-  const handleSelect = (eventInfo: DateSelectArg) => {
-    const start = eventInfo.startStr;
-    const end = eventInfo.endStr;
+  function handleSelect(eventInfo: DateSelectArg) {
+    setCreateStart(eventInfo.startStr);
+    setCreateEnd(eventInfo.endStr);
     setShowCreate(true);
-  };
+  }
   const [showCreate, setShowCreate] = useState<boolean>(false);
+  const [createStart, setCreateStart] = useState<string>("");
+  const [createEnd, setCreateEnd] = useState<string>("");
+
+  // function for event interaction
+  function handleEvent() {
+    setShowEvent(true);
+  }
+  const [showEvent, setShowEvent] = useState<boolean>(false);
 
   // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
@@ -99,12 +103,25 @@ export const CalendarAnchorComponent = () => {
           editable={false} //events cannot be edited directly in calendar
           droppable={false} // events cannot be dragged and dropped (edited) in the calendar view)
           longPressDelay={50}
-          selectLongPressDelay={150}
+          selectLongPressDelay={100}
           selectable={true}
           selectMirror={true}
           select={handleSelect}
+          // Handle eventClick
+          eventClick={handleEvent}
         />
+        <CalendarAnchorCreate
+          showCreate={showCreate}
+          setShowCreate={setShowCreate}
+          createStart={createStart}
+          createEnd={createEnd}
+        ></CalendarAnchorCreate>
+        <CalendarAnchorEvent
+          showEvent={showEvent}
+          setShowEvent={setShowEvent}
+        ></CalendarAnchorEvent>
       </IonContent>
+
       {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
       <IonToggle
         className="ion-padding"
@@ -112,10 +129,6 @@ export const CalendarAnchorComponent = () => {
       >
         Ganze Woche / Arbeitswoche
       </IonToggle>
-      <CalendarAnchorCreate
-        showCreate={showCreate}
-        setShowCreate={setShowCreate}
-      ></CalendarAnchorCreate>
     </IonPage>
   );
 };
