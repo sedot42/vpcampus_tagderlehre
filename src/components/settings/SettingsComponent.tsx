@@ -6,6 +6,8 @@ import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "./SelectionModal";
 import { ProfileModal, ProfileSelection } from "./ProfileSelection";
 import { InfoModal } from "./InfoModal";
+import { SettingsComponentCalendar } from "./SettingsComponentsCalendar";
+import { ModalButton } from "../globalUI/Buttons";
 
 export enum SettingsGroup {
   TAGS = "TAGS",
@@ -19,12 +21,8 @@ export enum Profile {
   NONE = "NONE",
 }
 
-import { SettingsComponentCalendar } from "./SettingsComponentsCalendar";
-import { ModalButton } from "../globalUI/Buttons";
-
 export const SettingsComponent = () => {
   const { anchors } = useContext(AnchorContext);
-
   const [tagsModalOpen, setTagsModalOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [groupsModalOpen, setGroupsModalOpen] = useState(false);
@@ -40,10 +38,11 @@ export const SettingsComponent = () => {
     [...new Set(anchors.flatMap((anchor) => anchor.tags))]
       .sort()
       .filter((tag) => tag !== undefined);
-
-  const saveToLocalStorage = (newList: string[], settingsGroup: SettingsGroup) => {
-    localStorage.setItem(settingsGroup, JSON.stringify([...newList]));
-  };
+  const groupList =
+    anchors &&
+    [...new Set(anchors.flatMap((anchor) => anchor.group_id))]
+      .sort()
+      .filter((tag) => tag !== undefined);
 
   return (
     <IonPage>
@@ -73,32 +72,6 @@ export const SettingsComponent = () => {
           </IonButton>
         </IonItem>
         <ProfileSelection setProfile={setProfile} />
-        {/* <IonButton
-          id="selectTagButton"
-          className="buttonAddElements"
-          expand="block"
-          color="light"
-          fill="solid"
-          size="default"
-          onClick={() => setTagsModalOpen(true)}
-        >
-          <div>
-            <IonLabel
-              id="selectTagButtonLabel"
-              class="ion-text-wrap"
-              className="buttonAddElementsLabel"
-            >
-              Tags
-            </IonLabel>
-            <IonIcon
-              icon={addCircleOutline}
-              className="buttonAddElementsIcon"
-              size="large"
-              aria-hidden="true"
-            ></IonIcon>
-          </div>
-        </IonButton> */}
-
         <ModalButton
           id="openGroupModal"
           text="Tags"
@@ -111,26 +84,28 @@ export const SettingsComponent = () => {
           icon={addCircleOutline}
           onClick={() => setGroupsModalOpen(true)}
         />
-
         <SelectionModal
           headerText="Tags auswählen"
           closeModal={() => setTagsModalOpen(false)}
           isOpen={tagsModalOpen}
-          searchFunction={() => console.log("Nicht implementiert")}
           selectionList={tagList}
-          settingsGroup={SettingsGroup.TAGS}
-          modalConfirmAction={}
+          modalConfirmAction={(newList: string[]) =>
+            localStorage.setItem(SettingsGroup.TAGS, JSON.stringify([...newList]))
+          }
+          initialSelection={JSON.parse(localStorage.getItem(SettingsGroup.TAGS) || "[]")}
         />
-
         <SelectionModal
           headerText="Gruppen auswählen"
           closeModal={() => setGroupsModalOpen(false)}
           isOpen={groupsModalOpen}
-          searchFunction={() => console.log("Nicht implementiert")}
-          selectionList={[]}
-          settingsGroup={SettingsGroup.GROUPS}
+          selectionList={groupList}
+          modalConfirmAction={(newList: string[]) =>
+            localStorage.setItem(SettingsGroup.GROUPS, JSON.stringify([...newList]))
+          }
+          initialSelection={JSON.parse(
+            localStorage.getItem(SettingsGroup.GROUPS) || "[]"
+          )}
         />
-
         <ProfileModal
           profile={profile}
           isOpen={profileModalOpen}

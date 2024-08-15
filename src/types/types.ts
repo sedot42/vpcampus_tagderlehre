@@ -72,6 +72,7 @@ export type Anchor = {
 
   // relational fields:
   group_id?: string;
+  groups?: string[];
   prev_anchor_id?: string;
   next_anchor_id?: string;
 

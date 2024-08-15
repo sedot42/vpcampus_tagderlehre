@@ -14,17 +14,15 @@ import {
 } from "@ionic/react";
 import { CheckboxChangeEventDetail, IonCheckboxCustomEvent } from "@ionic/core";
 import { closeOutline } from "ionicons/icons";
-import { SettingsGroup } from "./SettingsComponent";
 import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 
 type SelectionModalProps = {
   closeModal: () => void;
   isOpen: boolean;
   headerText: string;
-  searchFunction: (term: string) => void;
   selectionList: string[];
-  settingsGroup: SettingsGroup;
-  modalConfirmAction: () => void;
+  modalConfirmAction: (list: string[]) => void;
+  initialSelection: string[];
 };
 
 export const SelectionModal = ({
@@ -32,11 +30,10 @@ export const SelectionModal = ({
   isOpen,
   headerText,
   selectionList,
-  settingsGroup,
   modalConfirmAction,
+  initialSelection,
 }: SelectionModalProps) => {
-  const storedValues = JSON.parse(localStorage.getItem(settingsGroup) || "[]");
-  const [checkedBoxes, setCheckedBoxes] = useState<string[]>(storedValues);
+  const [checkedBoxes, setCheckedBoxes] = useState<string[]>(initialSelection || []);
 
   const handleChange = (event: IonCheckboxCustomEvent<CheckboxChangeEventDetail>) => {
     const isChecked = event?.target.checked;
@@ -93,7 +90,7 @@ export const SelectionModal = ({
       <IonFooter class="ion-padding">
         <IonButton
           onClick={() => {
-            saveToLocalStorage(checkedBoxes);
+            modalConfirmAction(checkedBoxes);
             closeModal();
           }}
           expand="full"

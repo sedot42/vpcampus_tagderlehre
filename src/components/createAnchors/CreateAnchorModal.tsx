@@ -10,38 +10,24 @@ import {
   IonFooter,
   IonContent,
   IonItem,
-  IonLabel,
   IonToggle,
-  IonDatetimeButton,
 } from "@ionic/react";
-import {
-  addCircleOutline,
-  trashOutline,
-  closeOutline,
-  qrCodeOutline,
-} from "ionicons/icons";
+import { addCircleOutline } from "ionicons/icons";
 
-import { checkmarkCircleOutline, alertCircleOutline } from "ionicons/icons";
-import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
-import { CreateValidityComponent } from "./CreateValidityComponent";
-import { CreateDocumentComponent } from "./CreateDocumentComponent";
-import { CreateGroupComponent } from "./CreateGroupComponent";
-import { CreateLocationComponent } from "./CreateLocationComponent";
 import { CreateDateComponent } from "./CreateDateComponent";
-import { SelectionModal } from "../settings/SelectionModal";
 import { ModalButton } from "../globalUI/Buttons";
-import { SettingsGroup } from "../settings/SettingsComponent";
+import { TagGroup } from "./UIgroups/TagGroup";
+import { GroupGroup } from "./UIgroups/GroupGroup";
 
 export const CreateAnchorModal = () => {
   const { anchors, createOneAnchor } = useContext(AnchorContext);
   const [localAnchor, setLocalAnchor] = useState(draftAnchor);
-  const [tagsModalOpen, setTagsModalOpen] = useState(false);
-  const [groupsModalOpen, setGroupsModalOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [useDate, setUseDate] = useState<boolean>(false); // status whether date should be set or not
   const [anchorStartDate, setAnchorStartDate] = useState<string>(""); // string for the start point
   const [anchorEndDate, setAnchorEndDate] = useState<string>(""); // string for the end point
+
   const handleSubmission = () => {
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
     createOneAnchor(dbAnchor as DBAnchor);
@@ -65,9 +51,9 @@ export const CreateAnchorModal = () => {
     }
   }, [useDate, anchorStartDate, anchorEndDate]);
 
-  const tagList =
+  const groupList =
     anchors &&
-    [...new Set(anchors.flatMap((anchor) => anchor.tags))]
+    [...new Set(anchors.flatMap((anchor) => anchor.group_id))]
       .sort()
       .filter((tag) => tag !== undefined);
 
@@ -115,18 +101,9 @@ export const CreateAnchorModal = () => {
           anchorEndDate={anchorEndDate}
           setAnchorEndDate={setAnchorEndDate}
         />
-        <ModalButton
-          id="openGroupModal"
-          text="Tags"
-          icon={addCircleOutline}
-          onClick={() => setTagsModalOpen(true)}
-        />
-        <ModalButton
-          id="openTagModal"
-          text="Gruppen"
-          icon={addCircleOutline}
-          onClick={() => setGroupsModalOpen(true)}
-        />
+        <TagGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+        <GroupGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+
         <ModalButton
           id="openDialogSelectDocument"
           text="Dokumente"
@@ -134,23 +111,6 @@ export const CreateAnchorModal = () => {
           onClick={() => console.log("not implemented")}
         />
 
-        <SelectionModal
-          headerText="Tags auswählen"
-          closeModal={() => setTagsModalOpen(false)}
-          isOpen={tagsModalOpen}
-          searchFunction={() => console.log("Nicht implementiert")}
-          selectionList={tagList}
-          settingsGroup={SettingsGroup.TAGS}
-        />
-
-        <SelectionModal
-          headerText="Gruppen auswählen"
-          closeModal={() => setGroupsModalOpen(false)}
-          isOpen={groupsModalOpen}
-          searchFunction={() => console.log("Nicht implementiert")}
-          selectionList={[]}
-          settingsGroup={SettingsGroup.GROUPS}
-        />
         <IonItem lines="none" id="privateToggle" style={{ margin: "16px 0 0 0" }}>
           <IonToggle labelPlacement="start">Privater Eintrag?</IonToggle>
           {/*onIonChange={addPrivacy} DEFINED LATER */}
