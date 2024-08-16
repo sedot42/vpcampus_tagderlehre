@@ -40,17 +40,11 @@ export const CalendarAnchorComponent = () => {
   // function for event interaction
   function handleEvent(event: EventInput) {
     setShowEvent(true);
-    setEvent(event);
+    setEventID(event.event.id);
     //console.log(event.event);
   }
   const [showEvent, setShowEvent] = useState<boolean>(false);
-  const [event, setEvent] = useState<EventInput>([
-    {
-      id: "a",
-      title: "my event",
-      start: "2018-09-01",
-    },
-  ]);
+  const [eventID, setEventID] = useState<string>("");
 
   // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
@@ -129,7 +123,7 @@ export const CalendarAnchorComponent = () => {
         <CalendarAnchorEvent
           showEvent={showEvent}
           setShowEvent={setShowEvent}
-          event={event}
+          eventID={eventID}
         ></CalendarAnchorEvent>
       </IonContent>
 
