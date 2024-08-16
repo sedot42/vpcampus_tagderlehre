@@ -93,14 +93,19 @@ export const CalendarAnchorComponent = () => {
                 year: "numeric",
               },
             },
+            dayGrid: {
+              monthStartFormat: { month: "short", day: "numeric" },
+            },
             ...viewsSettings, // Load all other settings from external file
           }}
           initialView="timeGridWeekCustom"
-          weekNumbers={true}
+          weekNumbers={false} // We do not show week numbers as they overlap with other content and the position cannot be changed
+          weekNumberCalculation={"ISO"} // For better display of Month labels in Month View
           weekends={displayWeekends}
           eventTimeFormat={eventTimeFormatSetting} // Load event time format settings
           businessHours={businessHoursSettings}
           buttonText={buttonTextSettings}
+          eventDisplay="block" // In dayGridMonth View all events should be displayed solid
           //
           // Interaction
           //dateClick={handleDateClick}

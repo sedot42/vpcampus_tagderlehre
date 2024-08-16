@@ -45,6 +45,7 @@ export const viewsSettings = {
     slotMaxTime: "24:00:00",
     scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
     nowIndicator: true,
+    displayEventEnd: false,
   },
   // Create new custom Week view which starts with current day
   timeGridWeekCustom: {
@@ -59,6 +60,7 @@ export const viewsSettings = {
     duration: { weeks: 4 },
     buttonText: "Monat",
     visibleRange: defineMonthVisibleRange(currentDate, 28),
+    displayEventTime: false,
   },
 };
 
