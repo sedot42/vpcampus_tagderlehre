@@ -1,6 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { convertFlatAnchorToDBAnchor, DBAnchor } from "../../types/types";
+import {
+  Anchor,
+  convertFlatAnchorToDBAnchor,
+  DBAnchor,
+  DraftAnchor,
+} from "../../types/types";
 import { draftAnchor } from "../../types/defaults";
 import { AnchorContext } from "../../anchorContext";
 import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
@@ -13,49 +18,27 @@ import {
   IonToggle,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
-
-import "../../theme/styles.css";
 import { CreateDateComponent } from "./CreateDateComponent";
 import { ModalButton } from "../globalUI/Buttons";
 import { TagGroup } from "./UIgroups/TagGroup";
 import { GroupGroup } from "./UIgroups/GroupGroup";
+import "../../theme/styles.css";
+
+export type AnchorCreateProps = {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: (anchor: DraftAnchor<Anchor>) => void;
+};
 
 export const CreateAnchorModal = () => {
   const { anchors, createOneAnchor } = useContext(AnchorContext);
   const [localAnchor, setLocalAnchor] = useState(draftAnchor);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
-  const [useDate, setUseDate] = useState<boolean>(false); // status whether date should be set or not
-  const [anchorStartDate, setAnchorStartDate] = useState<string>(""); // string for the start point
-  const [anchorEndDate, setAnchorEndDate] = useState<string>(""); // string for the end point
 
   const handleSubmission = () => {
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
     createOneAnchor(dbAnchor as DBAnchor);
     setLocalAnchor(draftAnchor);
   };
-
-  useEffect(() => {
-    if (useDate) {
-      setLocalAnchor({
-        ...localAnchor,
-        start_at:
-          anchorStartDate != "" ? (anchorStartDate as string) + ".000Z" : undefined,
-        end_at: anchorEndDate != "" ? (anchorEndDate as string) + ".000Z" : undefined,
-      });
-    } else {
-      setLocalAnchor({
-        ...localAnchor,
-        start_at: undefined,
-        end_at: undefined,
-      });
-    }
-  }, [useDate, anchorStartDate, anchorEndDate]);
-
-  const groupList =
-    anchors &&
-    [...new Set(anchors.flatMap((anchor) => anchor.group_id))]
-      .sort()
-      .filter((tag) => tag !== undefined);
 
   const configTitle: ConfigInput[] = [
     {
@@ -93,14 +76,7 @@ export const CreateAnchorModal = () => {
           icon={addCircleOutline}
           onClick={() => setLocationModalOpen(true)}
         />
-        <CreateDateComponent
-          localAnchor={localAnchor}
-          setLocalAnchor={setLocalAnchor}
-          anchorStartDate={anchorStartDate}
-          setAnchorStartDate={setAnchorStartDate}
-          anchorEndDate={anchorEndDate}
-          setAnchorEndDate={setAnchorEndDate}
-        />
+        <CreateDateComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
         <TagGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
         <GroupGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
 

@@ -1,34 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  IonButton,
-  IonFooter,
   IonDatetime,
   IonDatetimeButton,
   IonModal,
   IonLabel,
   IonItem,
   IonToggle,
-  IonHeader,
-  IonIcon,
-  IonTitle,
-  IonButtons,
-  IonToolbar,
 } from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
+import { AnchorCreateProps } from "./CreateAnchorModal";
 
 export const CreateDateComponent = ({
   localAnchor,
   setLocalAnchor,
-  anchorStartDate,
-  setAnchorStartDate,
-  anchorEndDate,
-  setAnchorEndDate,
-}) => {
+}: AnchorCreateProps) => {
   // functional components for date allocation
   const [useDate, setUseDate] = useState<boolean>(false); // status whether date should be set or not
-
+  const now = new Date().toISOString();
   // show data selection when toggle is activated
   const addDate = () => {
     if (useDate) {
@@ -40,33 +29,10 @@ export const CreateDateComponent = ({
     }
   };
 
-  // update the starttime by event (input)
-  function updateStartTimeInput(event: CustomEvent) {
-    setAnchorStartDate(event.detail.value);
-  }
+  type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
 
-  // update the endtime by event (input)
-  function updateEndTimeInput(event: CustomEvent) {
-    setAnchorEndDate(event.detail.value);
-  }
-
-  // changing the dates in the event of changes in time or use
-  useEffect(() => {
-    if (useDate) {
-      setLocalAnchor({
-        ...localAnchor,
-        start_at:
-          anchorStartDate != "" ? (anchorStartDate as string) + ".000Z" : undefined,
-        end_at: anchorEndDate != "" ? (anchorEndDate as string) + ".000Z" : undefined,
-      });
-    } else {
-      setLocalAnchor({
-        ...localAnchor,
-        start_at: undefined,
-        end_at: undefined,
-      });
-    }
-  }, [useDate, anchorStartDate, anchorEndDate]);
+  const writeDateToAnchor = (timestamp: string, property: allowedProperties) =>
+    timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
 
   return (
     <>
@@ -77,95 +43,33 @@ export const CreateDateComponent = ({
         </IonToggle>
       </IonItem>
       <div id="dateContainer">
-        <IonItem lines="none">
+        <IonItem>
           <IonLabel>Start</IonLabel>
-          <IonDatetimeButton datetime="starttime">
-            {anchorStartDate === "" && <IonLabel slot="date-target">Datum</IonLabel>}
-            {anchorStartDate === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
-          </IonDatetimeButton>
+          <IonDatetimeButton datetime="starttime"></IonDatetimeButton>
         </IonItem>
-        <IonItem lines="none">
+        <IonItem>
           <IonLabel>Ende</IonLabel>
-          <IonDatetimeButton datetime="endtime">
-            {anchorEndDate === "" && <IonLabel slot="date-target">Datum</IonLabel>}
-            {anchorEndDate === "" && <IonLabel slot="time-target">Zeit</IonLabel>}
-          </IonDatetimeButton>
+          <IonDatetimeButton datetime="endtime"></IonDatetimeButton>
         </IonItem>
-        <IonModal keepContentsMounted={true} id="dialogSelectDateStart">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle slot="start">Startzeit auswählen</IonTitle>
-              <IonButtons slot="end">
-                <IonButton
-                  onClick={() =>
-                    (
-                      document.getElementById(
-                        "dialogSelectDateStart"
-                      ) as HTMLIonModalElement
-                    ).dismiss()
-                  }
-                >
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
+        <IonModal keepContentsMounted={true}>
           <IonDatetime
-            max={anchorEndDate}
             id="starttime"
-            onIonChange={(e) => updateStartTimeInput(e)}
+            presentation="date-time"
+            onIonChange={(event) =>
+              writeDateToAnchor(event.detail.value as string, "start_at")
+            }
+            value={now}
           ></IonDatetime>
-          <IonFooter class="ion-padding">
-            <IonButton
-              onClick={() => {
-                (
-                  document.getElementById("dialogSelectDateStart")! as HTMLIonModalElement
-                ).dismiss();
-              }}
-              expand="full"
-              color="primary"
-            >
-              Speichern
-            </IonButton>
-          </IonFooter>
         </IonModal>
-        <IonModal keepContentsMounted={true} id="dialogSelectDateEnd">
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle slot="start">Endzeit auswählen</IonTitle>
-              <IonButtons slot="end">
-                <IonButton
-                  onClick={() =>
-                    (
-                      document.getElementById(
-                        "dialogSelectDateEnd"
-                      ) as HTMLIonModalElement
-                    ).dismiss()
-                  }
-                >
-                  <IonIcon icon={closeOutline} size="large"></IonIcon>
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
+        <IonModal keepContentsMounted={true}>
           <IonDatetime
-            min={anchorStartDate}
             id="endtime"
-            onIonChange={(e) => updateEndTimeInput(e)}
+            presentation="date-time"
+            onIonChange={(event) =>
+              writeDateToAnchor(event.detail.value as string, "end_at")
+            }
+            value={now}
           ></IonDatetime>
-          <IonFooter class="ion-padding">
-            <IonButton
-              onClick={() => {
-                (
-                  document.getElementById("dialogSelectDateEnd")! as HTMLIonModalElement
-                ).dismiss();
-              }}
-              expand="full"
-              color="primary"
-            >
-              Speichern
-            </IonButton>
-          </IonFooter>
         </IonModal>
       </div>
     </>

@@ -1,19 +1,13 @@
 import { useState, useContext } from "react";
-import { Anchor, DraftAnchor } from "../../../types/types";
 import { AnchorContext } from "../../../anchorContext";
 import { IonButton, IonLabel, IonIcon } from "@ionic/react";
 import { addCircleOutline, trashOutline } from "ionicons/icons";
 import { SelectionModal } from "../../settings/SelectionModal";
 import { ModalButton } from "../../globalUI/Buttons";
+import { AnchorCreateProps } from "../CreateAnchorModal";
 import "../../../theme/styles.css";
 
-export const GroupGroup = ({
-  localAnchor,
-  setLocalAnchor,
-}: {
-  localAnchor: DraftAnchor<Anchor>;
-  setLocalAnchor: (anchor: DraftAnchor<Anchor>) => void;
-}) => {
+export const GroupGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
   const { anchors } = useContext(AnchorContext);
 
   const [groupsModalOpen, setGroupsModalOpen] = useState(false);
