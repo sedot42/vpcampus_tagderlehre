@@ -69,7 +69,7 @@ export const CalendarAnchorComponent = () => {
           ref={calendarRef}
           locale="ch" // Time and Date formatting according to locale
           events={mockState.map(transformEvent)} // Load and transform events
-          height="100%" // Set height of Calender to fill whole container -> Must be later set to something different/auto if other children elements are added
+          height="100%"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           //
           // Define Header Toolbar Elements

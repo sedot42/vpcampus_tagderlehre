@@ -19,35 +19,33 @@ export const CalendarAnchorCreate = ({
   // The props createStart and createEnd must be passed to the modal -> Not done now, as the "Erstellen" Tab is getting refactored!
 
   return (
-    <IonContent>
-      <IonModal
-        isOpen={showCreate}
-        initialBreakpoint={0.3}
-        breakpoints={[0, 0.3]}
-        onIonModalDidDismiss={() => setShowCreate(false)}
-      >
-        <IonContent className="ion-padding">
-          <IonButton
-            routerLink="/createAnchors" // go to create Anchor
-            routerDirection="forward" // forward movement
-            onClick={() => setShowCreate(false)} // close Modal on move
-            expand="block"
-            className="ion-padding"
-          >
-            <IonIcon aria-hidden="true" icon={addOutline} size="large" />
-            <IonLabel>Anker erstellen</IonLabel>
-          </IonButton>
-          <IonButton
-            expand="block"
-            fill="outline"
-            color="medium"
-            className="ion-padding"
-            onClick={() => setShowCreate(false)}
-          >
-            <IonLabel>Schliessen</IonLabel>
-          </IonButton>
-        </IonContent>
-      </IonModal>
-    </IonContent>
+    <IonModal
+      isOpen={showCreate}
+      initialBreakpoint={0.3}
+      breakpoints={[0, 0.3]}
+      onIonModalDidDismiss={() => setShowCreate(false)}
+    >
+      <IonContent className="ion-padding">
+        <IonButton
+          routerLink="/createAnchors" // go to create Anchor
+          routerDirection="forward" // forward movement
+          onClick={() => setShowCreate(false)} // close Modal on move
+          expand="block"
+          className="ion-padding"
+        >
+          <IonIcon aria-hidden="true" icon={addOutline} size="large" />
+          <IonLabel>Anker erstellen</IonLabel>
+        </IonButton>
+        <IonButton
+          expand="block"
+          fill="outline"
+          color="medium"
+          className="ion-padding"
+          onClick={() => setShowCreate(false)}
+        >
+          <IonLabel>Schliessen</IonLabel>
+        </IonButton>
+      </IonContent>
+    </IonModal>
   );
 };
