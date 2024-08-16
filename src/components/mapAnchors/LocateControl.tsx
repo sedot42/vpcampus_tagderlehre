@@ -10,6 +10,7 @@ import {
   IonList,
   IonItem,
   IonButton,
+  useIonViewDidEnter,
 } from "@ionic/react";
 import { locateOutline } from "ionicons/icons";
 import "./map.css";
@@ -17,8 +18,11 @@ import "./map.css";
 export const LocateControl = () => {
   const map = useMap();
 
+  useIonViewDidEnter(() => {
+    window.dispatchEvent(new Event("resize"));
+  });
+
   const handleLocate = (e) => {
-    e.stopPropagation();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {

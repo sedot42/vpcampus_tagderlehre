@@ -78,7 +78,10 @@ export const MapComponent: React.FC = () => {
     <IonPage>
       <StatusHeader titleText="Erstellen" />
       <IonContent fullscreen>
-        <MapContainerComponent anchors={filteredAnchors} />
+        <MapContainerComponent
+          filteredAnchors={filteredAnchors}
+          setFilteredAnchors={setFilteredAnchors}
+        />
       </IonContent>
       <TimeSliderComponent
         startTimeFilter={startTimeFilter}

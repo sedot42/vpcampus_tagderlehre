@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -36,21 +36,39 @@ import L from "leaflet"; // Ensure L is imported
 
 const { BaseLayer } = LayersControl;
 
-export const MapContainerComponent = ({ anchors = [] }) => {
-  const [validAnchor, setAnchor] = useState<Anchor[]>([]);
+export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) => {
+  const [validAnchors, setValidAnchors] = useState<Anchor[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<Anchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
-  const [selectedLayer, setSelectedLayer] = useState<string>("");
+  const [selectedLayer, setSelectedLayer] = useState<string>("openstreetmap");
   const [sliderValue, setSliderValue] = useState(1);
   const [showRangeSlider, setShowRangeSlider] = useState(false);
   const ref = useRef(null);
 
+  useIonViewDidEnter(() => {
+    window.dispatchEvent(new Event("resize"));
+  });
+
   useEffect(() => {
-    const filterMarkers = anchors.filter(
-      (anchor) => typeof anchor.lat === "number" && typeof anchor.lon === "number"
-    );
-    setAnchor(filterMarkers);
-  }, [anchors]);
+    const timer = setTimeout(() => {
+      setValidAnchors(filteredAnchors);
+    }, 500); // 2 seconds delay
+
+    return () => clearTimeout(timer);
+  }, [filteredAnchors]);
+
+  const mapAnchors = useMemo(() => {
+    if (selectedLayer === "etagenplaene_image") {
+      const anchors = filteredAnchors.filter((anchor) => anchor.floor_nr === sliderValue);
+      return anchors;
+    } else {
+      const anchors = filteredAnchors.filter(
+        (anchor) => typeof anchor.lat === "number" && typeof anchor.lon === "number"
+      );
+
+      return anchors;
+    }
+  }, [selectedLayer, filteredAnchors, sliderValue]);
 
   const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
     return L.divIcon({
@@ -62,8 +80,9 @@ export const MapContainerComponent = ({ anchors = [] }) => {
 
   const groupMarkersByCoordinates = () => {
     const grouped: { [key: string]: Anchor[] } = {};
-    validAnchor.forEach((marker) => {
+    mapAnchors.forEach((marker) => {
       const key = `${marker.lat},${marker.lon}`;
+      console.log(marker);
       if (!grouped[key]) {
         grouped[key] = [];
       }
@@ -94,14 +113,6 @@ export const MapContainerComponent = ({ anchors = [] }) => {
     setShowLayerControl(false);
   };
 
-  useEffect(() => {
-    console.log(ref);
-    console.log(ref?.current);
-    if (ref?.current) {
-      L.DomEvent.disableClickPropagation(ref.current);
-    }
-  }, []);
-
   return (
     <>
       <MapContainer
@@ -115,14 +126,24 @@ export const MapContainerComponent = ({ anchors = [] }) => {
         ]}
       >
         <WMSTileLayer
-          url="https://wms.geo.admin.ch/?"
-          layers="ch.swisstopo.pixelkarte-farbe"
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           format="image/jpeg"
           detectRetina={true}
           minZoom={7.5}
           maxZoom={20}
-          attribution="<a href='https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+
+        {selectedLayer === "openstreetmap" && (
+          <WMSTileLayer
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            format="image/jpeg"
+            detectRetina={true}
+            minZoom={7.5}
+            maxZoom={20}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+        )}
 
         {selectedLayer === "basemap" && (
           <WMSTileLayer
@@ -201,8 +222,8 @@ export const MapContainerComponent = ({ anchors = [] }) => {
                 pin={true}
                 pinFormatter={(value) => `${value}`}
                 value={sliderValue}
+                onMouseOver={() => L.DomEvent.disableClickPropagation(ref.current)}
                 onIonChange={(e) => {
-                  L.DomEvent.disableClickPropagation(ref.current);
                   setSliderValue(e.detail.value as number);
                 }}
               />
@@ -212,7 +233,7 @@ export const MapContainerComponent = ({ anchors = [] }) => {
       </MapContainer>
 
       {selectedMarker.length > 0 && (
-        <AnchorInfoModal anchors={selectedMarker} onClose={handleCloseDetails} />
+        <AnchorInfoModal mapAnchors={mapAnchors} onClose={handleCloseDetails} />
       )}
 
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
@@ -225,6 +246,9 @@ export const MapContainerComponent = ({ anchors = [] }) => {
         {showLayerControl && (
           <div className="layer-control-menu">
             <IonList>
+              <IonItem button onClick={() => handleLayerChange("openstreetmap")}>
+                <IonLabel>OpenStreetMap</IonLabel>
+              </IonItem>
               <IonItem button onClick={() => handleLayerChange("basemap")}>
                 <IonLabel>Basemap</IonLabel>
               </IonItem>

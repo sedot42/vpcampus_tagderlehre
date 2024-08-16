@@ -19,49 +19,52 @@ interface Anchor {
 }
 
 interface AnchorInfoModalProps {
-  anchors: Anchor[];
+  selectedMarker: Anchor[];
   onClose: () => void;
 }
 
-export const AnchorInfoModal: React.FC<AnchorInfoModalProps> = ({ anchors, onClose }) => {
-  if (!anchors || anchors.length === 0) return null;
+export const AnchorInfoModal: React.FC<AnchorInfoModalProps> = ({
+  mapAnchors,
+  onClose,
+}) => {
+  if (!mapAnchors || mapAnchors.length === 0) return null;
 
   return (
     <IonContent className="ion-padding ion-text-wrap custom-modal">
       <IonList>
-        {anchors.length === 1 ? (
+        {mapAnchors.length === 1 ? (
           <IonCard>
             <IonList>
               <IonItem>
                 <IonLabel>
                   <strong>Name:</strong>
                 </IonLabel>
-                <IonText>{anchors[0].anchor_name}</IonText>
+                <IonText>{mapAnchors[0].anchor_name}</IonText>
               </IonItem>
               <IonItem>
                 <IonLabel>
                   <strong>Description:</strong>
                 </IonLabel>
-                <IonText>{anchors[0].anchor_description}</IonText>
+                <IonText>{mapAnchors[0].anchor_description}</IonText>
               </IonItem>
               <IonItem>
                 <IonLabel>
                   <strong>Latitude:</strong>
                 </IonLabel>
-                <IonText>{anchors[0].lat}</IonText>
+                <IonText>{mapAnchors[0].lat}</IonText>
               </IonItem>
               <IonItem>
                 <IonLabel>
                   <strong>Longitude:</strong>
                 </IonLabel>
-                <IonText>{anchors[0].lon}</IonText>
+                <IonText>{mapAnchors[0].lon}</IonText>
               </IonItem>
             </IonList>
           </IonCard>
         ) : (
           <IonCard>
             <IonList>
-              {anchors.map((item) => (
+              {mapAnchors.map((item) => (
                 <IonCard key={item.id}>
                   <IonList>
                     <IonItem>
