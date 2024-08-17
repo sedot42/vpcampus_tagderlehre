@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   IonDatetime,
   IonDatetimeButton,
@@ -31,8 +31,11 @@ export const CreateDateComponent = ({
 
   type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
 
-  const writeDateToAnchor = (timestamp: string, property: allowedProperties) =>
+  const datetime = useRef<null | HTMLIonDatetimeElement>(null);
+
+  const writeDateToAnchor = (timestamp: string, property: allowedProperties) => {
     timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
+  };
 
   return (
     <>
@@ -55,20 +58,23 @@ export const CreateDateComponent = ({
           <IonDatetime
             id="starttime"
             presentation="date-time"
+            showDefaultButtons
+            preferWheel
+            ref={datetime}
             onIonChange={(event) =>
               writeDateToAnchor(event.detail.value as string, "start_at")
             }
-            value={now}
           ></IonDatetime>
         </IonModal>
         <IonModal keepContentsMounted={true}>
           <IonDatetime
             id="endtime"
+            showDefaultButtons
+            preferWheel
             presentation="date-time"
             onIonChange={(event) =>
               writeDateToAnchor(event.detail.value as string, "end_at")
             }
-            value={now}
           ></IonDatetime>
         </IonModal>
       </div>

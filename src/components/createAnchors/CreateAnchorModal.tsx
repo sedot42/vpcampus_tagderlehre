@@ -103,7 +103,8 @@ export const CreateAnchorModal = () => {
           id="create-anchor"
           fill="solid"
           strong={true}
-          onClick={handleSubmission}
+          onClick={() => console.log(localAnchor)}
+          // onClick={handleSubmission}
           expand="block"
           style={{ padding: "4px" }}
         >
