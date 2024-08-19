@@ -16,6 +16,7 @@ import {
   createOutline,
   mapOutline,
   settingsOutline,
+  gitNetworkOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -46,6 +47,7 @@ import { AnchorProvider } from "./anchorContext";
 
 import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
 import { MapComponent } from "./components/mapAnchors/MapComponent";
+import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 
 setupIonicReact();
 
@@ -61,6 +63,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/calendarHeatmap">
                 <CalendarHeatMapComponent />
+              </Route>
+              <Route exact path="/graphAnchor">
+                <ShowAnchorGraph />
               </Route>
               <Route exact path="/mapAnchors">
                 <MapComponent />
@@ -83,6 +88,12 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
+              {/*}
+              <IonTabButton tab="graphAnchor" href="/graphAnchor">
+                <IonIcon aria-hidden="true" icon={gitNetworkOutline} size="large" />
+                <IonLabel>Graph</IonLabel>
+              </IonTabButton>
+              */}
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>

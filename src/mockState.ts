@@ -1,6 +1,6 @@
 export const mockState = [
   {
-    id: "208ef33f-90e2-4119-9ccc-d8316f0bd724",
+    id: "208ef33f-90e2-4119-9ccc-d8316f0bd324",
     anchor_name: "WID 01",
     anchor_description:
       "Veranstaltung 01 im Modul 3050 'Webprogrammierung und interaktive Datenvisulaisierung' ",
@@ -21,9 +21,10 @@ export const mockState = [
     valid_until: "2024-12-18T15:54:35.991Z",
     owner: { id: "108ef33f-90e2-4119-9ccc-d8316f0bd724" },
     private_anchor: false,
+    anchor_ref: ["999ef33f-90e2-2219-9ccc-d8316f0bd726"]
   },
   {
-    id: "308ef33f-90e2-4119-9ccc-d8316f0bd724",
+    id: "308ef33f-90e2-4119-9ccc-d8316f0bd174",
     anchor_name: "WID 02",
     anchor_description:
       "Veranstaltung 02 im Modul 3050 'Webprogrammierung und interaktive Datenvisulaisierung' ",
@@ -44,9 +45,10 @@ export const mockState = [
     valid_until: "2024-12-18T15:54:35.991Z",
     owner: { id: "108ef33f-90e2-4119-9ccc-d8316f0bd724" },
     private_anchor: false,
+    anchor_ref: ["999ef33f-90e2-2219-9ccc-d8316f0bd726", "308ef33f-90e2-4119-9ccc-d8316f0bd174"]
   },
   {
-    id: "408ef33f-90e2-4119-9ccc-d8316f0bd724",
+    id: "408ef33f-90e2-4119-9ccc-d8316f0bd814",
     anchor_name: "WID 03",
     anchor_description:
       "Veranstaltung 03 im Modul 3050 'Webprogrammierung und interaktive Datenvisulaisierung' ",
@@ -67,9 +69,10 @@ export const mockState = [
     valid_until: "2024-12-18T15:54:35.991Z",
     owner: { id: "108ef33f-90e2-4119-9ccc-d8316f0bd724" },
     private_anchor: false,
+    anchor_ref: ["999ef33f-90e2-2219-9ccc-d8316f0bd726"]
   },
   {
-    id: "508ef33f-90e2-4119-9ccc-d8316f0bd724",
+    id: "508ef33f-90e2-4119-9ccc-d8316f0bd715",
     anchor_name: "Apero im Foyer",
     anchor_description:
       "Liebe Mitarbeitende, wir laden Sie herzlich zum diesjährigen Jubiläum der...",
@@ -87,6 +90,7 @@ export const mockState = [
 
     owner: { id: "998ef33f-00e2-4119-9ccc-d8316f0bd700" },
     private_anchor: false,
+    anchor_ref: ["5888f33f-90e2-2219-9ccc-d8316777d727"]
   },
   {
     id: "588ef33f-90e2-2219-9ccc-d8316f0bd724",
@@ -118,6 +122,7 @@ export const mockState = [
     created_at: "2024-07-11T17:14:35.991Z",
     owner: { id: "998ef44f-00e2-2219-9999-d8316f0bd700" },
     private_anchor: true,
+    anchor_ref: ["208ef33f-90e2-4119-9ccc-d8316f0bd324", "308ef33f-90e2-4119-9ccc-d8316f0bd174","408ef33f-90e2-4119-9ccc-d8316f0bd814",]
   },
   {
     id: "5888f33f-90e2-2219-9ccc-d8316f0bd555",
@@ -129,6 +134,7 @@ export const mockState = [
     start_at: "2024-07-23T10:54:35.991Z",
     end_at: "2024-08-23T12:54:35.991Z",
     owner: { id: "998ef44f-00e2-4119-9ccc-d8316f0bd700" },
+    anchor_ref: [ "999ef33f-90e2-2219-9ccc-d8316f0bd726"]
   },
 
   {
@@ -141,6 +147,7 @@ export const mockState = [
     start_at: "2024-08-06T02:54:35.991Z",
     end_at: "2024-08-06T12:54:35.991Z",
     owner: { id: "998ef44f-00e2-4119-9ccc-d8316f0bd700" },
+    anchor_ref: [ "999ef33f-90e2-2219-9ccc-d8316f0bd726"]
   },
 
   {
@@ -153,5 +160,6 @@ export const mockState = [
     start_at: "2024-08-06T02:54:35.991Z",
     end_at: "2024-08-06T12:54:35.991Z",
     owner: { id: "998ef44f-00e2-4119-9ccc-d8316f0bd700" },
+    anchor_ref: [ "5888f33f-90e2-2219-9ccc-d8316f0b6667", "508ef33f-90e2-4119-9ccc-d8316f0bd715", "588ef33f-90e2-2219-9ccc-d8316f0bd724",]
   },
 ];
