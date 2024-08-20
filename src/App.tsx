@@ -39,14 +39,12 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorsComponent";
-import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
 import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
 import { TempWrapper } from "./components/createAnchors/TempWrapper";
 
@@ -71,9 +69,7 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapComponent />
               </Route>
-              <Route exact path="/createAnchors">
-                <CreateFunctionalAnchorComponent />
-              </Route>
+              <Route exact path="/createAnchors"></Route>
               <Route path="/manageAnchors">
                 <ManageAnchorComponent />
               </Route>

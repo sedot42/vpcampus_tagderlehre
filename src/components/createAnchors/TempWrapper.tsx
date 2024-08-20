@@ -1,7 +1,7 @@
 import { IonButton, IonContent, IonModal, IonPage } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { useState } from "react";
-import { CreateAnchorModal } from "./_unused/CreateAnchorModal";
+import { CreateAnchorModal } from "./CreateAnchorModal";
 
 export const TempWrapper = () => {
   const [modalOpen, setModalOpen] = useState(false);

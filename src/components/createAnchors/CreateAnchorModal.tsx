@@ -1,14 +1,14 @@
 import { useState, useContext } from "react";
-import { StatusHeader } from "../../globalUI/StatusHeader";
+import { StatusHeader } from "../globalUI/StatusHeader";
 import {
   Anchor,
   convertFlatAnchorToDBAnchor,
   DBAnchor,
   DraftAnchor,
-} from "../../../types/types";
-import { draftAnchor } from "../../../types/defaults";
-import { AnchorContext } from "../../../anchorContext";
-import { ConfigInput, createInputs, createTextarea } from "../../globalUI/GenericFields";
+} from "../../types/types";
+import { draftAnchor } from "../../types/defaults";
+import { AnchorContext } from "../../anchorContext";
+import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import {
   IonPage,
   IonButton,
@@ -19,11 +19,11 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
-import { DateComponent } from "../DateComponent";
-import { ModalButton } from "../../globalUI/Buttons";
-import { TagGroup } from "../UIgroups/TagGroup";
-import { GroupGroup } from "../UIgroups/GroupGroup";
-import { LocationGroup } from "../UIgroups/LocationGroup";
+import { DateComponent } from "./DateComponent";
+import { ModalButton } from "../globalUI/Buttons";
+import { TagComponent } from "./TagComponent";
+import { GroupComponent } from "./GroupComponent";
+import { LocationGroup } from "./LocationComponent";
 // import "../../theme/styles.css";
 
 export type AnchorCreateProps = {
@@ -107,8 +107,8 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
           <DateComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
         )}
         <LocationGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
-        <TagGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
-        <GroupGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+        <TagComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+        <GroupComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
 
         <ModalButton
           id="openDialogSelectDocument"

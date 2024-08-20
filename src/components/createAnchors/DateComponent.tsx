@@ -8,7 +8,7 @@ import {
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
-import { AnchorCreateProps } from "./_unused/CreateAnchorModal";
+import { AnchorCreateProps } from "./CreateAnchorModal";
 
 export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
   type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
