@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import { IonPage, IonContent, useIonViewDidEnter } from "@ionic/react";
-import "leaflet/dist/leaflet.css";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { MapContainerComponent } from "./MapContainerComponent";

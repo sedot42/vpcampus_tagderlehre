@@ -1,28 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  useIonViewDidEnter,
-  useIonViewDidLeave,
-  useIonViewWillEnter,
-  useIonViewWillLeave,
-} from "@ionic/react";
-import {
-  MapContainer,
-  Marker,
-  LayersControl,
-  WMSTileLayer,
-  TileLayer,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./map.css";
-import { AnchorInfoModal } from "./AnchorInfoModal";
-import { LocateControl } from "./LocateControl";
-import MarkerClusterGroup from "react-leaflet-cluster";
-import { Anchor } from "../../types/types";
+import L from "leaflet";
 import {
+  useIonViewDidEnter,
   IonFab,
   IonFabButton,
   IonIcon,
@@ -31,10 +11,16 @@ import {
   IonList,
   IonRange,
 } from "@ionic/react";
-import { layersOutline } from "ionicons/icons";
-import L from "leaflet"; // Ensure L is imported
+import { MapContainer, Marker, WMSTileLayer, useMap, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
-const { BaseLayer } = LayersControl;
+import { AnchorInfoModal } from "./AnchorInfoModal";
+import { LocateControl } from "./LocateControl";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import { Anchor } from "../../types/types";
+import { layersOutline } from "ionicons/icons";
+
+import { CalendarAnchorCreate } from "./CalendarAnchorCreate";
 
 export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) => {
   const [validAnchors, setValidAnchors] = useState<Anchor[]>([]);
@@ -44,6 +30,10 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
   const [sliderValue, setSliderValue] = useState(1);
   const [showRangeSlider, setShowRangeSlider] = useState(false);
   const ref = useRef(null);
+  const [showCreate, setShowCreate] = useState<boolean>(false);
+  const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
+  const mousedownInterval = useRef<NodeJS.Timeout | null>(null);
+  const startPosition = useRef<[number, number] | null>(null);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));
@@ -52,22 +42,18 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
   useEffect(() => {
     const timer = setTimeout(() => {
       setValidAnchors(filteredAnchors);
-    }, 500); // 2 seconds delay
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [filteredAnchors]);
 
   const mapAnchors = useMemo(() => {
     if (selectedLayer === "etagenplaene_image") {
-      const anchors = filteredAnchors.filter((anchor) => anchor.floor_nr === sliderValue);
-      return anchors;
-    } else {
-      const anchors = filteredAnchors.filter(
-        (anchor) => typeof anchor.lat === "number" && typeof anchor.lon === "number"
-      );
-
-      return anchors;
+      return filteredAnchors.filter((anchor) => anchor.floor_nr === sliderValue);
     }
+    return filteredAnchors.filter(
+      (anchor) => typeof anchor.lat === "number" && typeof anchor.lon === "number"
+    );
   }, [selectedLayer, filteredAnchors, sliderValue]);
 
   const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
@@ -82,7 +68,6 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
     const grouped: { [key: string]: Anchor[] } = {};
     mapAnchors.forEach((marker) => {
       const key = `${marker.lat},${marker.lon}`;
-      console.log(marker);
       if (!grouped[key]) {
         grouped[key] = [];
       }
@@ -113,6 +98,110 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
     setShowLayerControl(false);
   };
 
+  const MapEventHandlers = () => {
+    const map = useMap();
+    const [coords, setCoords] = useState(null);
+
+    const clearMousedownTimeout = () => {
+      if (mousedownInterval.current) {
+        clearTimeout(mousedownInterval.current);
+        mousedownInterval.current = null;
+      }
+    };
+
+    const handleStart = (latlng) => {
+      startPosition.current = [latlng.lat, latlng.lng];
+      setCoords(startPosition.current);
+      mousedownInterval.current = setTimeout(() => {
+        setMarkerPosition([latlng.lat, latlng.lng]);
+        setShowCreate(true);
+      }, 750);
+    };
+
+    const handleMove = (latlng) => {
+      if (startPosition.current) {
+        const distanceMoved = latlng.distanceTo({
+          lat: startPosition.current[0],
+          lng: startPosition.current[1],
+        });
+        if (distanceMoved > 1) {
+          clearMousedownTimeout();
+        }
+      }
+    };
+
+    const handleEnd = () => {
+      clearMousedownTimeout();
+      startPosition.current = null;
+    };
+
+    useEffect(() => {
+      const handleTouchStart = (e) => {
+        const latlng = map.mouseEventToLatLng(e.touches[0]);
+        handleStart(latlng);
+      };
+
+      const handleTouchMove = (e) => {
+        const latlng = map.mouseEventToLatLng(e.touches[0]);
+        handleMove(latlng);
+      };
+
+      const handleTouchEnd = () => {
+        handleEnd();
+      };
+
+      const handleMouseDown = (e) => {
+        handleStart(e.latlng);
+      };
+
+      const handleMouseMove = (e) => {
+        handleMove(e.latlng);
+      };
+
+      const handleMouseUp = () => {
+        handleEnd();
+      };
+
+      map.on("mousedown", handleMouseDown);
+      map.on("mousemove", handleMouseMove);
+      map.on("mouseup", handleMouseUp);
+      map.on("mouseout", handleEnd);
+
+      map.getContainer().addEventListener("touchstart", handleTouchStart);
+      map.getContainer().addEventListener("touchmove", handleTouchMove);
+      map.getContainer().addEventListener("touchend", handleTouchEnd);
+      map.getContainer().addEventListener("touchcancel", handleTouchEnd);
+
+      return () => {
+        map.off("mousedown", handleMouseDown);
+        map.off("mousemove", handleMouseMove);
+        map.off("mouseup", handleMouseUp);
+        map.off("mouseout", handleEnd);
+
+        map.getContainer().removeEventListener("touchstart", handleTouchStart);
+        map.getContainer().removeEventListener("touchmove", handleTouchMove);
+        map.getContainer().removeEventListener("touchend", handleTouchEnd);
+        map.getContainer().removeEventListener("touchcancel", handleTouchEnd);
+
+        clearMousedownTimeout();
+      };
+    }, [map]);
+
+    return (
+      <>
+        {markerPosition && <Marker position={markerPosition} />}
+        {showCreate && (
+          <CalendarAnchorCreate
+            showCreate={showCreate}
+            setShowCreate={setShowCreate}
+            setMarkerPosition={setMarkerPosition}
+            coords={coords}
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <MapContainer
@@ -130,7 +219,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
           format="image/jpeg"
           detectRetina={true}
           minZoom={7.5}
-          maxZoom={20}
+          maxZoom={25}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
@@ -140,7 +229,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
             format="image/jpeg"
             detectRetina={true}
             minZoom={7.5}
-            maxZoom={20}
+            maxZoom={25}
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
         )}
@@ -152,24 +241,25 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
             format="image/jpeg"
             detectRetina={true}
             minZoom={7.5}
-            maxZoom={20}
+            maxZoom={25}
             attribution="<a href='https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>"
           />
         )}
+
         {selectedLayer === "situationsplan" && (
           <WMSTileLayer
             url="https://wfs.geodienste.ch/av_situationsplan_0/deu?"
             layers="single_objects_surface_elements_underground,single_objects_surface_elements_without_underground,single_objects_surface_elements_underground_outline,single_objects_linear_elements,single_objects_point_elements,land_cover_surface,land_cover_surface_water,land_cover_surface_project,land_cover_surface_building,land_cover_surface_project_buildings,locality_labels,house_addresses"
             format="image/png"
             minZoom={7.5}
-            maxZoom={22}
+            maxZoom={25}
             attribution="<a href='https://www.geodienste.ch/'>geodienste.ch</a>"
           />
         )}
 
         {selectedLayer === "etagenplaene_image" && (
           <WMSTileLayer
-            key={sliderValue} // key ensures re-render on sliderValue change
+            key={sliderValue}
             url={
               "https://qgiscloud.com/CaroBro97/qgis_floorplans/wms?SERVICE=WMS&REQUEST=GetCapabilities"
             }
@@ -186,7 +276,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={40}
-          spiderfyOnMaxZoom={true}
+          spiderfyOnMaxZoom={false}
           disableClusteringAtZoom={16}
         >
           {Object.keys(groupedMarkers).map((key) => {
@@ -197,17 +287,17 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
                 position={[lat, lon]}
                 bubblingMouseEvents={false}
                 eventHandlers={{
-                  click: (e) => {
-                    handleAnchorClick(lat, lon);
-                  },
+                  click: () => handleAnchorClick(lat, lon),
                 }}
-              ></Marker>
+              />
             );
           })}
         </MarkerClusterGroup>
 
-        {/* Geolocation Control */}
         <LocateControl />
+
+        <MapEventHandlers />
+
         <div className="slider-wrapper">
           {showRangeSlider && (
             <div className="range-slider-container">
@@ -222,10 +312,8 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
                 pin={true}
                 pinFormatter={(value) => `${value}`}
                 value={sliderValue}
-                onMouseOver={() => L.DomEvent.disableClickPropagation(ref.current)}
-                onIonChange={(e) => {
-                  setSliderValue(e.detail.value as number);
-                }}
+                onIonFocus={() => L.DomEvent.disableClickPropagation(ref.current)}
+                onIonChange={(e) => setSliderValue(e.detail.value as number)}
               />
             </div>
           )}

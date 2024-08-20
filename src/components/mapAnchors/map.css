@@ -144,9 +144,16 @@ div.rangeClass{
 }
 
 .range-slider-container {
-  pointer-events: auto; /* Make sure pointer events are handled by the slider */
+  pointer-events: auto; 
 }
 
 .vertical-range {
-  pointer-events: auto; /* Ensure slider handles pointer events */
+  pointer-events: auto; 
+}
+
+#mapContainer{
+cursor:pointer
+}
+.leaflet-touch{
+  cursor:pointer
 }

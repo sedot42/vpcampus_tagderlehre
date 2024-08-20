@@ -88,12 +88,12 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
-              {/*}
+
               <IonTabButton tab="graphAnchor" href="/graphAnchor">
                 <IonIcon aria-hidden="true" icon={gitNetworkOutline} size="large" />
                 <IonLabel>Graph</IonLabel>
               </IonTabButton>
-              */}
+
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
