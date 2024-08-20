@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import { AnchorContext } from "../../anchorContext";
 import { IonButton, IonLabel, IonIcon } from "@ionic/react";
 import { addCircleOutline, trashOutline } from "ionicons/icons";
+import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "../settings/SelectionModal";
 import { ModalButton } from "../globalUI/Buttons";
 import { AnchorCreateProps } from "./CreateAnchorModal";

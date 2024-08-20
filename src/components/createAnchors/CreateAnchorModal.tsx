@@ -1,14 +1,4 @@
 import { useState, useContext } from "react";
-import { StatusHeader } from "../globalUI/StatusHeader";
-import {
-  Anchor,
-  convertFlatAnchorToDBAnchor,
-  DBAnchor,
-  DraftAnchor,
-} from "../../types/types";
-import { draftAnchor } from "../../types/defaults";
-import { AnchorContext } from "../../anchorContext";
-import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import {
   IonPage,
   IonButton,
@@ -19,12 +9,21 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
+import {
+  Anchor,
+  convertFlatAnchorToDBAnchor,
+  DBAnchor,
+  DraftAnchor,
+} from "../../types/types";
+import { draftAnchor } from "../../types/defaults";
+import { StatusHeader } from "../globalUI/StatusHeader";
+import { AnchorContext } from "../../anchorContext";
+import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import { DateComponent } from "./DateComponent";
 import { ModalButton } from "../globalUI/Buttons";
 import { TagComponent } from "./TagComponent";
 import { GroupComponent } from "./GroupComponent";
 import { LocationGroup } from "./LocationComponent";
-// import "../../theme/styles.css";
 
 export type AnchorCreateProps = {
   localAnchor: DraftAnchor<Anchor>;
@@ -85,7 +84,7 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
 
         {/* part for entering the description */}
         {createTextarea(localAnchor, setLocalAnchor, configDescription)}
-        <IonItem lines="none" id="privateToggle" style={{ margin: "16px 0 0 0" }}>
+        <IonItem lines="none" id="privateToggle">
           <IonToggle
             labelPlacement="start"
             onIonChange={() =>
@@ -98,7 +97,7 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
             Privater Anker?
           </IonToggle>
         </IonItem>
-        <IonItem lines="none" style={{ margin: "16px 0 0 0" }}>
+        <IonItem lines="none">
           <IonToggle onIonChange={() => setShowDate(!showDate)} labelPlacement="start">
             Zeit
           </IonToggle>

@@ -118,8 +118,7 @@ const CreateOutside = ({
         });
         const mapPositionMarker = new Marker(e.latlng, { icon: customPosIcon });
         mapPositionMarker.addTo(map); // add to map;
-        setLocalAnchor({ ...localAnchor, lat: e.latlng.lat });
-        setLocalAnchor({ ...localAnchor, lon: e.latlng.lng });
+        setLocalAnchor({ ...localAnchor, lat: e.latlng.lat, lon: e.latlng.lng });
       },
     });
     return null;
@@ -149,7 +148,6 @@ const CreateOutside = ({
           />
           <GetPosClickDisplayedMap />
           <LocateControl />
-          123
         </MapContainer>
       </div>
     </IonContent>
@@ -208,21 +206,21 @@ export const CreateLocationModal = ({
             <IonCol>
               <IonButton
                 onClick={closeModal}
-                id="cancelTempLocation"
-                expand="full"
-                color="primary"
-              >
-                Abbrechen
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                onClick={closeModal}
                 id="saveTempLocation"
                 expand="full"
                 color="primary"
               >
                 Speichern
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                onClick={closeModal}
+                id="cancelTempLocation"
+                expand="full"
+                color="primary"
+              >
+                Abbrechen
               </IonButton>
             </IonCol>
           </IonRow>

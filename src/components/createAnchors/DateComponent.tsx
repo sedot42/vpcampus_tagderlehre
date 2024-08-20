@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   IonDatetime,
   IonDatetimeButton,
@@ -6,18 +6,27 @@ import {
   IonLabel,
   IonItem,
 } from "@ionic/react";
+import { AnchorCreateProps } from "./CreateAnchorModal";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
-import { AnchorCreateProps } from "./CreateAnchorModal";
 
 export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
   type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
 
   const datetime = useRef<null | HTMLIonDatetimeElement>(null);
+  const date = new Date();
+  const now = date.toISOString();
 
   const writeDateToAnchor = (timestamp: string, property: allowedProperties) => {
     timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
   };
+
+  useEffect(() => {
+    // Set an initial date once
+    localAnchor.start_at === undefined &&
+      localAnchor.end_at === undefined &&
+      setLocalAnchor({ ...localAnchor, start_at: now, end_at: now });
+  }, []);
 
   return (
     <>

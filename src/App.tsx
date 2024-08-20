@@ -16,7 +16,6 @@ import {
   createOutline,
   mapOutline,
   settingsOutline,
-  telescopeOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -57,7 +56,7 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/test">
+              <Route exact path="/create">
                 <TempWrapper />
               </Route>
               <Route exact path="/calendarAnchors">
@@ -69,7 +68,6 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapComponent />
               </Route>
-              <Route exact path="/createAnchors"></Route>
               <Route path="/manageAnchors">
                 <ManageAnchorComponent />
               </Route>
@@ -81,10 +79,6 @@ const App: React.FC = () => {
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="test" href="/test">
-                <IonIcon aria-hidden="true" icon={telescopeOutline} size="large" />
-                <IonLabel>Test</IonLabel>
-              </IonTabButton>
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
                 <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
@@ -93,7 +87,7 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="createAnchors" href="/createAnchors">
+              <IonTabButton tab="test" href="/create">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />
                 <IonLabel>Erstellen</IonLabel>
               </IonTabButton>

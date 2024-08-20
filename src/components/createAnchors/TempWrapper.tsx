@@ -9,7 +9,7 @@ export const TempWrapper = () => {
     <IonPage>
       <StatusHeader titleText="Kalender" />
       <IonButton onClick={() => setModalOpen(true)} expand="block">
-        Open
+        Anker erstellen
       </IonButton>
       <IonModal
         style={{ "--min-height": "100vh", "--min-width": "100vw" }}
