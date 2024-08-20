@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import {
   IonContent,
   IonButton,
@@ -23,6 +23,8 @@ type SelectionModalProps = {
   selectionList: string[];
   modalConfirmAction: (list: string[]) => void;
   initialSelection: string[];
+  hasMultiSelection: boolean;
+  children?: ReactElement;
 };
 
 export const SelectionModal = ({
@@ -32,6 +34,8 @@ export const SelectionModal = ({
   selectionList,
   modalConfirmAction,
   initialSelection,
+  hasMultiSelection,
+  children,
 }: SelectionModalProps) => {
   const [checkedBoxes, setCheckedBoxes] = useState<string[]>(initialSelection || []);
 
@@ -71,33 +75,49 @@ export const SelectionModal = ({
           entitiesToBeSearched={listForSearch}
           historyKeyName={"searchHistoryTags"}
           titlePropertyName={"name"}
-          renderItem={(tag, index) => (
-            <IonItem key={index}>
-              <IonCheckbox
-                justify="space-between"
+          renderItem={(item, index) =>
+            hasMultiSelection ? (
+              <IonItem key={index}>
+                <IonCheckbox
+                  justify="space-between"
+                  key={index}
+                  value={item.name}
+                  aria-label="item"
+                  checked={checkedBoxes.includes(item.name)}
+                  onIonChange={(e) => handleChange(e)}
+                >
+                  {item.name}
+                </IonCheckbox>
+              </IonItem>
+            ) : (
+              <IonItem
                 key={index}
-                value={tag.name}
-                aria-label="item"
-                checked={checkedBoxes.includes(tag.name)}
-                onIonChange={(e) => handleChange(e)}
+                onClick={() => {
+                  modalConfirmAction([item.name]);
+                  closeModal();
+                }}
               >
-                {tag.name}
-              </IonCheckbox>
-            </IonItem>
-          )}
+                {item.name}
+              </IonItem>
+            )
+          }
         />
       </IonContent>
       <IonFooter class="ion-padding">
-        <IonButton
-          onClick={() => {
-            modalConfirmAction(checkedBoxes);
-            closeModal();
-          }}
-          expand="full"
-          color="primary"
-        >
-          Ok
-        </IonButton>
+        {children ? (
+          children
+        ) : (
+          <IonButton
+            onClick={() => {
+              modalConfirmAction(checkedBoxes);
+              closeModal();
+            }}
+            expand="full"
+            color="primary"
+          >
+            Ok
+          </IonButton>
+        )}
       </IonFooter>
     </IonModal>
   );

@@ -4,7 +4,7 @@ import { IonButton, IonLabel, IonIcon } from "@ionic/react";
 import { addCircleOutline, trashOutline } from "ionicons/icons";
 import { SelectionModal } from "../../settings/SelectionModal";
 import { ModalButton } from "../../globalUI/Buttons";
-import { AnchorCreateProps } from "../CreateAnchorModal";
+import { AnchorCreateProps } from "../_unused/CreateAnchorModal";
 import "../../../theme/styles.css";
 
 export const GroupGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
@@ -13,7 +13,7 @@ export const GroupGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) =
   const [groupsModalOpen, setGroupsModalOpen] = useState(false);
   const { groups } = localAnchor;
 
-  const groupLIst =
+  const groupList =
     anchors &&
     [...new Set(anchors.flatMap((anchor) => anchor.groups))]
       .sort()
@@ -51,9 +51,10 @@ export const GroupGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) =
       </div>
       <SelectionModal
         headerText="Gruppen auswählen"
+        hasMultiSelection
         closeModal={() => setGroupsModalOpen(false)}
         isOpen={groupsModalOpen}
-        selectionList={groupLIst}
+        selectionList={groupList}
         initialSelection={localAnchor.groups || []}
         modalConfirmAction={(newList: string[]) =>
           setLocalAnchor({

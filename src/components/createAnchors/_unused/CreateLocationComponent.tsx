@@ -32,7 +32,7 @@ import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
 
 import { CreatePlaceComponent } from "./CreatePlaceComponent";
-import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
+import { UniversalSearchBar } from "../../globalUI/UniversalSearchBar";
 
 export const CreateLocationComponent = ({
   anchors,

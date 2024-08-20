@@ -3,7 +3,7 @@ import { addCircleOutline, trashOutline, closeOutline } from "ionicons/icons";
 import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
 import { divIcon, Marker } from "leaflet";
 import "../../theme/styles.css";
-import { LocateControl } from "../mapAnchors/ref/LocateControl";
+import { LocateControl } from "../../mapAnchors/ref/LocateControl";
 import {
   IonButton,
   IonFooter,

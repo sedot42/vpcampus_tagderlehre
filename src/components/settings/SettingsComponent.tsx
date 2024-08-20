@@ -86,6 +86,7 @@ export const SettingsComponent = () => {
         />
         <SelectionModal
           headerText="Tags auswählen"
+          hasMultiSelection
           closeModal={() => setTagsModalOpen(false)}
           isOpen={tagsModalOpen}
           selectionList={tagList}
@@ -96,6 +97,7 @@ export const SettingsComponent = () => {
         />
         <SelectionModal
           headerText="Gruppen auswählen"
+          hasMultiSelection
           closeModal={() => setGroupsModalOpen(false)}
           isOpen={groupsModalOpen}
           selectionList={groupList}

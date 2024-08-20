@@ -1,25 +1,21 @@
 import { IonButton, IonContent, IonModal, IonPage } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
-import { OverlayEventDetail } from "@ionic/core/components";
-import { useRef } from "react";
-import { CreateAnchorModal } from "./CreateAnchorModal";
+import { useState } from "react";
+import { CreateAnchorModal } from "./_unused/CreateAnchorModal";
 
 export const TempWrapper = () => {
-  const modal = useRef<HTMLIonModalElement>(null);
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {}
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <IonPage>
       <StatusHeader titleText="Kalender" />
-      <IonButton id="open-modal" expand="block">
+      <IonButton onClick={() => setModalOpen(true)} expand="block">
         Open
       </IonButton>
       <IonModal
         style={{ "--min-height": "100vh", "--min-width": "100vw" }}
-        ref={modal}
-        trigger="open-modal"
-        onWillDismiss={(ev) => onWillDismiss(ev)}
+        isOpen={modalOpen}
       >
-        <CreateAnchorModal></CreateAnchorModal>
+        <CreateAnchorModal closeModal={() => setModalOpen(false)}></CreateAnchorModal>
       </IonModal>
 
       <IonContent className="ion-padding"></IonContent>

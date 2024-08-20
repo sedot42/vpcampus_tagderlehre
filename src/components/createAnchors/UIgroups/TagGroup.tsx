@@ -4,7 +4,7 @@ import { IonButton, IonLabel, IonIcon } from "@ionic/react";
 import { addCircleOutline, trashOutline } from "ionicons/icons";
 import { SelectionModal } from "../../settings/SelectionModal";
 import { ModalButton } from "../../globalUI/Buttons";
-import { AnchorCreateProps } from "../CreateAnchorModal";
+import { AnchorCreateProps } from "../_unused/CreateAnchorModal";
 import "../../../theme/styles.css";
 
 export const TagGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
@@ -48,6 +48,7 @@ export const TagGroup = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => 
       </div>
       <SelectionModal
         headerText="Tags auswählen"
+        hasMultiSelection
         closeModal={() => setTagsModalOpen(false)}
         isOpen={tagsModalOpen}
         selectionList={tagList}
