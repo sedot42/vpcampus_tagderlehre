@@ -160,6 +160,6 @@ export const mockState = [
     start_at: "2024-08-06T02:54:35.991Z",
     end_at: "2024-08-06T12:54:35.991Z",
     owner: { id: "998ef44f-00e2-4119-9ccc-d8316f0bd700" },
-    anchor_ref: [ "5888f33f-90e2-2219-9ccc-d8316f0b6667", "508ef33f-90e2-4119-9ccc-d8316f0bd715", "588ef33f-90e2-2219-9ccc-d8316f0bd724",]
+    anchor_ref: [ "5888f33f-90e2-2219-9ccc-d8316f0b6667", "508ef33f-90e2-4119-9ccc-d8316f0bd715"]
   },
 ];

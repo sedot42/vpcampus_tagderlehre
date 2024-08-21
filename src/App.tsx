@@ -48,6 +48,7 @@ import { AnchorProvider } from "./anchorContext";
 import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
 import { MapComponent } from "./components/mapAnchors/MapComponent";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
+import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
 
 setupIonicReact();
 
@@ -66,6 +67,9 @@ const App: React.FC = () => {
               </Route>
               <Route exact path="/graphAnchor">
                 <ShowAnchorGraph />
+              </Route>
+              <Route exact path="/semantics">
+                <ForceDirectedGraph />
               </Route>
               <Route exact path="/mapAnchors">
                 <MapComponent />
