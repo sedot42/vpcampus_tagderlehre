@@ -24,11 +24,15 @@ import {
   IonInfiniteScroll,
   IonList,
   IonSearchbar,
+  IonCard,
+  IonItem,
+  IonRadio,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
 
 import { CreatePlaceComponent } from "./CreatePlaceComponent";
+import { UniversalSearchBar } from "../../globalUI/UniversalSearchBar";
 
 export const CreateLocationComponent = ({
   anchors,
@@ -379,16 +383,28 @@ export const CreateLocationComponent = ({
               </IonButton>
             </IonButtons>
           </IonToolbar>
-          <IonSearchbar
-            onIonInput={updateLocationFilter}
-            color="light"
-            id="locationSearchBar"
-          ></IonSearchbar>
         </IonHeader>
         <IonContent>
-          <IonInfiniteScroll>
-            <IonList id="listFilteredLocations"></IonList>
-          </IonInfiniteScroll>
+          <UniversalSearchBar
+            entitiesToBeSearched={anchors}
+            historyKeyName={"searchHistoryLocations"}
+            titlePropertyName={"anchor_name"}
+            renderItem={(anchor, index) => (
+              <IonItem
+                key={index}
+                style={{ cursor: "pointer" }}
+                button
+                onClick={() => console.log("Nicht implementiert")}
+              >
+                <IonLabel>
+                  {`${anchor.campus_id || ""}  ${anchor.building_id || ""} ${
+                    anchor.floor_nr || ""
+                  } ${anchor.room_id || ""}`}
+                  {`${anchor.lat || ""}  ${anchor.lon || ""}`}
+                </IonLabel>
+              </IonItem>
+            )}
+          />
         </IonContent>
         <div style={{ position: "relative", width: "100%" }}>
           <IonButton

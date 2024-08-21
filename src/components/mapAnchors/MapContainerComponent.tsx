@@ -10,6 +10,9 @@ import {
   IonLabel,
   IonList,
   IonRange,
+  IonButton,
+  IonContent,
+  IonModal,
 } from "@ionic/react";
 import { MapContainer, Marker, WMSTileLayer, useMap, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -18,9 +21,9 @@ import { AnchorInfoModal } from "./AnchorInfoModal";
 import { LocateControl } from "./LocateControl";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Anchor } from "../../types/types";
-import { layersOutline } from "ionicons/icons";
+import { addOutline, layersOutline } from "ionicons/icons";
 
-import { CalendarAnchorCreate } from "./CalendarAnchorCreate";
+import { CreateAnchorModal } from "../createAnchors/CreateAnchorModal";
 
 export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) => {
   const [validAnchors, setValidAnchors] = useState<Anchor[]>([]);
@@ -34,6 +37,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
   const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
   const mousedownInterval = useRef<NodeJS.Timeout | null>(null);
   const startPosition = useRef<[number, number] | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));
@@ -191,12 +195,21 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
       <>
         {markerPosition && <Marker position={markerPosition} />}
         {showCreate && (
-          <CalendarAnchorCreate
-            showCreate={showCreate}
-            setShowCreate={setShowCreate}
-            setMarkerPosition={setMarkerPosition}
-            coords={coords}
-          />
+          <IonModal
+            isOpen={showCreate}
+            initialBreakpoint={0.3}
+            breakpoints={[0, 0.3, 1]}
+            onIonModalDidDismiss={() => {
+              setShowCreate(false);
+              setMarkerPosition(null);
+            }}
+          >
+            <CreateAnchorModal
+              closeModal={() => {
+                setModalOpen(false), setMarkerPosition(null), setShowCreate(false);
+              }}
+            ></CreateAnchorModal>
+          </IonModal>
         )}
       </>
     );

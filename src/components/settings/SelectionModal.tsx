@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import {
   IonContent,
   IonButton,
@@ -8,23 +8,23 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
-  IonSearchbar,
   IonFooter,
-  IonInfiniteScroll,
-  IonList,
   IonItem,
   IonCheckbox,
 } from "@ionic/react";
+import { CheckboxChangeEventDetail, IonCheckboxCustomEvent } from "@ionic/core";
 import { closeOutline } from "ionicons/icons";
-import { SettingsGroup } from "./SettingsComponent";
+import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 
 type SelectionModalProps = {
   closeModal: () => void;
   isOpen: boolean;
   headerText: string;
-  searchFunction: (term: string) => void;
   selectionList: string[];
-  settingsGroup: SettingsGroup;
+  modalConfirmAction: (list: string[]) => void;
+  initialSelection: string[];
+  hasMultiSelection: boolean;
+  children?: ReactElement;
 };
 
 export const SelectionModal = ({
@@ -32,16 +32,14 @@ export const SelectionModal = ({
   isOpen,
   headerText,
   selectionList,
-  settingsGroup,
+  modalConfirmAction,
+  initialSelection,
+  hasMultiSelection,
+  children,
 }: SelectionModalProps) => {
-  const storedValues = JSON.parse(localStorage.getItem(settingsGroup) || "[]");
-  const [checkedBoxes, setCheckedBoxes] = useState<string[]>(storedValues);
+  const [checkedBoxes, setCheckedBoxes] = useState<string[]>(initialSelection || []);
 
-  const saveToLocalStorage = (newList: string[]) => {
-    localStorage.setItem(settingsGroup, JSON.stringify([...newList]));
-  };
-
-  const handleChange = (event) => {
+  const handleChange = (event: IonCheckboxCustomEvent<CheckboxChangeEventDetail>) => {
     const isChecked = event?.target.checked;
     if (isChecked) {
       setCheckedBoxes([...checkedBoxes, event.target.value]);
@@ -49,8 +47,15 @@ export const SelectionModal = ({
       setCheckedBoxes(checkedBoxes.filter((i) => i !== event.target.value));
     }
   };
+
+  const listForSearch = selectionList.map((item: string) => ({ name: item }));
   return (
-    <IonModal id="dialogFilterInfo" trigger="openFilterInfo" isOpen={isOpen}>
+    <IonModal
+      id="dialogFilterInfo"
+      isOpen={isOpen}
+      onDidDismiss={() => closeModal()}
+      style={{ "--min-height": "100vh", "--min-width": "100vw" }}
+    >
       <IonHeader>
         <IonToolbar>
           <IonTitle slot="start">{headerText}</IonTitle>
@@ -64,45 +69,55 @@ export const SelectionModal = ({
             </IonButton>
           </IonButtons>
         </IonToolbar>
-        <IonSearchbar
-          onIonInput={(e) => console.log(e.target.value || "")}
-          color="light"
-          id="tagSearchBar"
-        ></IonSearchbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonInfiniteScroll>
-          <IonList id="listAllFilteredTags">
-            {selectionList &&
-              selectionList.length > 0 &&
-              selectionList.map((item, index) => (
-                <IonItem key={index}>
-                  <IonCheckbox
-                    justify="space-between"
-                    key={index}
-                    value={item}
-                    aria-label="item"
-                    checked={checkedBoxes.includes(item)}
-                    onIonChange={(e) => handleChange(e)}
-                  >
-                    {item}
-                  </IonCheckbox>
-                </IonItem>
-              ))}
-          </IonList>
-        </IonInfiniteScroll>
+        <UniversalSearchBar
+          entitiesToBeSearched={listForSearch}
+          historyKeyName={"searchHistoryTags"}
+          titlePropertyName={"name"}
+          renderItem={(item, index) =>
+            hasMultiSelection ? (
+              <IonItem key={index}>
+                <IonCheckbox
+                  justify="space-between"
+                  key={index}
+                  value={item.name}
+                  aria-label="item"
+                  checked={checkedBoxes.includes(item.name)}
+                  onIonChange={(e) => handleChange(e)}
+                >
+                  {item.name}
+                </IonCheckbox>
+              </IonItem>
+            ) : (
+              <IonItem
+                key={index}
+                onClick={() => {
+                  modalConfirmAction([item.name]);
+                  closeModal();
+                }}
+              >
+                {item.name}
+              </IonItem>
+            )
+          }
+        />
       </IonContent>
       <IonFooter class="ion-padding">
-        <IonButton
-          onClick={() => {
-            saveToLocalStorage(checkedBoxes);
-            closeModal();
-          }}
-          expand="full"
-          color="primary"
-        >
-          Ok
-        </IonButton>
+        {children ? (
+          children
+        ) : (
+          <IonButton
+            onClick={() => {
+              modalConfirmAction(checkedBoxes);
+              closeModal();
+            }}
+            expand="full"
+            color="primary"
+          >
+            Ok
+          </IonButton>
+        )}
       </IonFooter>
     </IonModal>
   );

@@ -45,10 +45,12 @@ import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatM
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent";
+/* import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent"; */
 import { MapComponent } from "./components/mapAnchors/MapComponent";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
+
+import { TempWrapper } from "./components/createAnchors/TempWrapper";
 
 setupIonicReact();
 
@@ -59,6 +61,9 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
+              <Route exact path="/create">
+                <TempWrapper />
+              </Route>
               <Route exact path="/calendarAnchors">
                 <CalendarAnchorComponent />
               </Route>
@@ -74,9 +79,11 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapComponent />
               </Route>
+              {/*  
               <Route exact path="/createAnchors">
                 <CreateFunctionalAnchorComponent />
               </Route>
+              */}
               <Route path="/manageAnchors">
                 <ManageAnchorComponent />
               </Route>
@@ -102,7 +109,7 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="createAnchors" href="/createAnchors">
+              <IonTabButton tab="test" href="/create">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />
                 <IonLabel>Erstellen</IonLabel>
               </IonTabButton>

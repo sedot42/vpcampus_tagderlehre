@@ -1,4 +1,4 @@
-import { IonButton } from "@ionic/react";
+import { IonButton, IonIcon, IonLabel } from "@ionic/react";
 import React from "react";
 
 type ButtonProps = {
@@ -120,4 +120,39 @@ export const IconButton = ({ icon, onClick, style }: ButtonProps) => (
   <a style={style} onClick={onClick}>
     {icon}
   </a>
+);
+
+export const ModalButton = ({
+  id,
+  icon,
+  text,
+  onClick,
+}: {
+  id: string;
+  icon: string;
+  text: string;
+  onClick: () => void;
+}) => (
+  <IonButton
+    id="selectGroupButton"
+    className="buttonAddElements"
+    expand="block"
+    color="light"
+    fill="solid"
+    size="default"
+    onClick={onClick}
+  >
+    <div>
+      <IonLabel id={id} class="ion-text-wrap" slot="start">
+        {text}
+      </IonLabel>
+
+      <IonIcon
+        icon={icon}
+        className="buttonAddElementsIcon"
+        aria-hidden="true"
+        size="large"
+      ></IonIcon>
+    </div>
+  </IonButton>
 );
