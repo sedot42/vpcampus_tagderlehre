@@ -12,22 +12,35 @@ import {
   IonItemOptions,
   IonItemOption,
   IonItemSliding,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
-import { pin, trash, share } from "ionicons/icons";
+import { pin, trash, share, addOutline } from "ionicons/icons";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 
-export const ManageAnchorComponent: React.FC = () => {
+export const ManageAnchorsComponent = ({
+  setShowCreate,
+}: {
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
   return (
     <IonPage>
       <StatusHeader titleText="Übersicht" />
+
       <IonContent fullscreen>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={() => setShowCreate(true)}>
+            <IonIcon icon={addOutline}></IonIcon>
+          </IonFabButton>
+        </IonFab>
+
         <UniversalSearchBar
           entitiesToBeSearched={anchors}
           historyKeyName={"searchHistoryAnchors"}
@@ -92,6 +105,7 @@ export const ManageAnchorComponent: React.FC = () => {
             </IonCard>
           )}
         />
+
         {modalData && (
           <>
             <UpdateModal

@@ -11,7 +11,6 @@ import {
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  addOutline,
   calendarOutline,
   createOutline,
   mapOutline,
@@ -39,7 +38,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorComponent";
-import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+import { ManageAnchorsComponent } from "./components/manageAnchors/ManageAnchorsComponent";
 import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
 import { SettingsComponent } from "./components/settings/SettingsComponent";
@@ -50,22 +49,30 @@ import { MapComponent } from "./components/mapAnchors/MapComponent";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
 
-import { TempWrapper } from "./components/createAnchors/TempWrapper";
+import { draftAnchor } from "./types/defaults";
+import { useState } from "react";
+import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  // States for create modal
+  const [localAnchor, setLocalAnchor] = useState(draftAnchor);
+  const [showDate, setShowDate] = useState<boolean>(false);
+  const [showCreate, setShowCreate] = useState<boolean>(false);
+
   return (
     <AnchorProvider>
       <IonApp>
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/create">
-                <TempWrapper />
-              </Route>
               <Route exact path="/calendarAnchors">
-                <CalendarAnchorComponent />
+                <CalendarAnchorComponent
+                  setShowCreate={setShowCreate}
+                  setLocalAnchor={setLocalAnchor}
+                  setShowDate={setShowDate}
+                />
               </Route>
               <Route exact path="/calendarHeatmap">
                 <CalendarHeatMapComponent />
@@ -79,13 +86,8 @@ const App: React.FC = () => {
               <Route exact path="/mapAnchors">
                 <MapComponent />
               </Route>
-              {/*
-              <Route exact path="/createAnchors">
-                <CreateFunctionalAnchorComponent />
-              </Route>
-              */}
               <Route path="/manageAnchors">
-                <ManageAnchorComponent />
+                <ManageAnchorsComponent setShowCreate={setShowCreate} />
               </Route>
               <Route path="/settings">
                 <SettingsComponent />
@@ -109,10 +111,6 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="test" href="/create">
-                <IonIcon aria-hidden="true" icon={addOutline} size="large" />
-                <IonLabel>Erstellen</IonLabel>
-              </IonTabButton>
               <IonTabButton tab="manageAnchors" href="/manageAnchors">
                 <IonIcon aria-hidden="true" icon={createOutline} size="large" />
                 <IonLabel>Verwalten</IonLabel>
@@ -124,6 +122,14 @@ const App: React.FC = () => {
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>
+        <CreateAnchorModal
+          showCreate={showCreate}
+          setShowCreate={setShowCreate}
+          localAnchor={localAnchor}
+          setLocalAnchor={setLocalAnchor}
+          showDate={showDate}
+          setShowDate={setShowDate}
+        ></CreateAnchorModal>
       </IonApp>
     </AnchorProvider>
   );
