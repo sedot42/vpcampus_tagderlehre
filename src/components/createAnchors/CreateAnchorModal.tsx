@@ -61,14 +61,14 @@ export const CreateAnchorModal = ({
 
   const handleSubmission = () => {
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
-    console.log(dbAnchor);
+    //console.log(dbAnchor);
     createOneAnchor(dbAnchor as DBAnchor);
     //setLocalAnchor(draftAnchor); // Why?
     //closeModal();
     presentToast("middle");
   };
 
-  console.log(localAnchor);
+  //console.log(localAnchor);
 
   const configTitle: ConfigInput[] = [
     {
