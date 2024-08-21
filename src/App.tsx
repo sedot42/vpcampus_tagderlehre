@@ -16,6 +16,7 @@ import {
   createOutline,
   mapOutline,
   settingsOutline,
+  gitNetworkOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,15 +39,18 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorComponent";
-import { MapAnchorComponent } from "./components/mapAnchors/MapAnchorsComponent";
-import { CreateAnchorComponent } from "./components/createAnchors/CreateAnchorsComponent";
 import { ManageAnchorComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { CreateFunctionalAnchorComponent } from "./components/refactored/CreateFunctionalAnchorComponent";
-import { MapComponent } from "./components/mapAnchors/ref/MapComponent";
+/* import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent"; */
+import { MapComponent } from "./components/mapAnchors/MapComponent";
+import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
+import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
+
+import { TempWrapper } from "./components/createAnchors/TempWrapper";
 
 setupIonicReact();
 
@@ -57,21 +61,29 @@ const App: React.FC = () => {
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
+              <Route exact path="/create">
+                <TempWrapper />
+              </Route>
               <Route exact path="/calendarAnchors">
                 <CalendarAnchorComponent />
               </Route>
-              <Route exact path="/mapAnchors">
-                <MapAnchorComponent />
+              <Route exact path="/calendarHeatmap">
+                <CalendarHeatMapComponent />
               </Route>
-              <Route exact path="/mapAnchors2">
+              <Route exact path="/graphAnchor">
+                <ShowAnchorGraph />
+              </Route>
+              <Route exact path="/semantics">
+                <ForceDirectedGraph />
+              </Route>
+              <Route exact path="/mapAnchors">
                 <MapComponent />
               </Route>
+              {/*
               <Route exact path="/createAnchors">
                 <CreateFunctionalAnchorComponent />
               </Route>
-              <Route exact path="/createAnchorsX">
-                <CreateAnchorComponent />
-              </Route>
+              */}
               <Route path="/manageAnchors">
                 <ManageAnchorComponent />
               </Route>
@@ -87,15 +99,17 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
+
+              <IonTabButton tab="graphAnchor" href="/graphAnchor">
+                <IonIcon aria-hidden="true" icon={gitNetworkOutline} size="large" />
+                <IonLabel>Graph</IonLabel>
+              </IonTabButton>
+
               <IonTabButton tab="mapAnchors" href="/mapAnchors">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="mapAnchors2" href="/mapAnchors2">
-                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
-                <IonLabel>Karte2</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="createAnchors" href="/createAnchors">
+              <IonTabButton tab="test" href="/create">
                 <IonIcon aria-hidden="true" icon={addOutline} size="large" />
                 <IonLabel>Erstellen</IonLabel>
               </IonTabButton>

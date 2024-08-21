@@ -10,54 +10,98 @@ import {
 } from "@ionic/react";
 import React from "react";
 
-interface AnchorInfoModalProps {
-  filteredAnchor: any[];
-  setModalData: (data: any) => void;
-  setShowModal: (show: boolean) => void;
+interface Anchor {
+  id: string;
+  anchor_name: string;
+  anchor_description: string;
+  lat: number;
+  lon: number;
 }
 
-export const AnchorInfoModal: React.FC<AnchorInfoModalProps> = ({
-  filteredAnchor,
-  setModalData,
-  setShowModal,
-}) => {
-  console.log(filteredAnchor);
+interface AnchorInfoModalProps {
+  anchors: Anchor[];
+  onClose: () => void;
+}
 
-  const tabdata: { [key: string]: any }[] = [];
-  for (const element of filteredAnchor) {
-    console.log(element);
-    if (element.length !== 0) {
-      for (const item of element) {
-        console.log(item);
-        tabdata.push(item);
-      }
-    }
-  }
+export const AnchorInfoModal: React.FC<AnchorInfoModalProps> = ({ anchors, onClose }) => {
+  if (!anchors || anchors.length === 0) return null;
 
   return (
-    <IonContent className="ion-padding ion-text-wrap">
+    <IonContent className="ion-padding ion-text-wrap custom-modal">
       <IonList>
-        {tabdata.length > 0 ? (
-          tabdata.map((item, index) => (
-            <IonCard key={index}>
-              <IonList>
-                {Object.entries(item).map(([key, value]) => (
-                  <IonItem key={key}>
-                    <IonLabel>{key}</IonLabel>
-                    <IonText>{value.toString()}</IonText>
-                  </IonItem>
-                ))}
-              </IonList>
-            </IonCard>
-          ))
+        {anchors.length === 1 ? (
+          <IonCard>
+            <IonList>
+              <IonItem>
+                <IonLabel>
+                  <strong>Name:</strong>
+                </IonLabel>
+                <IonText>{anchors[0].anchor_name}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>
+                  <strong>Description:</strong>
+                </IonLabel>
+                <IonText>{anchors[0].anchor_description}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>
+                  <strong>Latitude:</strong>
+                </IonLabel>
+                <IonText>{anchors[0].lat}</IonText>
+              </IonItem>
+              <IonItem>
+                <IonLabel>
+                  <strong>Longitude:</strong>
+                </IonLabel>
+                <IonText>{anchors[0].lon}</IonText>
+              </IonItem>
+            </IonList>
+          </IonCard>
         ) : (
-          <IonItem>
-            <IonText>No data available</IonText>
-          </IonItem>
+          <IonCard>
+            <IonList>
+              {anchors.map((item) => (
+                <IonCard key={item.id}>
+                  <IonList>
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Name:</strong>
+                      </IonLabel>
+                      <IonText>{item.anchor_name}</IonText>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Description:</strong>
+                      </IonLabel>
+                      <IonText>{item.anchor_description}</IonText>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Latitude:</strong>
+                      </IonLabel>
+                      <IonText>{item.lat}</IonText>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>
+                        <strong>Longitude:</strong>
+                      </IonLabel>
+                      <IonText>{item.lon}</IonText>
+                    </IonItem>
+                  </IonList>
+                </IonCard>
+              ))}
+            </IonList>
+          </IonCard>
         )}
       </IonList>
       <IonFooter className="ion-padding">
-        <IonButton onClick={() => setShowModal(false)} expand="full" color="primary">
+        <IonButton
+          onClick={onClose}
+          className="close-button"
+          expand="full"
+          color="primary"
+        >
           Schliessen
         </IonButton>
       </IonFooter>

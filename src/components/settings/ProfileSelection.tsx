@@ -4,7 +4,6 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  IonText,
   IonItem,
   IonSelect,
   IonSelectOption,
@@ -13,11 +12,10 @@ import {
   IonContent,
   IonFooter,
 } from "@ionic/react";
-import { Profile } from "./SettingsComponent";
 import { closeOutline } from "ionicons/icons";
+import { Profile } from "./SettingsComponent";
 
 type ProfileSelectionType = {
-  profile: Profile;
   setProfile: (profile: Profile) => void;
 };
 
@@ -27,21 +25,19 @@ type ProfilModalTypes = {
   closeModal: () => void;
 };
 
-export const ProfileSelection = ({ profile, setProfile }: ProfileSelectionType) => {
+export const ProfileSelection = ({ setProfile }: ProfileSelectionType) => {
   return (
-    <IonItem>
-      <IonSelect
-        label="Profil"
-        placeholder="Nicht gewählt"
-        onIonChange={(e) => setProfile(e.target.value)}
-      >
-        <IonSelectOption value={Profile.STUDIERENDE}>
-          {Profile.STUDIERENDE}
-        </IonSelectOption>
-        <IonSelectOption value={Profile.LEHRENDE}>{Profile.LEHRENDE}</IonSelectOption>
-        <IonSelectOption value={Profile.EXTERNE}>{Profile.EXTERNE}</IonSelectOption>
-      </IonSelect>
-    </IonItem>
+    <IonSelect
+      label="Profil"
+      placeholder="Nicht gewählt"
+      onIonChange={(e) => setProfile(e.target.value)}
+      fill="outline"
+      style={{ margin: "15px -10px 15px 0px" }}
+    >
+      <IonSelectOption value={Profile.STUDIERENDE}>{Profile.STUDIERENDE}</IonSelectOption>
+      <IonSelectOption value={Profile.LEHRENDE}>{Profile.LEHRENDE}</IonSelectOption>
+      <IonSelectOption value={Profile.EXTERNE}>{Profile.EXTERNE}</IonSelectOption>
+    </IonSelect>
   );
 };
 
@@ -49,8 +45,8 @@ export const ProfileModal = ({ profile, isOpen, closeModal }: ProfilModalTypes) 
   return (
     <IonModal
       id="dialogFilterInfo"
-      trigger="openFilterInfo"
       isOpen={isOpen}
+      onDidDismiss={() => closeModal()}
       style={{ "--min-height": "100vh", "--min-width": "100vw" }}
     >
       <IonHeader>
@@ -92,7 +88,7 @@ const ProfileSettings = ({ profile }: { profile: Profile }) => {
         <>
           <IonItem>
             <IonSelect
-              label="Sudiengang"
+              label="Studiengang"
               placeholder="Nicht gewählt"
               onIonChange={(e) => console.log("Nicht implementiert", e.target.value)}
             >

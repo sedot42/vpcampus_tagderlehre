@@ -1,6 +1,5 @@
 import { Anchor, convertFlatAnchorToDBAnchor } from "../../types/types";
 import { useContext } from "react";
-
 import {
   IonContent,
   IonHeader,
@@ -12,10 +11,12 @@ import {
   IonFooter,
   IonIcon,
   IonText,
+  IonItem,
+  IonLabel,
+  IonInput,
   IonItemDivider,
 } from "@ionic/react";
 import { closeOutline, trashOutline } from "ionicons/icons";
-import { Config, createInputs } from "../globalUI/GenericFields";
 import { AnchorContext } from "../../anchorContext";
 
 export const UpdateModal = ({
@@ -31,31 +32,63 @@ export const UpdateModal = ({
 }) => {
   const { updateOneAnchor } = useContext(AnchorContext);
   const { deleteOneAnchor } = useContext(AnchorContext);
-  const config: Config[] = [
-    {
-      required: true,
-      property: "anchor_name",
-      placeholder: "Anchor",
-      label: "Anchor",
-    },
+
+  // List of all possible fields
+  const fieldKeys: (keyof Anchor)[] = [
+    "id",
+    "anchor_name",
+    "anchor_description",
+    "tags",
+    "attachments",
+    "created_at",
+    "updated_at",
+    "start_at",
+    "end_at",
+    "valid_from",
+    "valid_until",
+    "lat",
+    "lon",
+    "alt",
+    "campus_id",
+    "address_string",
+    "building_id",
+    "faculty_name",
+    "floor_nr",
+    "room_id",
+    "loc_description",
+    "loc_description_imgs",
+    "ar_anchor_id",
+    "group_id",
+    "prev_anchor_id",
+    "next_anchor_id",
+    "private_anchor",
   ];
-  for (const key in modalData) {
-    if (key !== "anchor_name" && key !== "id") {
-      config.push({
-        required: false,
-        property: key,
-        placeholder: "",
-        label: key,
-      });
-    }
-  }
+
+  // Function to handle changes
+  const handleChange = (key: string, value: any) => {
+    setModalData({ ...modalData, [key]: value });
+  };
+
+  // Function to render fields
+  const renderField = (key: keyof Anchor, value: any) => {
+    return (
+      <IonItem key={key}>
+        <IonLabel position="floating">{key}</IonLabel>
+        <IonInput
+          type={typeof value === "number" ? "number" : "text"}
+          value={value !== undefined && value !== null ? value.toString() : " "}
+          onIonInput={(e) => handleChange(key, e.detail.value)}
+        />
+      </IonItem>
+    );
+  };
 
   return (
     <IonModal isOpen={openModal} onWillDismiss={() => setOpenModal(false)}>
       <IonHeader>
         <IonToolbar>
           <IonIcon size="large" slot="start"></IonIcon>
-          <IonTitle style={{ textAlign: "center" }}>Anker bearbeiten</IonTitle>
+          <IonTitle style={{ textAlign: "center" }}>Edit Anchor</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setOpenModal(false)}>
               <IonIcon icon={closeOutline} size="large"></IonIcon>
@@ -64,7 +97,8 @@ export const UpdateModal = ({
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding ion-text-wrap">
-        {createInputs(modalData, setModalData, config)}
+        {/* Render all fields */}
+        {fieldKeys.map((key) => renderField(key, modalData[key]))}
 
         <IonButton
           fill="clear"
@@ -74,7 +108,7 @@ export const UpdateModal = ({
             setOpenModal(false);
           }}
         >
-          <IonIcon aria-hidden="true" icon={trashOutline} /> Anker löschen
+          <IonIcon aria-hidden="true" icon={trashOutline} /> Delete Anchor
         </IonButton>
         <IonItemDivider />
         <br />
@@ -91,12 +125,12 @@ export const UpdateModal = ({
           fill="clear"
           strong={true}
           onClick={() => {
-            // convert from flat to nested for DB update
+            // Convert from flat to nested for DB update
             updateOneAnchor(convertFlatAnchorToDBAnchor(modalData));
             setOpenModal(false);
           }}
         >
-          Speichern
+          Save
         </IonButton>
       </IonFooter>
     </IonModal>

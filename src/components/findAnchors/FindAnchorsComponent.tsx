@@ -55,7 +55,7 @@ export const FindAnchorsComponent = () => {
     const flatAnchors = anchors.map(convertDBAnchorToFlatAnchor);
     let sortedAnchors: Anchor[];
     const param: keyof SortState = Object.keys(sortState).find(
-      (key) => sortState[key as keyof typeof sortState] !== SORT.NONE,
+      (key) => sortState[key as keyof typeof sortState] !== SORT.NONE
     ) as keyof SortState;
 
     if (!param) {
@@ -64,10 +64,10 @@ export const FindAnchorsComponent = () => {
       sortedAnchors =
         sortState[param] === SORT.DSC
           ? flatAnchors.sort(
-              (a, b) => Date.parse(a[param] as string) - Date.parse(b[param] as string),
+              (a, b) => Date.parse(a[param] as string) - Date.parse(b[param] as string)
             )
           : flatAnchors.sort(
-              (a, b) => Date.parse(b[param] as string) - Date.parse(a[param] as string),
+              (a, b) => Date.parse(b[param] as string) - Date.parse(a[param] as string)
             );
     } else {
       sortedAnchors =
@@ -97,7 +97,7 @@ export const FindAnchorsComponent = () => {
                 (anchor) =>
                   (anchor.anchor_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     anchor.owner.id.toLowerCase().includes(searchTerm.toLowerCase())) &&
-                  (!filterByBookmarked || bookmarks.includes(anchor.id)),
+                  (!filterByBookmarked || bookmarks.includes(anchor.id))
               )
               .map((anchor, index) => (
                 <IonCard key={index}>
