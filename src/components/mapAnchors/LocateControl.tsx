@@ -17,7 +17,7 @@ export const LocateControl = () => {
           const { latitude, longitude } = position.coords;
 
           // Update the map view without removing any layers or markers
-          map.setView([latitude, longitude], 15);
+          map.setView([latitude, longitude], 18);
 
           if (locateMarkerRef.current) {
             locateMarkerRef.current.setLatLng([latitude, longitude]);

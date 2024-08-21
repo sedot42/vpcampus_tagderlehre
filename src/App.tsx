@@ -60,6 +60,7 @@ const App: React.FC = () => {
   const [localAnchor, setLocalAnchor] = useState(draftAnchor);
   const [showDate, setShowDate] = useState<boolean>(false);
   const [showCreate, setShowCreate] = useState<boolean>(false);
+  const [showMapLocation, setShowMapLocation] = useState<boolean>(false);
 
   return (
     <AnchorProvider>
@@ -84,7 +85,11 @@ const App: React.FC = () => {
                 <ForceDirectedGraph />
               </Route>
               <Route exact path="/mapAnchors">
-                <MapComponent />
+                <MapComponent
+                  setShowCreate={setShowCreate}
+                  setLocalAnchor={setLocalAnchor}
+                  setShowMapLocation={setShowMapLocation}
+                />
               </Route>
               <Route path="/manageAnchors">
                 <ManageAnchorsComponent setShowCreate={setShowCreate} />
@@ -129,6 +134,8 @@ const App: React.FC = () => {
           setLocalAnchor={setLocalAnchor}
           showDate={showDate}
           setShowDate={setShowDate}
+          setShowMapLocation={setShowMapLocation}
+          showMapLocation={showMapLocation}
         ></CreateAnchorModal>
       </IonApp>
     </AnchorProvider>

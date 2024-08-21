@@ -20,12 +20,25 @@ import "leaflet/dist/leaflet.css";
 import { AnchorInfoModal } from "./AnchorInfoModal";
 import { LocateControl } from "./LocateControl";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Anchor } from "../../types/types";
+import { Anchor, DraftAnchor } from "../../types/types";
 import { addOutline, layersOutline } from "ionicons/icons";
 
 import { CreateAnchorModal } from "../createAnchors/CreateAnchorModal";
+import { draftAnchor } from "../../types/defaults";
 
-export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) => {
+export const MapContainerComponent = ({
+  filteredAnchors,
+  setFilteredAnchors,
+  setShowCreate,
+  setLocalAnchor,
+  setShowMapLocation,
+}: {
+  filteredAnchors: Anchor[];
+  setFilteredAnchors: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [validAnchors, setValidAnchors] = useState<Anchor[]>([]);
   const [selectedMarker, setSelectedMarker] = useState<Anchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
@@ -33,7 +46,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
   const [sliderValue, setSliderValue] = useState(1);
   const [showRangeSlider, setShowRangeSlider] = useState(false);
   const ref = useRef(null);
-  const [showCreate, setShowCreate] = useState<boolean>(false);
+  //const [showCreate, setShowCreate] = useState<boolean>(false);
   const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
   const mousedownInterval = useRef<NodeJS.Timeout | null>(null);
   const startPosition = useRef<[number, number] | null>(null);
@@ -119,6 +132,14 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
       mousedownInterval.current = setTimeout(() => {
         setMarkerPosition([latlng.lat, latlng.lng]);
         setShowCreate(true);
+        setShowMapLocation(true);
+
+        const selectAnchor: DraftAnchor<Anchor> = {
+          lat: latlng.lat,
+          lon: latlng.lng,
+          ...draftAnchor,
+        };
+        setLocalAnchor(selectAnchor);
       }, 750);
     };
 
@@ -194,7 +215,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
     return (
       <>
         {markerPosition && <Marker position={markerPosition} />}
-        {showCreate && (
+        {/* {showCreate && (
           <IonModal
             isOpen={showCreate}
             initialBreakpoint={0.3}
@@ -210,7 +231,7 @@ export const MapContainerComponent = ({ filteredAnchors, setFilteredAnchors }) =
               }}
             ></CreateAnchorModal>
           </IonModal>
-        )}
+        )} */}
       </>
     );
   };

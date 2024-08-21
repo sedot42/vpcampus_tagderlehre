@@ -24,11 +24,6 @@ import { TagComponent } from "./TagComponent";
 import { GroupComponent } from "./GroupComponent";
 import { LocationGroup } from "./LocationComponent";
 
-export type AnchorCreateProps = {
-  localAnchor: DraftAnchor<Anchor>;
-  setLocalAnchor: (anchor: DraftAnchor<Anchor>) => void;
-};
-
 export const CreateAnchorModal = ({
   showCreate,
   setShowCreate,
@@ -37,6 +32,8 @@ export const CreateAnchorModal = ({
   setLocalAnchor,
   showDate,
   setShowDate,
+  setShowMapLocation,
+  showMapLocation,
 }: {
   showCreate: boolean;
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,6 +42,8 @@ export const CreateAnchorModal = ({
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   showDate: boolean;
   setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
+  showMapLocation: boolean;
 }) => {
   const { createOneAnchor } = useContext(AnchorContext);
 
@@ -66,6 +65,7 @@ export const CreateAnchorModal = ({
     //setLocalAnchor(draftAnchor); // Why?
     //closeModal();
     presentToast("middle");
+    setShowMapLocation(false);
   };
 
   console.log(localAnchor);
@@ -129,7 +129,12 @@ export const CreateAnchorModal = ({
         {showDate && (
           <DateComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
         )}
-        <LocationGroup localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+        <LocationGroup
+          localAnchor={localAnchor}
+          setLocalAnchor={setLocalAnchor}
+          setShowMapLocation={setShowMapLocation}
+          showMapLocation={showMapLocation}
+        />
         <TagComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
         <GroupComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
 

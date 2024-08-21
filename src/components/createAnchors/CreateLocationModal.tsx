@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   IonButton,
   IonFooter,
@@ -16,6 +16,7 @@ import {
   IonLabel,
   IonSegment,
   IonSegmentButton,
+  useIonViewDidEnter,
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { AnchorCreateProps } from "./CreateAnchorModal";
@@ -86,29 +87,17 @@ const CreateOutside = ({
   setLocalAnchor,
   mapRef,
   setMapRef,
-}: AnchorCreateProps & { mapRef?: Map; setMapRef: (map: Map) => void }) => {
+  setLocationSetMap,
+}: AnchorCreateProps & {
+  mapRef?: Map;
+  setMapRef: (map: Map) => void;
+  setLocationSetMap: Dispatch<SetStateAction<boolean>>;
+}) => {
   useEffect(() => {
     mapRef && mapRef.invalidateSize();
   }, [mapRef, localAnchor.lat]);
-  function GetPosClickDisplayedMap() {
-    const customMarkerStyle = `
-    background-color: #44a2fa;
-    width: 3rem;
-    height: 3rem;
-    display: block;
-    left: -1.5rem;
-    top: -1.5rem;
-    position: relative;
-    border-radius: 3rem 3rem 0;
-    transform: rotate(45deg);
-    border: 1px solid #FFFFFF`;
 
-    const customPosIcon = divIcon({
-      className: "my-custom-pin",
-      iconAnchor: [0, 24],
-      popupAnchor: [0, -36],
-      html: `<span style="${customMarkerStyle}" />`,
-    });
+  function GetPosClickDisplayedMap() {
     const map = useMapEvents({
       click: (e) => {
         map.eachLayer((layer) => {
@@ -116,9 +105,10 @@ const CreateOutside = ({
             map.removeLayer(layer);
           }
         });
-        const mapPositionMarker = new Marker(e.latlng, { icon: customPosIcon });
+        const mapPositionMarker = new Marker(e.latlng);
         mapPositionMarker.addTo(map); // add to map;
         setLocalAnchor({ ...localAnchor, lat: e.latlng.lat, lon: e.latlng.lng });
+        setLocationSetMap(true);
       },
     });
     return null;
@@ -131,20 +121,19 @@ const CreateOutside = ({
           ref={setMapRef}
           center={[47.5349015179286, 7.6419409280402535]}
           zoom={18}
+          maxZoom={22}
           maxBounds={[
             [45.8148308954386, 5.740290246442871],
             [47.967830538595194, 10.594475942663449],
           ]}
         >
           <WMSTileLayer
-            id="backgroundPixelKarte"
-            url="https://wms.geo.admin.ch/?"
-            layers="ch.swisstopo.pixelkarte-farbe"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             format="image/jpeg"
             detectRetina={true}
             minZoom={7.5}
-            maxZoom={20}
-            attribution="Map by <a href = 'https://www.swisstopo.admin.ch/en/home.html'>swisstopo</a>"
+            maxZoom={25}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
           <GetPosClickDisplayedMap />
           <LocateControl />
@@ -159,14 +148,19 @@ export const CreateLocationModal = ({
   setLocalAnchor,
   createLocationModalOpen,
   setCreateLocationModalOpen,
+  setLocationSetMap,
 }: AnchorCreateProps & {
   createLocationModalOpen: boolean;
   setCreateLocationModalOpen: (state: boolean) => void;
+  setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   const closeModal = () => setCreateLocationModalOpen(false);
   const [showOutside, setShowOutside] = useState(true);
   const [mapRef, setMapRef] = useState<Map>();
 
+  useIonViewDidEnter(() => {
+    window.dispatchEvent(new Event("resize"));
+  });
   return (
     <IonModal
       isOpen={createLocationModalOpen}
@@ -196,6 +190,7 @@ export const CreateLocationModal = ({
           setLocalAnchor={setLocalAnchor}
           mapRef={mapRef}
           setMapRef={setMapRef}
+          setLocationSetMap={setLocationSetMap}
         />
       ) : (
         <CreateInside localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />

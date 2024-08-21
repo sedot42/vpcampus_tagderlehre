@@ -4,9 +4,17 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { MapContainerComponent } from "./MapContainerComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
-import { Anchor } from "../../types/types";
+import { Anchor, DraftAnchor } from "../../types/types";
 
-export const MapComponent: React.FC = () => {
+export const MapComponent = ({
+  setShowCreate,
+  setLocalAnchor,
+  setShowMapLocation,
+}: {
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { anchors } = useContext(AnchorContext);
 
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date());
@@ -80,6 +88,9 @@ export const MapComponent: React.FC = () => {
         <MapContainerComponent
           filteredAnchors={filteredAnchors}
           setFilteredAnchors={setFilteredAnchors}
+          setShowCreate={setShowCreate}
+          setLocalAnchor={setLocalAnchor}
+          setShowMapLocation={setShowMapLocation}
         />
       </IonContent>
       <TimeSliderComponent
