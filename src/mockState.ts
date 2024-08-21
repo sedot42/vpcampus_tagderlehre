@@ -127,7 +127,7 @@ export const mockState = [
   {
     id: "5888f33f-90e2-2219-9ccc-d8316f0bd555",
     anchor_name: "Test",
-    lat: 47.534730782168, 
+    lat: 47.534730782168,
     lon: 7.6422768226032,
     floor_nr: 8,
     created_at: "2024-07-11T15:54:35.991Z",
@@ -140,7 +140,7 @@ export const mockState = [
   {
     id: "5888f33f-90e2-2219-9ccc-d8316f0b6667",
     anchor_name: "Test2",
-    lat: 47.534730782168, 
+    lat: 47.534730782168,
     lon: 7.6422768226032,
     floor_nr: 8,
     created_at: "2024-07-06T15:54:35.991Z",
