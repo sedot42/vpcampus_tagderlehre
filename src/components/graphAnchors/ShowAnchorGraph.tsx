@@ -78,7 +78,7 @@ export const ShowAnchorGraph: React.FC = () => {
 
   return (
     <IonPage>
-      <StatusHeader titleText="Erstellen" />
+      <StatusHeader titleText="Graph" />
       <IonContent fullscreen>
         <Graph
           data={filteredData}

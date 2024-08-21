@@ -75,7 +75,7 @@ export const MapComponent: React.FC = () => {
 
   return (
     <IonPage>
-      <StatusHeader titleText="Erstellen" />
+      <StatusHeader titleText="Karte" />
       <IonContent fullscreen>
         <MapContainerComponent
           filteredAnchors={filteredAnchors}
