@@ -52,6 +52,7 @@ import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph
 import { draftAnchor } from "./types/defaults";
 import { useState } from "react";
 import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
+import { ViewAnchorModal } from "./components/manageAnchors/ViewAnchorModal";
 
 setupIonicReact();
 
@@ -60,6 +61,10 @@ const App: React.FC = () => {
   const [localAnchor, setLocalAnchor] = useState(draftAnchor);
   const [showDate, setShowDate] = useState<boolean>(false);
   const [showCreate, setShowCreate] = useState<boolean>(false);
+
+  // States for view modal
+  const [showView, setShowView] = useState<boolean>(false);
+  const [showViewEventID, setShowViewEventID] = useState<string>("");
 
   return (
     <AnchorProvider>
@@ -72,6 +77,8 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
                   setShowDate={setShowDate}
+                  setShowView={setShowView}
+                  setShowViewEventID={setShowViewEventID}
                 />
               </Route>
               <Route exact path="/calendarHeatmap">
@@ -130,6 +137,11 @@ const App: React.FC = () => {
           showDate={showDate}
           setShowDate={setShowDate}
         ></CreateAnchorModal>
+        <ViewAnchorModal
+          showView={showView}
+          setShowView={setShowView}
+          showViewEventID={showViewEventID}
+        ></ViewAnchorModal>
       </IonApp>
     </AnchorProvider>
   );

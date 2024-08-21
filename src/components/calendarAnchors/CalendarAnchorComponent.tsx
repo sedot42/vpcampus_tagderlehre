@@ -18,7 +18,6 @@ import {
 import { mockState } from "../../mockState";
 import { RefObject, useRef, useState } from "react";
 import { DateSelectArg } from "@fullcalendar/core";
-import { CalendarAnchorEvent } from "./CalendarAnchorEvent";
 import { Anchor, DraftAnchor } from "../../types/types";
 import { draftAnchor } from "../../types/defaults";
 
@@ -26,10 +25,14 @@ export const CalendarAnchorComponent = ({
   setShowCreate,
   setLocalAnchor,
   setShowDate,
+  setShowView,
+  setShowViewEventID,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowViewEventID: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
 
@@ -38,6 +41,7 @@ export const CalendarAnchorComponent = ({
 
   // Function for select interaction
   function handleSelect(eventInfo: DateSelectArg) {
+    // create draft Anchor with start and end time
     const selectAnchor: DraftAnchor<Anchor> = {
       start_at: eventInfo.startStr,
       end_at: eventInfo.endStr,
@@ -50,11 +54,9 @@ export const CalendarAnchorComponent = ({
 
   // function for event interaction
   function handleEvent(event: EventInput) {
-    setShowEvent(true);
-    setEventID(event.event.id);
+    setShowView(true);
+    setShowViewEventID(event.event.id);
   }
-  const [showEvent, setShowEvent] = useState<boolean>(false);
-  const [eventID, setEventID] = useState<string>("");
 
   // Function to manually update the calendar size
   function updateCalendarSize(calendarRef: RefObject<FullCalendar>) {
@@ -129,17 +131,6 @@ export const CalendarAnchorComponent = ({
           // Handle eventClick
           eventClick={handleEvent}
         />
-        {/*  <CalendarAnchorCreate
-          showCreate={showCreate}
-          setShowCreate={setShowCreate}
-          createStart={createStart}
-          createEnd={createEnd}
-        ></CalendarAnchorCreate> */}
-        <CalendarAnchorEvent
-          showEvent={showEvent}
-          setShowEvent={setShowEvent}
-          eventID={eventID}
-        ></CalendarAnchorEvent>
       </IonContent>
 
       {/* Button to change fullweek/workweek -> Button and state should be moved to options */}
