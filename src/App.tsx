@@ -16,6 +16,7 @@ import {
   mapOutline,
   settingsOutline,
   gitNetworkOutline,
+  qrCodeOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -53,6 +54,7 @@ import { draftAnchor } from "./types/defaults";
 import { useState } from "react";
 import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
 import { ViewAnchorModal } from "./components/manageAnchors/ViewAnchorModal";
+import { ScanQRAnchorsComponent } from "./components/scanQRAnchors/scanQRAnchorsComponent";
 
 setupIonicReact();
 
@@ -102,6 +104,9 @@ const App: React.FC = () => {
               <Route exact path="/">
                 <Redirect to="/mapAnchors" />
               </Route>
+              <Route exact path="/qrscanner">
+                <ScanQRAnchorsComponent />
+              </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
@@ -122,6 +127,12 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={createOutline} size="large" />
                 <IonLabel>Verwalten</IonLabel>
               </IonTabButton>
+
+              <IonTabButton tab="qrScanner" href="/qrscanner">
+                <IonIcon aria-hidden="true" icon={qrCodeOutline} size="large" />
+                <IonLabel>QR Scanner</IonLabel>
+              </IonTabButton>
+
               <IonTabButton tab="settings" href="/settings">
                 <IonIcon aria-hidden="true" icon={settingsOutline} size="large" />
                 <IonLabel>Optionen</IonLabel>
