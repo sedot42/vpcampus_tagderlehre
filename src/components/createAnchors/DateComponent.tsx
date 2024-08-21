@@ -41,6 +41,7 @@ export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps
       <IonModal keepContentsMounted={true}>
         <IonDatetime
           id="starttime"
+          value={localAnchor.start_at}
           presentation="date-time"
           showDefaultButtons
           preferWheel
@@ -53,6 +54,7 @@ export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps
       <IonModal keepContentsMounted={true}>
         <IonDatetime
           id="endtime"
+          value={localAnchor.end_at}
           showDefaultButtons
           preferWheel
           presentation="date-time"

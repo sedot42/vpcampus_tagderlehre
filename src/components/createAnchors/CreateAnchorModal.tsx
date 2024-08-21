@@ -1,12 +1,12 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import {
-  IonPage,
   IonButton,
   IonFooter,
   IonContent,
   IonItem,
   IonToggle,
   useIonToast,
+  IonModal,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
 import {
@@ -15,8 +15,7 @@ import {
   DBAnchor,
   DraftAnchor,
 } from "../../types/types";
-import { draftAnchor } from "../../types/defaults";
-import { StatusHeader } from "../globalUI/StatusHeader";
+//import { draftAnchor } from "../../types/defaults";
 import { AnchorContext } from "../../anchorContext";
 import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import { DateComponent } from "./DateComponent";
@@ -30,10 +29,24 @@ export type AnchorCreateProps = {
   setLocalAnchor: (anchor: DraftAnchor<Anchor>) => void;
 };
 
-export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) => {
+export const CreateAnchorModal = ({
+  showCreate,
+  setShowCreate,
+  //closeModal,
+  localAnchor,
+  setLocalAnchor,
+  showDate,
+  setShowDate,
+}: {
+  showCreate: boolean;
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  //closeModal: () => void;
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  showDate: boolean;
+  setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { createOneAnchor } = useContext(AnchorContext);
-  const [localAnchor, setLocalAnchor] = useState(draftAnchor);
-  const [showDate, setShowDate] = useState<boolean>(false);
 
   const [present] = useIonToast();
 
@@ -50,10 +63,12 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
     console.log(dbAnchor);
     createOneAnchor(dbAnchor as DBAnchor);
-    setLocalAnchor(draftAnchor);
-    closeModal();
+    //setLocalAnchor(draftAnchor); // Why?
+    //closeModal();
     presentToast("middle");
   };
+
+  console.log(localAnchor);
 
   const configTitle: ConfigInput[] = [
     {
@@ -77,7 +92,12 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
   ];
 
   return (
-    <>
+    <IonModal
+      isOpen={showCreate}
+      initialBreakpoint={1}
+      breakpoints={[0, 0.3, 1]}
+      onIonModalDidDismiss={() => setShowCreate(false)}
+    >
       <IonContent className="ion-padding" fullscreen>
         {/* part for entering the name */}
         {createInputs(localAnchor, setLocalAnchor, configTitle)}
@@ -98,7 +118,11 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
           </IonToggle>
         </IonItem>
         <IonItem lines="none">
-          <IonToggle onIonChange={() => setShowDate(!showDate)} labelPlacement="start">
+          <IonToggle
+            checked={showDate}
+            onIonChange={() => setShowDate(!showDate)}
+            labelPlacement="start"
+          >
             Zeit
           </IonToggle>
         </IonItem>
@@ -127,7 +151,7 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
           id="abort"
           fill="clear"
           color="dark"
-          onClick={closeModal}
+          onClick={() => setShowCreate(false)}
           expand="block"
           style={{ padding: "4px" }}
         >
@@ -144,6 +168,6 @@ export const CreateAnchorModal = ({ closeModal }: { closeModal: () => void }) =>
           Erstellen
         </IonButton>
       </IonFooter>
-    </>
+    </IonModal>
   );
 };

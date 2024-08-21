@@ -17,11 +17,20 @@ import {
 } from "./CalendarAnchorSettings";
 import { mockState } from "../../mockState";
 import { RefObject, useRef, useState } from "react";
-import { CalendarAnchorCreate } from "./CalendarAnchorCreate";
 import { DateSelectArg } from "@fullcalendar/core";
 import { CalendarAnchorEvent } from "./CalendarAnchorEvent";
+import { Anchor, DraftAnchor } from "../../types/types";
+import { draftAnchor } from "../../types/defaults";
 
-export const CalendarAnchorComponent = () => {
+export const CalendarAnchorComponent = ({
+  setShowCreate,
+  setLocalAnchor,
+  setShowDate,
+}: {
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
 
   // Create reference to the calendar (Needs to be checked against 0)
@@ -29,19 +38,20 @@ export const CalendarAnchorComponent = () => {
 
   // Function for select interaction
   function handleSelect(eventInfo: DateSelectArg) {
-    setCreateStart(eventInfo.startStr);
-    setCreateEnd(eventInfo.endStr);
+    const selectAnchor: DraftAnchor<Anchor> = {
+      start_at: eventInfo.startStr,
+      end_at: eventInfo.endStr,
+      ...draftAnchor,
+    };
+    setLocalAnchor(selectAnchor);
+    setShowDate(true);
     setShowCreate(true);
   }
-  const [showCreate, setShowCreate] = useState<boolean>(false);
-  const [createStart, setCreateStart] = useState<string>("");
-  const [createEnd, setCreateEnd] = useState<string>("");
 
   // function for event interaction
   function handleEvent(event: EventInput) {
     setShowEvent(true);
     setEventID(event.event.id);
-    //console.log(event.event);
   }
   const [showEvent, setShowEvent] = useState<boolean>(false);
   const [eventID, setEventID] = useState<string>("");
@@ -119,12 +129,12 @@ export const CalendarAnchorComponent = () => {
           // Handle eventClick
           eventClick={handleEvent}
         />
-        <CalendarAnchorCreate
+        {/*  <CalendarAnchorCreate
           showCreate={showCreate}
           setShowCreate={setShowCreate}
           createStart={createStart}
           createEnd={createEnd}
-        ></CalendarAnchorCreate>
+        ></CalendarAnchorCreate> */}
         <CalendarAnchorEvent
           showEvent={showEvent}
           setShowEvent={setShowEvent}

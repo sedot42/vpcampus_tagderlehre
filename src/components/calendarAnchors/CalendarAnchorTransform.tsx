@@ -1,7 +1,7 @@
 import { EventInput } from "@fullcalendar/core";
-import { Anchor } from "../../types/types";
+import { DBAnchor } from "../../types/types";
 
-export const transformEvent = (event: Anchor): EventInput => {
+export const transformEvent = (event: DBAnchor): EventInput => {
   const { anchor_name, start_at, end_at, ...rest } = event;
 
   let allDay: boolean = false;
