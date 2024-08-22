@@ -29,10 +29,16 @@ import {
   IonRadio,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
+import {
+  CapacitorBarcodeScanner,
+  CapacitorBarcodeScannerTypeHint,
+} from "@capacitor/barcode-scanner";
+import * as wellknown from "wellknown";
 import "../../theme/styles.css";
 
 import { CreatePlaceComponent } from "./CreatePlaceComponent";
 import { UniversalSearchBar } from "../../globalUI/UniversalSearchBar";
+import * as roomData from "../mapAnchors/floorplan/room_geometries/mapdata-campus-default.jsonDB.json";
 
 export const CreateLocationComponent = ({
   anchors,
@@ -349,6 +355,44 @@ export const CreateLocationComponent = ({
     setSelectedLocationDictionary({});
   };
 
+  // reset the constants for a new temporary location
+  const scanRoomQRCode = async function () {
+    try {
+      let { ScanResult } = await CapacitorBarcodeScanner.scanBarcode({
+        scanInstructions: "Bitte scanne den QR-Code eines Raumes",
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
+      });
+      console.log("Barcode data", ScanResult);
+      // try to get the room number from the scan result
+      const roomID = new URL(ScanResult).searchParams.get("idRoom");
+      if (roomID) {
+        // TODO Extract roomNumber from roomID via evento?
+      }
+      const roomNumber = RegExp(/(\d+\.\d+\.)(?<room>.+)$/, "gm").exec(ScanResult)?.groups
+        ?.room;
+      console.log(roomNumber, roomID, ScanResult);
+      alert(`Scan-Ergebnis: ${roomNumber}`);
+      const room = roomData.rooms.find((room) => room.nr === roomNumber);
+      if (!room) throw "Raum konnte nicht ermittelt werden";
+      // TODO geometry is in the local pixel CRS of the campusapp floorplan
+      const roomGeometry = wellknown.parse(room.wkt_pt);
+      console.log(roomGeometry, room);
+      const newLocation = {
+        room_id: room.nr,
+        lat: roomGeometry.coordinates[0],
+        lon: roomGeometry.coordinates[1],
+        floor_nr: room.lvl,
+        building_id: "", // TODO
+        address_string: "",
+        campus_id: "",
+      };
+      temporaryLocationList.push(newLocation);
+      setSelectedLocationDictionary(newLocation);
+    } catch (err) {
+      alert(`Fehler beim Scannen des Raumes: ${err}`);
+    }
+  };
+
   return (
     <>
       {/* part for the selection of a location */}
@@ -408,12 +452,15 @@ export const CreateLocationComponent = ({
         </IonContent>
         <div style={{ position: "relative", width: "100%" }}>
           <IonButton
-            onClick={() => alert("Ready for QR-Scanning?")}
+            onClick={scanRoomQRCode}
+            size="large"
             shape="round"
             style={{
               position: "absolute",
               right: "2px",
               bottom: "2px",
+              width: "50px",
+              height: "50px",
             }}
           >
             <IonIcon icon={qrCodeOutline} slot="icon-only" size="large"></IonIcon>
