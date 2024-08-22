@@ -22,13 +22,13 @@ import { AnchorContext } from "../../anchorContext";
 export const UpdateModal = ({
   modalData,
   setModalData,
-  openModal,
-  setOpenModal,
+  openUpdateModal,
+  setOpenUpdateModal,
 }: {
   modalData: Anchor;
   setModalData: (anchor: Anchor) => void;
-  openModal: boolean;
-  setOpenModal: (openModal: boolean) => void;
+  openUpdateModal: boolean;
+  setOpenUpdateModal: (openUpdateModal: boolean) => void;
 }) => {
   const { updateOneAnchor } = useContext(AnchorContext);
   const { deleteOneAnchor } = useContext(AnchorContext);
@@ -84,13 +84,13 @@ export const UpdateModal = ({
   };
 
   return (
-    <IonModal isOpen={openModal} onWillDismiss={() => setOpenModal(false)}>
+    <IonModal isOpen={openUpdateModal} onWillDismiss={() => setOpenUpdateModal(false)}>
       <IonHeader>
         <IonToolbar>
           <IonIcon size="large" slot="start"></IonIcon>
           <IonTitle style={{ textAlign: "center" }}>Edit Anchor</IonTitle>
           <IonButtons slot="end">
-            <IonButton onClick={() => setOpenModal(false)}>
+            <IonButton onClick={() => setOpenUpdateModal(false)}>
               <IonIcon icon={closeOutline} size="large"></IonIcon>
             </IonButton>
           </IonButtons>
@@ -105,7 +105,7 @@ export const UpdateModal = ({
           color="danger"
           onClick={() => {
             deleteOneAnchor(modalData.id);
-            setOpenModal(false);
+            setOpenUpdateModal(false);
           }}
         >
           <IonIcon aria-hidden="true" icon={trashOutline} /> Delete Anchor
@@ -127,7 +127,7 @@ export const UpdateModal = ({
           onClick={() => {
             // Convert from flat to nested for DB update
             updateOneAnchor(convertFlatAnchorToDBAnchor(modalData));
-            setOpenModal(false);
+            setOpenUpdateModal(false);
           }}
         >
           Save

@@ -68,6 +68,7 @@ const App: React.FC = () => {
   // States for view modal
   const [showView, setShowView] = useState<boolean>(false);
   const [showViewAnchorID, setShowViewAnchorID] = useState<string>("");
+  //const { anchors, deleteOneAnchor } = useContext(AnchorContext); // Somehow does not work in app.tsx?!
 
   return (
     <AnchorProvider>
@@ -101,7 +102,11 @@ const App: React.FC = () => {
                 />
               </Route>
               <Route path="/manageAnchors">
-                <ManageAnchorsComponent setShowCreate={setShowCreate} />
+                <ManageAnchorsComponent
+                  setShowCreate={setShowCreate}
+                  //anchors={anchors}
+                  //deleteOneAnchor={deleteOneAnchor}
+                />
               </Route>
               <Route path="/settings">
                 <SettingsComponent />
@@ -159,6 +164,8 @@ const App: React.FC = () => {
           showView={showView}
           setShowView={setShowView}
           showViewAnchorID={showViewAnchorID}
+          //anchors={anchors}
+          //deleteOneAnchor={deleteOneAnchor}
         ></ViewAnchorModal>
       </IonApp>
     </AnchorProvider>

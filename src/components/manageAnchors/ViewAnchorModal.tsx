@@ -1,34 +1,32 @@
-import {
-  IonButton,
-  IonCard,
-  IonIcon,
-  IonItem,
-  IonItemSliding,
-  IonLabel,
-  IonModal,
-  IonNote,
-  IonList,
-} from "@ionic/react";
-import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
-import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
+import { IonList, IonModal } from "@ionic/react";
+import {} from "ionicons/icons";
+import { Anchor } from "../../types/types";
 import { useContext, useRef, useState } from "react";
 import { AnchorContext } from "../../anchorContext";
+import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
 
 export const ViewAnchorModal = ({
   showView,
   setShowView,
   showViewAnchorID,
-}: {
+}: //anchors,
+//deleteOneAnchor,
+{
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   showViewAnchorID: string;
+  //anchors: DBAnchor[];
+  //deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
-  const { anchors, deleteOneAnchor } = useContext(AnchorContext);
-  const [openModal, setOpenModal] = useState(false);
-  const [modalData, setModalData] = useState<Anchor | undefined>();
+  const { anchors, deleteOneAnchor } = useContext(AnchorContext); // load anchors state and delete action
+  const [openUpdateModal, setOpenUpdateModal] = useState(false); // for opening later the edit modal
+  const [modalData, setModalData] = useState<Anchor | undefined>(); // for passing the selected modal data
+  console.log(anchors);
 
+  // Reference of the viewModal
   const viewModal = useRef<HTMLIonModalElement>(null); // reference for the viewModal
 
+  // Filter all anchors which match the List of IDs (which is set by other component)
   const filteredAnchors = anchors.filter((anchor) => anchor.id === showViewAnchorID);
 
   return (
@@ -45,61 +43,15 @@ export const ViewAnchorModal = ({
       <IonList>
         {showViewAnchorID && // If there is no Event ID (e.g. on App Launch) this content should not render
           filteredAnchors.map((anchor, index) => (
-            <IonCard
+            // Load content from CardsComponent (shared with other components)
+            <ListAnchorsAsCardsComponent
               key={index}
-              style={{ cursor: "pointer" }}
-              onClick={() => viewModal.current?.setCurrentBreakpoint(1)}
-            >
-              <IonItemSliding>
-                <IonItem
-                  lines="none"
-                  id={"open-modal-" + index}
-                  onClick={() => {
-                    setModalData(convertDBAnchorToFlatAnchor(anchor as DBAnchor));
-                    setOpenModal(true);
-                  }}
-                >
-                  <IonLabel>
-                    <div style={{ fontWeight: 700, color: "black" }}>
-                      {anchor.anchor_name}
-                    </div>
-                    <IonNote class="ion-text-wrap">
-                      {anchor.loc_description
-                        ? `${anchor.loc_description}`
-                        : "Keine Beschreibung vorhanden"}{" "}
-                      <br />
-                      {anchor.start_at &&
-                        anchor.end_at &&
-                        `Start: ${new Date(anchor.start_at).toLocaleString()} `}
-                      <br />
-                      {anchor.start_at &&
-                        anchor.end_at &&
-                        `Ende: ${new Date(anchor.end_at).toLocaleString()}`}
-                      <br />
-                      {(anchor.room_id || anchor.campus_id || anchor.faculty_name) &&
-                        `Ort: ${anchor.room_id || ""} ${
-                          anchor.room_id && (anchor.faculty_name || anchor.campus_id)
-                            ? ", "
-                            : ""
-                        }${anchor.faculty_name || ""} ${
-                          anchor.faculty_name && anchor.campus_id ? ", " : ""
-                        }${anchor.campus_id || ""}`}
-                    </IonNote>
-                  </IonLabel>
-                </IonItem>
-                <>
-                  <IonButton>
-                    <IonIcon icon={createOutline} size="small" />
-                  </IonButton>
-                  <IonButton>
-                    <IonIcon icon={mapOutline} size="small" />
-                  </IonButton>
-                  <IonButton>
-                    <IonIcon icon={trashOutline} size="small" />
-                  </IonButton>
-                </>
-              </IonItemSliding>
-            </IonCard>
+              anchor={anchor}
+              index={index}
+              setModalData={setModalData}
+              setOpenUpdateModal={setOpenUpdateModal}
+              deleteOneAnchor={deleteOneAnchor}
+            ></ListAnchorsAsCardsComponent>
           ))}
       </IonList>
     </IonModal>
