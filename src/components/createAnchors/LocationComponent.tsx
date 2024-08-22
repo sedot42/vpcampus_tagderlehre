@@ -71,6 +71,7 @@ export const LocationGroup = ({
     setLocalAnchor({ lat: null, lon: null, room_id: null });
     setLocationSet(false);
     setLocationSetMap(false);
+    setShowMapLocation(false);
     setActiveButton("none");
   };
 
@@ -101,7 +102,9 @@ export const LocationGroup = ({
           {!locationSetMap && !showMapLocation ? (
             <IonButton
               onClick={handleMapButtonClick}
-              disabled={activeButton !== "none" && activeButton !== "map"}
+              disabled={
+                (activeButton !== "none" && activeButton !== "map") || showMapLocation
+              }
             >
               Über Karte wählen
             </IonButton>
@@ -131,7 +134,9 @@ export const LocationGroup = ({
           <IonButton
             color={localAnchor.room_id ? "medium" : "primary"}
             onClick={localAnchor.room_id ? resetLocation : handleListeClick}
-            disabled={activeButton !== "none" && activeButton !== "list"}
+            disabled={
+              (activeButton !== "none" && activeButton !== "list") || showMapLocation
+            }
           >
             <IonLabel className="ion-text-wrap">
               {localAnchor.room_id ? `Room: ${localAnchor.room_id}` : "Raum über Liste"}
@@ -171,7 +176,9 @@ export const LocationGroup = ({
           {!locationSet ? (
             <IonButton
               onClick={handleLocationClick}
-              disabled={activeButton !== "none" && activeButton !== "current"}
+              disabled={
+                (activeButton !== "none" && activeButton !== "current") || showMapLocation
+              }
             >
               Aktuellen Standort verwenden
             </IonButton>

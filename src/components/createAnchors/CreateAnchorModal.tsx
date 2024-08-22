@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   IonButton,
   IonFooter,
@@ -23,6 +23,8 @@ import { ModalButton } from "../globalUI/Buttons";
 import { TagComponent } from "./TagComponent";
 import { GroupComponent } from "./GroupComponent";
 import { LocationGroup } from "./LocationComponent";
+import { draftAnchor } from "../../types/defaults";
+import { v4 as uuidv4 } from "uuid";
 
 export const CreateAnchorModal = ({
   showCreate,
@@ -58,17 +60,19 @@ export const CreateAnchorModal = ({
     });
   };
 
+  useEffect(() => setLocalAnchor({ ...localAnchor, id: uuidv4() }), []);
+
   const handleSubmission = () => {
+    console.log(localAnchor);
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
-    console.log(dbAnchor);
+
     createOneAnchor(dbAnchor as DBAnchor);
-    //setLocalAnchor(draftAnchor); // Why?
+    setLocalAnchor(draftAnchor); // Why?
     //closeModal();
     presentToast("middle");
     setShowMapLocation(false);
+    setShowCreate(false);
   };
-
-  console.log(localAnchor);
 
   const configTitle: ConfigInput[] = [
     {
