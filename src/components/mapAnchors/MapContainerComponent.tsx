@@ -10,37 +10,33 @@ import {
   IonLabel,
   IonList,
   IonRange,
-  IonButton,
-  IonContent,
-  IonModal,
 } from "@ionic/react";
-import { MapContainer, Marker, WMSTileLayer, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, WMSTileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { AnchorInfoModal } from "./AnchorInfoModal";
 import { LocateControl } from "./LocateControl";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Anchor, DraftAnchor } from "../../types/types";
-import { addOutline, layersOutline } from "ionicons/icons";
+import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
+import { layersOutline } from "ionicons/icons";
 
-import { CreateAnchorModal } from "../createAnchors/CreateAnchorModal";
 import { draftAnchor } from "../../types/defaults";
 
 export const MapContainerComponent = ({
   filteredAnchors,
-  setFilteredAnchors,
   setShowCreate,
   setLocalAnchor,
   setShowMapLocation,
+  setShowView,
+  setShowViewAnchorID,
 }: {
-  filteredAnchors: Anchor[];
-  setFilteredAnchors: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  filteredAnchors: DBAnchor[];
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
-  const [validAnchors, setValidAnchors] = useState<Anchor[]>([]);
-  const [selectedMarker, setSelectedMarker] = useState<Anchor[]>([]);
+  const [validAnchors, setValidAnchors] = useState<DBAnchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<string>("openstreetmap");
   const [sliderValue, setSliderValue] = useState(1);
@@ -50,7 +46,6 @@ export const MapContainerComponent = ({
   const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
   const mousedownInterval = useRef<NodeJS.Timeout | null>(null);
   const startPosition = useRef<[number, number] | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));
@@ -81,29 +76,21 @@ export const MapContainerComponent = ({
     });
   };
 
-  const groupMarkersByCoordinates = () => {
-    const grouped: { [key: string]: Anchor[] } = {};
-    mapAnchors.forEach((marker) => {
-      const key = `${marker.lat},${marker.lon}`;
-      if (!grouped[key]) {
-        grouped[key] = [];
-      }
-      grouped[key].push(marker);
-    });
-    return grouped;
-  };
+  const handleAnchorClick = (anchor) => {
+    console.log(anchor);
+    const lat: number = anchor.lat;
+    const lon: number = anchor.lon;
+    //const anchor_id: string = anchor.id;
+    // Find all anchors with the same coordinates
 
-  const handleAnchorClick = (lat: number, lon: number) => {
-    const groupedMarkers = groupMarkersByCoordinates();
-    const key = `${lat},${lon}`;
-    setSelectedMarker(groupedMarkers[key] || []);
+    const matchingAnchors = mapAnchors.filter((a) => a.lat === lat && a.lon === lon);
+    console.log(matchingAnchors);
+    // Collect their IDs
+    const anchorIDs = matchingAnchors.map((a) => a.id);
+    console.log(anchorIDs);
+    setShowView(true);
+    setShowViewAnchorID(anchorIDs);
   };
-
-  const handleCloseDetails = () => {
-    setSelectedMarker([]);
-  };
-
-  const groupedMarkers = groupMarkersByCoordinates();
 
   const handleLayerChange = (layerUrl: string) => {
     if (layerUrl === "etagenplaene_image") {
@@ -212,28 +199,7 @@ export const MapContainerComponent = ({
       };
     }, [map]);
 
-    return (
-      <>
-        {markerPosition && <Marker position={markerPosition} />}
-        {/* {showCreate && (
-          <IonModal
-            isOpen={showCreate}
-            initialBreakpoint={0.3}
-            breakpoints={[0, 0.3, 1]}
-            onIonModalDidDismiss={() => {
-              setShowCreate(false);
-              setMarkerPosition(null);
-            }}
-          >
-            <CreateAnchorModal
-              closeModal={() => {
-                setModalOpen(false), setMarkerPosition(null), setShowCreate(false);
-              }}
-            ></CreateAnchorModal>
-          </IonModal>
-        )} */}
-      </>
-    );
+    return <>{markerPosition && <Marker position={markerPosition} />}</>;
   };
 
   return (
@@ -313,19 +279,15 @@ export const MapContainerComponent = ({
           spiderfyOnMaxZoom={false}
           disableClusteringAtZoom={16}
         >
-          {Object.keys(groupedMarkers).map((key) => {
-            const [lat, lon] = key.split(",").map(Number);
-            return (
-              <Marker
-                key={key}
-                position={[lat, lon]}
-                bubblingMouseEvents={false}
-                eventHandlers={{
-                  click: () => handleAnchorClick(lat, lon),
-                }}
-              />
-            );
-          })}
+          {mapAnchors.map((anchor) => (
+            <Marker
+              key={anchor.id}
+              position={[anchor.lat, anchor.lon]}
+              eventHandlers={{
+                click: () => handleAnchorClick(anchor),
+              }}
+            />
+          ))}
         </MarkerClusterGroup>
 
         <LocateControl />
@@ -354,9 +316,9 @@ export const MapContainerComponent = ({
         </div>
       </MapContainer>
 
-      {selectedMarker.length > 0 && (
+      {/*       {selectedMarker.length > 0 && (
         <AnchorInfoModal mapAnchors={mapAnchors} onClose={handleCloseDetails} />
-      )}
+      )} */}
 
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton

@@ -12,7 +12,6 @@ import {
 import { qrCodeOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "../settings/SelectionModal";
-import { AnchorCreateProps } from "./CreateAnchorModal";
 import { CreateLocationModal } from "./CreateLocationModal";
 import "../../theme/styles.css";
 import "leaflet/dist/leaflet.css";
@@ -68,7 +67,7 @@ export const LocationGroup = ({
   };
 
   const resetLocation = () => {
-    setLocalAnchor({ lat: null, lon: null, room_id: null });
+    setLocalAnchor({ lat: undefined, lon: undefined, room_id: undefined });
     setLocationSet(false);
     setLocationSetMap(false);
     setShowMapLocation(false);

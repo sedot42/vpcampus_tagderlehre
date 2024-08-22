@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -25,6 +24,14 @@ export const TimeSliderComponent = ({
   setSelectedDayFilter,
   showToastAnchorNoPos,
   setShowToastAnchorNoPos,
+}: {
+  startTimeFilter: number;
+  endTimeFilter: number;
+  setStartTimeFilter: React.Dispatch<React.SetStateAction<number>>;
+  setEndTimeFilter: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedDayFilter: React.Dispatch<React.SetStateAction<Date>>;
+  showToastAnchorNoPos: boolean;
+  setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   // Default values if not provided
   const defaultStartTime = 7;

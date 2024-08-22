@@ -67,7 +67,7 @@ const App: React.FC = () => {
 
   // States for view modal
   const [showView, setShowView] = useState<boolean>(false);
-  const [showViewEventID, setShowViewEventID] = useState<string>("");
+  const [showViewAnchorID, setShowViewAnchorID] = useState<string[]>([""]);
 
   return (
     <AnchorProvider>
@@ -81,7 +81,7 @@ const App: React.FC = () => {
                   setLocalAnchor={setLocalAnchor}
                   setShowDate={setShowDate}
                   setShowView={setShowView}
-                  setShowViewEventID={setShowViewEventID}
+                  setShowViewAnchorID={setShowViewAnchorID}
                 />
               </Route>
               <Route exact path="/calendarHeatmap">
@@ -98,6 +98,8 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
                   setShowMapLocation={setShowMapLocation}
+                  setShowView={setShowView}
+                  setShowViewAnchorID={setShowViewAnchorID}
                 />
               </Route>
               <Route path="/manageAnchors">
@@ -158,7 +160,7 @@ const App: React.FC = () => {
         <ViewAnchorModal
           showView={showView}
           setShowView={setShowView}
-          showViewEventID={showViewEventID}
+          showViewAnchorID={showViewAnchorID}
         ></ViewAnchorModal>
       </IonApp>
     </AnchorProvider>

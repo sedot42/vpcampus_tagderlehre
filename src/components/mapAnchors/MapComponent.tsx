@@ -4,26 +4,28 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { MapContainerComponent } from "./MapContainerComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
-import { Anchor, DraftAnchor } from "../../types/types";
+import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
 
 export const MapComponent = ({
   setShowCreate,
   setLocalAnchor,
   setShowMapLocation,
+  setShowView,
+  setShowViewAnchorID,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const { anchors } = useContext(AnchorContext);
 
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date());
-  const [selectedFloor] = useState<number>(2);
   const [startTimeFilter, setStartTimeFilter] = useState<number>(7);
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18);
   const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false);
-  const [filteredAnchors, setFilteredAnchors] = useState<Anchor[]>([]);
-  const [sliderValue, setSliderValue] = useState(1);
+  const [filteredAnchors, setFilteredAnchors] = useState<DBAnchor[]>([]);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));
@@ -49,8 +51,13 @@ export const MapComponent = ({
     const selectedEndMinutes = endTimeFilter * 60;
 
     const filteredAnchors = anchors.filter((anchor) => {
-      const startDate = new Date(anchor.start_at);
-      const endDate = new Date(anchor.end_at);
+      const startDate = anchor.start_at
+        ? new Date(anchor.start_at)
+        : new Date("2000-01-01T00:00:00Z");
+
+      const endDate = anchor.end_at
+        ? new Date(anchor.end_at)
+        : new Date("2000-01-01T00:00:00Z");
 
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         console.warn(`Invalid date for anchor: ${anchor.id}`);
@@ -87,10 +94,11 @@ export const MapComponent = ({
       <IonContent fullscreen>
         <MapContainerComponent
           filteredAnchors={filteredAnchors}
-          setFilteredAnchors={setFilteredAnchors}
           setShowCreate={setShowCreate}
           setLocalAnchor={setLocalAnchor}
           setShowMapLocation={setShowMapLocation}
+          setShowView={setShowView}
+          setShowViewAnchorID={setShowViewAnchorID}
         />
       </IonContent>
       <TimeSliderComponent
