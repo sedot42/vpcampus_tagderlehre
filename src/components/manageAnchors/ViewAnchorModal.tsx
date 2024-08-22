@@ -19,9 +19,6 @@ export const ViewAnchorModal = ({
   //deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext); // load anchors state and delete action
-  const [openUpdateModal, setOpenUpdateModal] = useState(false); // for opening later the edit modal
-  const [modalData, setModalData] = useState<Anchor | undefined>(); // for passing the selected modal data
-  console.log(anchors);
 
   // Reference of the viewModal
   const viewModal = useRef<HTMLIonModalElement>(null); // reference for the viewModal
@@ -48,8 +45,8 @@ export const ViewAnchorModal = ({
               key={index}
               anchor={anchor}
               index={index}
-              setModalData={setModalData}
-              setOpenUpdateModal={setOpenUpdateModal}
+              //setModalData={setModalData}
+              //setOpenUpdateModal={setOpenUpdateModal}
               deleteOneAnchor={deleteOneAnchor}
             ></ListAnchorsAsCardsComponent>
           ))}

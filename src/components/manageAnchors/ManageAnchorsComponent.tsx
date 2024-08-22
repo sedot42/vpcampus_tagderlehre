@@ -20,8 +20,8 @@ export const ManageAnchorsComponent = ({
   //</React.SetStateAction>deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
-  const [modalData, setModalData] = useState<Anchor | undefined>();
+  /* const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [modalData, setModalData] = useState<Anchor | undefined>(); */
   return (
     <IonPage>
       <StatusHeader titleText="Übersicht" />
@@ -42,14 +42,14 @@ export const ManageAnchorsComponent = ({
               key={index}
               anchor={anchor} // Type error in Search Bar (returnes GenericObject instead of DBAnchor)
               index={index}
-              setModalData={setModalData}
-              setOpenUpdateModal={setOpenUpdateModal}
+              //setModalData={setModalData}
+              //setOpenUpdateModal={setOpenUpdateModal}
               deleteOneAnchor={deleteOneAnchor}
             ></ListAnchorsAsCardsComponent>
           )}
         />
 
-        {modalData && (
+        {/* {modalData && (
           <>
             <UpdateModal
               modalData={modalData}
@@ -58,7 +58,7 @@ export const ManageAnchorsComponent = ({
               setOpenUpdateModal={setOpenUpdateModal}
             />
           </>
-        )}
+        )} */}
       </IonContent>
     </IonPage>
   );

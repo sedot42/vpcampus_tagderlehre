@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonIcon,
   IonLabel,
@@ -11,20 +11,24 @@ import {
 import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { AnchorContextType } from "../../anchorContext";
+import { UpdateModal } from "./UpdateModal";
 
 export const ListAnchorsAsCardsComponent = ({
   anchor,
   index,
-  setModalData,
-  setOpenUpdateModal,
+  //setModalData,
+  //setOpenUpdateModal,
   deleteOneAnchor,
 }: {
   anchor: DBAnchor;
   index: number;
-  setModalData: React.Dispatch<React.SetStateAction<Anchor | undefined>>;
-  setOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
+  //setModalData: React.Dispatch<React.SetStateAction<Anchor | undefined>>;
+  //setOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [modalData, setModalData] = useState<Anchor | undefined>();
+
   return (
     <IonCard key={index} style={{ cursor: "pointer" }}>
       <IonItemSliding>
@@ -61,7 +65,19 @@ export const ListAnchorsAsCardsComponent = ({
           </IonLabel>
         </IonItem>
         <>
-          <IonButton>
+          <IonButton
+            onClick={() => {
+              modalData && (
+                <UpdateModal
+                  modalData={modalData}
+                  setModalData={setModalData}
+                  openUpdateModal={openUpdateModal}
+                  setOpenUpdateModal={setOpenUpdateModal}
+                ></UpdateModal>
+              );
+              console.log("edited", modalData);
+            }}
+          >
             <IonIcon icon={createOutline} size="small" />
           </IonButton>
           <IonButton>
