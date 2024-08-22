@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useRef } from "react";
 import {
   IonButton,
   IonFooter,
@@ -50,6 +50,8 @@ export const CreateAnchorModal = ({
 
   const [present] = useIonToast();
 
+  const createModal = useRef<HTMLIonModalElement>(null); // reference for the createModal
+
   const presentToast = (position: "top" | "middle" | "bottom") => {
     present({
       message: "Anker wurde erstellt!",
@@ -91,6 +93,7 @@ export const CreateAnchorModal = ({
 
   return (
     <IonModal
+      ref={createModal}
       isOpen={showCreate}
       initialBreakpoint={0.3}
       breakpoints={[0, 0.3, 1]}
@@ -99,7 +102,11 @@ export const CreateAnchorModal = ({
       }}
       onIonModalWillPresent={() => setLocalAnchor({ ...localAnchor, id: uuidv4() })} // Create new uuID each time the modal opens
     >
-      <IonContent className="ion-padding" fullscreen>
+      <IonContent
+        className="ion-padding"
+        fullscreen
+        onClick={() => createModal.current?.setCurrentBreakpoint(1)} // when clicking into modal, it should expand to full height
+      >
         {/* part for entering the name */}
         {createInputs(localAnchor, setLocalAnchor, configTitle)}
 

@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { AnchorContext } from "../../anchorContext";
 
 export const ViewAnchorModal = ({
@@ -27,10 +27,13 @@ export const ViewAnchorModal = ({
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
 
+  const viewModal = useRef<HTMLIonModalElement>(null); // reference for the viewModal
+
   const filteredAnchors = anchors.filter((anchor) => anchor.id === showViewAnchorID);
 
   return (
     <IonModal
+      ref={viewModal}
       isOpen={showView}
       initialBreakpoint={0.3}
       breakpoints={[0, 0.3, 1]}
@@ -42,7 +45,11 @@ export const ViewAnchorModal = ({
       <IonList>
         {showViewAnchorID && // If there is no Event ID (e.g. on App Launch) this content should not render
           filteredAnchors.map((anchor, index) => (
-            <IonCard key={index} style={{ cursor: "pointer" }}>
+            <IonCard
+              key={index}
+              style={{ cursor: "pointer" }}
+              onClick={() => viewModal.current?.setCurrentBreakpoint(1)}
+            >
               <IonItemSliding>
                 <IonItem
                   lines="none"
