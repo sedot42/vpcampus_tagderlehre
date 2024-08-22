@@ -54,7 +54,7 @@ import { draftAnchor } from "./types/defaults";
 import { useState } from "react";
 import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
 import { ViewAnchorModal } from "./components/manageAnchors/ViewAnchorModal";
-import { ScanQRAnchorsComponent } from "./components/scanQRAnchors/scanQRAnchorsComponent";
+import { ScanQRAnchorsComponent } from "./components/scanQRAnchors/ScanQRAnchorsComponent";
 
 setupIonicReact();
 

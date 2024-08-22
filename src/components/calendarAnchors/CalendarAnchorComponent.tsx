@@ -15,11 +15,11 @@ import {
   eventTimeFormatSetting,
   viewsSettings,
 } from "./CalendarAnchorSettings";
-import { mockState } from "../../mockState";
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useContext, useRef, useState } from "react";
 import { DateSelectArg } from "@fullcalendar/core";
 import { Anchor, DraftAnchor } from "../../types/types";
 import { draftAnchor } from "../../types/defaults";
+import { AnchorContext } from "../../anchorContext";
 
 export const CalendarAnchorComponent = ({
   setShowCreate,
@@ -35,6 +35,7 @@ export const CalendarAnchorComponent = ({
   setShowViewEventID: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
+  const { anchors } = useContext(AnchorContext);
 
   // Create reference to the calendar (Needs to be checked against 0)
   const calendarRef = useRef<FullCalendar>(null);
@@ -80,7 +81,7 @@ export const CalendarAnchorComponent = ({
         <FullCalendar
           ref={calendarRef}
           locale="ch" // Time and Date formatting according to locale
-          events={mockState.map(transformEvent)} // Load and transform events
+          events={anchors.map(transformEvent)} // Load and transform events
           height="100%"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           //
