@@ -16,6 +16,7 @@ import {
   mapOutline,
   settingsOutline,
   gitNetworkOutline,
+  qrCodeOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -52,6 +53,8 @@ import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph
 import { draftAnchor } from "./types/defaults";
 import { useState } from "react";
 import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
+import { ViewAnchorModal } from "./components/manageAnchors/ViewAnchorModal";
+import { ScanQRAnchorsComponent } from "./components/scanQRAnchors/ScanQRAnchorsComponent";
 
 setupIonicReact();
 
@@ -61,6 +64,10 @@ const App: React.FC = () => {
   const [showDate, setShowDate] = useState<boolean>(false);
   const [showCreate, setShowCreate] = useState<boolean>(false);
   const [showMapLocation, setShowMapLocation] = useState<boolean>(false);
+
+  // States for view modal
+  const [showView, setShowView] = useState<boolean>(false);
+  const [showViewEventID, setShowViewEventID] = useState<string>("");
 
   return (
     <AnchorProvider>
@@ -73,6 +80,8 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
                   setShowDate={setShowDate}
+                  setShowView={setShowView}
+                  setShowViewEventID={setShowViewEventID}
                 />
               </Route>
               <Route exact path="/calendarHeatmap">
@@ -100,6 +109,9 @@ const App: React.FC = () => {
               <Route exact path="/">
                 <Redirect to="/mapAnchors" />
               </Route>
+              <Route exact path="/qrscanner">
+                <ScanQRAnchorsComponent />
+              </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
@@ -120,6 +132,12 @@ const App: React.FC = () => {
                 <IonIcon aria-hidden="true" icon={createOutline} size="large" />
                 <IonLabel>Verwalten</IonLabel>
               </IonTabButton>
+
+              <IonTabButton tab="qrScanner" href="/qrscanner">
+                <IonIcon aria-hidden="true" icon={qrCodeOutline} size="large" />
+                <IonLabel>QR Scanner</IonLabel>
+              </IonTabButton>
+
               <IonTabButton tab="settings" href="/settings">
                 <IonIcon aria-hidden="true" icon={settingsOutline} size="large" />
                 <IonLabel>Optionen</IonLabel>
@@ -137,6 +155,11 @@ const App: React.FC = () => {
           setShowMapLocation={setShowMapLocation}
           showMapLocation={showMapLocation}
         ></CreateAnchorModal>
+        <ViewAnchorModal
+          showView={showView}
+          setShowView={setShowView}
+          showViewEventID={showViewEventID}
+        ></ViewAnchorModal>
       </IonApp>
     </AnchorProvider>
   );

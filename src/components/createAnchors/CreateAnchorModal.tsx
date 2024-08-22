@@ -65,7 +65,6 @@ export const CreateAnchorModal = ({
   const handleSubmission = () => {
     console.log(localAnchor);
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
-
     createOneAnchor(dbAnchor as DBAnchor);
     setLocalAnchor(draftAnchor); // Why?
     //closeModal();
@@ -98,9 +97,11 @@ export const CreateAnchorModal = ({
   return (
     <IonModal
       isOpen={showCreate}
-      initialBreakpoint={1}
+      initialBreakpoint={0.3}
       breakpoints={[0, 0.3, 1]}
-      onIonModalDidDismiss={() => setShowCreate(false)}
+      onIonModalDidDismiss={() => {
+        setShowCreate(false), setShowDate(false);
+      }}
     >
       <IonContent className="ion-padding" fullscreen>
         {/* part for entering the name */}

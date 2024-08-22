@@ -67,11 +67,11 @@ export const ManageAnchorsComponent = ({
                       <br />
                       {anchor.start_at &&
                         anchor.end_at &&
-                        `Start: ${new Date(
-                          anchor.start_at
-                        ).toLocaleString()}  Ende: ${new Date(
-                          anchor.end_at
-                        ).toLocaleString()}`}
+                        `Start: ${new Date(anchor.start_at).toLocaleString()} `}
+                      <br />
+                      {anchor.start_at &&
+                        anchor.end_at &&
+                        `Ende: ${new Date(anchor.end_at).toLocaleString()}`}
                       <br />
                       {(anchor.room_id || anchor.campus_id || anchor.faculty_name) &&
                         `Ort: ${anchor.room_id || ""} ${
