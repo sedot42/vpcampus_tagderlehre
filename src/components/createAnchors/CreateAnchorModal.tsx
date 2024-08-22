@@ -23,7 +23,6 @@ import { ModalButton } from "../globalUI/Buttons";
 import { TagComponent } from "./TagComponent";
 import { GroupComponent } from "./GroupComponent";
 import { LocationGroup } from "./LocationComponent";
-import { draftAnchor } from "../../types/defaults";
 import { v4 as uuidv4 } from "uuid";
 
 export const CreateAnchorModal = ({
@@ -60,14 +59,10 @@ export const CreateAnchorModal = ({
     });
   };
 
-  useEffect(() => setLocalAnchor({ ...localAnchor, id: uuidv4() }), []);
-
   const handleSubmission = () => {
     console.log(localAnchor);
     const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
     createOneAnchor(dbAnchor as DBAnchor);
-    setLocalAnchor(draftAnchor); // Why?
-    //closeModal();
     presentToast("middle");
     setShowMapLocation(false);
     setShowCreate(false);
@@ -102,6 +97,7 @@ export const CreateAnchorModal = ({
       onIonModalDidDismiss={() => {
         setShowCreate(false), setShowDate(false);
       }}
+      onIonModalWillPresent={() => setLocalAnchor({ ...localAnchor, id: uuidv4() })} // Create new uuID each time the modal opens
     >
       <IonContent className="ion-padding" fullscreen>
         {/* part for entering the name */}

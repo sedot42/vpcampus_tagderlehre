@@ -17,21 +17,17 @@ import { AnchorContext } from "../../anchorContext";
 export const ViewAnchorModal = ({
   showView,
   setShowView,
-  showViewEventID,
+  showViewAnchorID,
 }: {
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  showViewEventID: string;
+  showViewAnchorID: string;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
 
-  const filteredAnchors = anchors.filter((anchor) => anchor.id === showViewEventID);
-
-  //console.log("ID:", showViewEventID);
-  console.log("Anchor", filteredAnchors);
-  //console.log("draftAnchor", draftAnchor);
+  const filteredAnchors = anchors.filter((anchor) => anchor.id === showViewAnchorID);
 
   return (
     <IonModal
@@ -44,7 +40,7 @@ export const ViewAnchorModal = ({
       }}
     >
       <IonList>
-        {showViewEventID && // If there is no Event ID (e.g. on App Launch) this content should not render
+        {showViewAnchorID && // If there is no Event ID (e.g. on App Launch) this content should not render
           filteredAnchors.map((anchor, index) => (
             <IonCard key={index} style={{ cursor: "pointer" }}>
               <IonItemSliding>
