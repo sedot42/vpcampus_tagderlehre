@@ -11,6 +11,7 @@ import {
   IonDatetime,
   IonToast,
   IonRange,
+  IonLabel,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
 import { closeOutline, alertCircleOutline } from "ionicons/icons";
@@ -53,6 +54,16 @@ export const TimeSliderComponent = ({
   return (
     <>
       <IonFooter id="footerTimeLineFilter" className="ion-padding">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <IonLabel style={{ marginRight: "10px" }}>Wähle Datum und Uhrzeit</IonLabel>
+        </div>
         <IonRange
           dualKnobs={true}
           min={0}

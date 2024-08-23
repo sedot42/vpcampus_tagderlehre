@@ -34,6 +34,7 @@ export const MapComponent = ({
   const convertTimeToMinutes = (date: Date) =>
     date.getUTCHours() * 60 + date.getUTCMinutes();
 
+  // Unify times of range-filter and anchor and then filter the anchors based on this
   const filterAnchors = () => {
     const selectedDate = new Date(
       Date.UTC(

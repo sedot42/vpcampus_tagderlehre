@@ -42,7 +42,6 @@ export const MapContainerComponent = ({
   const [sliderValue, setSliderValue] = useState(1);
   const [showRangeSlider, setShowRangeSlider] = useState(false);
   const ref = useRef(null);
-  //const [showCreate, setShowCreate] = useState<boolean>(false);
   const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null);
   const mousedownInterval = useRef<NodeJS.Timeout | null>(null);
   const startPosition = useRef<[number, number] | null>(null);
@@ -51,6 +50,7 @@ export const MapContainerComponent = ({
     window.dispatchEvent(new Event("resize"));
   });
 
+  // Timeout since the markers on the map are not rendered correctly --> should be fixed in a different way
   useEffect(() => {
     const timer = setTimeout(() => {
       setValidAnchors(filteredAnchors);
@@ -59,6 +59,7 @@ export const MapContainerComponent = ({
     return () => clearTimeout(timer);
   }, [filteredAnchors]);
 
+  // Filter the anchors based on the timeslider. If the Floorplans are displayed they should also be filtered based on the floorlevel
   const mapAnchors = useMemo(() => {
     if (selectedLayer === "etagenplaene_image") {
       return filteredAnchors.filter((anchor) => anchor.floor_nr === sliderValue);
@@ -68,6 +69,7 @@ export const MapContainerComponent = ({
     );
   }, [selectedLayer, filteredAnchors, sliderValue]);
 
+  // Clusterfunction when you zoom out. (Maybe we should find an different solution ;)
   const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
     return L.divIcon({
       html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
@@ -76,13 +78,12 @@ export const MapContainerComponent = ({
     });
   };
 
+  // On click on Anchor display the ListModal. If there are several Anchors at the same location create a list, based on their IDs
   const handleAnchorClick = (anchor) => {
     console.log(anchor);
     const lat: number = anchor.lat;
     const lon: number = anchor.lon;
-    //const anchor_id: string = anchor.id;
     // Find all anchors with the same coordinates
-
     const matchingAnchors = mapAnchors.filter((a) => a.lat === lat && a.lon === lon);
     console.log(matchingAnchors);
     // Collect their IDs
@@ -92,6 +93,7 @@ export const MapContainerComponent = ({
     setShowViewAnchorID(anchorIDs);
   };
 
+  // open/close the range slider only if the Floorplans are displayed/closed
   const handleLayerChange = (layerUrl: string) => {
     if (layerUrl === "etagenplaene_image") {
       setShowRangeSlider(true);
@@ -102,6 +104,8 @@ export const MapContainerComponent = ({
     setShowLayerControl(false);
   };
 
+  // Very complicated function. This handles the "longTouch" on the map and assures that this works on mobile and desktop.
+  // After the long touch a temporary marker is set and the "createAnchor" Modal is opened with the respective coordinates already filled out
   const MapEventHandlers = () => {
     const map = useMap();
     const [coords, setCoords] = useState(null);
@@ -127,7 +131,7 @@ export const MapContainerComponent = ({
           ...draftAnchor,
         };
         setLocalAnchor(selectAnchor);
-      }, 750);
+      }, 750); // Definition of the touch-duration
     };
 
     const handleMove = (latlng) => {
@@ -214,6 +218,7 @@ export const MapContainerComponent = ({
           [47.967830538595194, 10.594475942663449],
         ]}
       >
+        {/* initialisation of all WMS layers */}
         <WMSTileLayer
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           format="image/jpeg"
@@ -271,6 +276,7 @@ export const MapContainerComponent = ({
           />
         )}
 
+        {/* Display of the Markers aswell as the clustering */}
         <MarkerClusterGroup
           ref={ref}
           chunkedLoading
@@ -289,11 +295,12 @@ export const MapContainerComponent = ({
             />
           ))}
         </MarkerClusterGroup>
-
+        {/* Find your Geolocation */}
         <LocateControl />
 
+        {/* Call of all the interactions with the map */}
         <MapEventHandlers />
-
+        {/* Slieder for the Floorplans */}
         <div className="slider-wrapper">
           {showRangeSlider && (
             <div className="range-slider-container">
@@ -315,11 +322,7 @@ export const MapContainerComponent = ({
           )}
         </div>
       </MapContainer>
-
-      {/*       {selectedMarker.length > 0 && (
-        <AnchorInfoModal mapAnchors={mapAnchors} onClose={handleCloseDetails} />
-      )} */}
-
+      {/* Layercontrols */}
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton
           color="primary"

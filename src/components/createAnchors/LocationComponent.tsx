@@ -98,6 +98,8 @@ export const LocationGroup = ({
       <IonItem lines="none">
         Ort
         <IonItemGroup>
+          {/* There are thre buttons how to fill out the location (map, roomlist or current location. 
+          If one of it is filled the other should be dissabled) */}
           {!locationSetMap && !showMapLocation ? (
             <IonButton
               onClick={handleMapButtonClick}
