@@ -26,13 +26,13 @@ export const CalendarAnchorComponent = ({
   setLocalAnchor,
   setShowDate,
   setShowView,
-  setShowViewEventID,
+  setShowViewAnchorID,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowViewEventID: React.Dispatch<React.SetStateAction<string>>;
+  setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const [displayWeekends, setDisplayWeekends] = useState(true);
   const { anchors } = useContext(AnchorContext);
@@ -56,7 +56,7 @@ export const CalendarAnchorComponent = ({
   // function for event interaction
   function handleEvent(event: EventInput) {
     setShowView(true);
-    setShowViewEventID(event.event.id);
+    setShowViewAnchorID(event.event.id);
   }
 
   // Function to manually update the calendar size

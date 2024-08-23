@@ -22,7 +22,7 @@ import { closeOutline } from "ionicons/icons";
 import { AnchorCreateProps } from "./CreateAnchorModal";
 import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
 import { LocateControl } from "../mapAnchors/ref/LocateControl";
-import { divIcon, Map, Marker } from "leaflet";
+import { Map, Marker } from "leaflet";
 
 import "../../theme/styles.css";
 import "leaflet/dist/leaflet.css";

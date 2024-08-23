@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { IonButton, IonIcon, useIonViewDidEnter } from "@ionic/react";
+import { IonButton, IonIcon } from "@ionic/react";
 import { locateOutline } from "ionicons/icons";
 import "./map.css";
 

@@ -8,14 +8,10 @@ export const ViewAnchorModal = ({
   showView,
   setShowView,
   showViewAnchorID,
-}: //anchors,
-//deleteOneAnchor,
-{
+}: {
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  showViewAnchorID: string;
-  //anchors: DBAnchor[];
-  //deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
+  showViewAnchorID: string[];
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext); // load anchors state and delete action
 
@@ -23,7 +19,13 @@ export const ViewAnchorModal = ({
   const viewModal = useRef<HTMLIonModalElement>(null); // reference for the viewModal
 
   // Filter all anchors which match the List of IDs (which is set by other component)
-  const filteredAnchors = anchors.filter((anchor) => anchor.id === showViewAnchorID);
+  const filteredAnchors = anchors.filter((anchor) =>
+    showViewAnchorID.includes(anchor.id)
+  );
+  console.log(filteredAnchors);
+  //console.log("ID:", showViewEventID);
+  console.log("Anchor", filteredAnchors);
+  //console.log("draftAnchor", draftAnchor);
 
   return (
     <IonModal

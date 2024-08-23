@@ -67,8 +67,7 @@ const App: React.FC = () => {
 
   // States for view modal
   const [showView, setShowView] = useState<boolean>(false);
-  const [showViewAnchorID, setShowViewAnchorID] = useState<string>("");
-  //const { anchors, deleteOneAnchor } = useContext(AnchorContext); // Somehow does not work in app.tsx?!
+  const [showViewAnchorID, setShowViewAnchorID] = useState<string[]>([""]);
 
   return (
     <AnchorProvider>
@@ -82,7 +81,7 @@ const App: React.FC = () => {
                   setLocalAnchor={setLocalAnchor}
                   setShowDate={setShowDate}
                   setShowView={setShowView}
-                  setShowViewEventID={setShowViewAnchorID}
+                  setShowViewAnchorID={setShowViewAnchorID}
                 />
               </Route>
               <Route exact path="/calendarHeatmap">
@@ -99,6 +98,8 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
                   setShowMapLocation={setShowMapLocation}
+                  setShowView={setShowView}
+                  setShowViewAnchorID={setShowViewAnchorID}
                 />
               </Route>
               <Route path="/manageAnchors">
