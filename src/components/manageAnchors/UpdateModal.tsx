@@ -88,7 +88,7 @@ export const UpdateModal = ({
       <IonHeader>
         <IonToolbar>
           <IonIcon size="large" slot="start"></IonIcon>
-          <IonTitle style={{ textAlign: "center" }}>Edit Anchor</IonTitle>
+          <IonTitle style={{ textAlign: "center" }}>Anker bearbeiten</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setOpenUpdateModal(false)}>
               <IonIcon icon={closeOutline} size="large"></IonIcon>

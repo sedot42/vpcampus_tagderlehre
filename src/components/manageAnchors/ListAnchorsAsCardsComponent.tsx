@@ -7,6 +7,7 @@ import {
   IonCard,
   IonItemSliding,
   IonButton,
+  IonAlert,
 } from "@ionic/react";
 import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
@@ -64,9 +65,34 @@ export const ListAnchorsAsCardsComponent = ({
           <IonButton>
             <IonIcon icon={mapOutline} size="small" />
           </IonButton>
-          <IonButton onClick={() => deleteOneAnchor(anchor.id)}>
+          <IonButton
+            id={anchor.id + "delete"}
+            onClick={() => {
+              console.log(anchor.id);
+            }}
+          >
             <IonIcon icon={trashOutline} size="small" />
           </IonButton>
+          <IonAlert
+            trigger={anchor.id + "delete"}
+            header="Anker Löschen"
+            subHeader={anchor.anchor_name}
+            message="Willst du den Anker endgültig Löschen?"
+            buttons={[
+              {
+                text: "Abrechnen",
+                role: "cancel",
+              },
+              {
+                text: "Löschen",
+                role: "confirm",
+                handler: () => {
+                  deleteOneAnchor(anchor.id);
+                  console.log("Delete", anchor.anchor_name);
+                },
+              },
+            ]}
+          ></IonAlert>
         </>
       </IonItemSliding>
       {modalData && (
