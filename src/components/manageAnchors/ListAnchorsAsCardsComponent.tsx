@@ -24,6 +24,8 @@ export const ListAnchorsAsCardsComponent = ({
 }) => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+  const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
   return (
     <IonCard key={index} style={{ cursor: "pointer" }}>
@@ -69,12 +71,15 @@ export const ListAnchorsAsCardsComponent = ({
             id={anchor.id + "delete"}
             onClick={() => {
               console.log(anchor.id);
+              setShowDeleteConfirm(true);
+              setAnchorToDelete(anchor);
             }}
           >
             <IonIcon icon={trashOutline} size="small" />
           </IonButton>
           <IonAlert
-            trigger={anchor.id + "delete"}
+            //trigger={anchor.id + "delete"}
+            isOpen={showDeleteConfirm}
             header="Anker Löschen"
             subHeader={anchor.anchor_name}
             message="Willst du den Anker endgültig Löschen?"
@@ -87,8 +92,10 @@ export const ListAnchorsAsCardsComponent = ({
                 text: "Löschen",
                 role: "confirm",
                 handler: () => {
-                  deleteOneAnchor(anchor.id);
-                  console.log("Delete", anchor.anchor_name);
+                  {
+                    anchorToDelete && deleteOneAnchor(anchorToDelete.id);
+                    console.log("Delete", anchor.anchor_name);
+                  }
                 },
               },
             ]}
