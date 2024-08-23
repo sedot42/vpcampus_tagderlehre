@@ -17,13 +17,17 @@ export const ListAnchorsAsCardsComponent = ({
   anchor,
   index,
   deleteOneAnchor,
+  setShowView,
 }: {
   anchor: DBAnchor;
   index: number;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
+  setShowView: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
+
+  // States for delete Confirm Alert
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
@@ -78,7 +82,6 @@ export const ListAnchorsAsCardsComponent = ({
             <IonIcon icon={trashOutline} size="small" />
           </IonButton>
           <IonAlert
-            //trigger={anchor.id + "delete"}
             isOpen={showDeleteConfirm}
             header="Anker Löschen"
             subHeader={anchor.anchor_name}
@@ -94,6 +97,7 @@ export const ListAnchorsAsCardsComponent = ({
                 handler: () => {
                   {
                     anchorToDelete && deleteOneAnchor(anchorToDelete.id);
+                    setShowView(false);
                     console.log("Delete", anchor.anchor_name);
                   }
                 },

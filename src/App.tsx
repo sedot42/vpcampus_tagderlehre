@@ -104,6 +104,7 @@ const App: React.FC = () => {
               <Route path="/manageAnchors">
                 <ManageAnchorsComponent
                   setShowCreate={setShowCreate}
+                  setShowView={setShowView}
                   //anchors={anchors}
                   //deleteOneAnchor={deleteOneAnchor}
                 />

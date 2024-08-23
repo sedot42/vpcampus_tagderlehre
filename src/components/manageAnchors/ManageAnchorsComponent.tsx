@@ -10,10 +10,12 @@ import { AnchorContext } from "../../anchorContext";
 
 export const ManageAnchorsComponent = ({
   setShowCreate,
+  setShowView,
 }: //anchors,
 //deleteOneAnchor,
 {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   //anchors: DBAnchor[];
   //</React.SetStateAction>deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
@@ -36,9 +38,10 @@ export const ManageAnchorsComponent = ({
           renderItem={(anchor, index) => (
             <ListAnchorsAsCardsComponent
               key={index}
-              anchor={anchor} // Type error in Search Bar (returnes GenericObject instead of DBAnchor)
+              anchor={anchor} // Type error in Search Bar Component! (returnes GenericObject instead of DBAnchor)
               index={index}
               deleteOneAnchor={deleteOneAnchor}
+              setShowView={setShowView}
             ></ListAnchorsAsCardsComponent>
           )}
         />

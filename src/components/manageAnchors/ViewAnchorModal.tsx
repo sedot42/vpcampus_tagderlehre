@@ -45,6 +45,7 @@ export const ViewAnchorModal = ({
               anchor={anchor}
               index={index}
               deleteOneAnchor={deleteOneAnchor}
+              setShowView={setShowView}
             ></ListAnchorsAsCardsComponent>
           ))}
       </IonList>
