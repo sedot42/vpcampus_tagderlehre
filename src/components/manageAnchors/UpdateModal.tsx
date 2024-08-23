@@ -12,7 +12,6 @@ import {
   IonIcon,
   IonText,
   IonItem,
-  IonLabel,
   IonInput,
   IonItemDivider,
 } from "@ionic/react";
@@ -73,8 +72,9 @@ export const UpdateModal = ({
   const renderField = (key: keyof Anchor, value: any) => {
     return (
       <IonItem key={key}>
-        <IonLabel position="floating">{key}</IonLabel>
         <IonInput
+          label={key}
+          labelPlacement="floating"
           type={typeof value === "number" ? "number" : "text"}
           value={value !== undefined && value !== null ? value.toString() : " "}
           onIonInput={(e) => handleChange(key, e.detail.value)}

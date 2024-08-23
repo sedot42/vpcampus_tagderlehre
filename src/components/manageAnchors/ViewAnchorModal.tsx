@@ -1,7 +1,6 @@
 import { IonList, IonModal } from "@ionic/react";
 import {} from "ionicons/icons";
-import { Anchor } from "../../types/types";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { AnchorContext } from "../../anchorContext";
 import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
 
@@ -45,8 +44,6 @@ export const ViewAnchorModal = ({
               key={index}
               anchor={anchor}
               index={index}
-              //setModalData={setModalData}
-              //setOpenUpdateModal={setOpenUpdateModal}
               deleteOneAnchor={deleteOneAnchor}
             ></ListAnchorsAsCardsComponent>
           ))}

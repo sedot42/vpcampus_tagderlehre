@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   IonIcon,
   IonLabel,
@@ -10,20 +10,15 @@ import {
 } from "@ionic/react";
 import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
-import { AnchorContextType } from "../../anchorContext";
 import { UpdateModal } from "./UpdateModal";
 
 export const ListAnchorsAsCardsComponent = ({
   anchor,
   index,
-  //setModalData,
-  //setOpenUpdateModal,
   deleteOneAnchor,
 }: {
   anchor: DBAnchor;
   index: number;
-  //setModalData: React.Dispatch<React.SetStateAction<Anchor | undefined>>;
-  //setOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -32,14 +27,7 @@ export const ListAnchorsAsCardsComponent = ({
   return (
     <IonCard key={index} style={{ cursor: "pointer" }}>
       <IonItemSliding>
-        <IonItem
-          lines="none"
-          id={"open-modal-" + index}
-          onClick={() => {
-            setModalData(convertDBAnchorToFlatAnchor(anchor as DBAnchor));
-            setOpenUpdateModal(true);
-          }}
-        >
+        <IonItem lines="none" id={"open-modal-" + index}>
           <IonLabel>
             <div style={{ fontWeight: 700, color: "black" }}>{anchor.anchor_name}</div>
             <IonNote class="ion-text-wrap">
@@ -67,15 +55,8 @@ export const ListAnchorsAsCardsComponent = ({
         <>
           <IonButton
             onClick={() => {
-              modalData && (
-                <UpdateModal
-                  modalData={modalData}
-                  setModalData={setModalData}
-                  openUpdateModal={openUpdateModal}
-                  setOpenUpdateModal={setOpenUpdateModal}
-                ></UpdateModal>
-              );
-              console.log("edited", modalData);
+              setModalData(convertDBAnchorToFlatAnchor(anchor as DBAnchor));
+              setOpenUpdateModal(true);
             }}
           >
             <IonIcon icon={createOutline} size="small" />
@@ -88,6 +69,14 @@ export const ListAnchorsAsCardsComponent = ({
           </IonButton>
         </>
       </IonItemSliding>
+      {modalData && (
+        <UpdateModal
+          modalData={modalData}
+          setModalData={setModalData}
+          openUpdateModal={openUpdateModal}
+          setOpenUpdateModal={setOpenUpdateModal}
+        ></UpdateModal>
+      )}
     </IonCard>
   );
 };
