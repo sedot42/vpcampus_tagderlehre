@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -34,36 +35,42 @@ export const TimeSliderComponent = ({
   showToastAnchorNoPos: boolean;
   setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  // Default values if not provided
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString()); // Added state for selectedDate
+
   const defaultStartTime = 7;
   const defaultEndTime = 18;
 
   // Function to handle time changes from the range slider
-  const handleTimeChange = (e) => {
+  const handleTimeChange = (e: CustomEvent) => {
     const { lower, upper } = e.detail.value;
     setStartTimeFilter(lower);
     setEndTimeFilter(upper);
   };
 
   // Function to handle date selection from IonDatetime
-  const handleDateChange = (e) => {
+  const handleDateChange = (e: CustomEvent) => {
     const selectedDate = new Date(e.detail.value);
+    setSelectedDate(selectedDate.toISOString());
     setSelectedDayFilter(selectedDate);
+  };
+
+  const incrementDate = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setSelectedDate(newDate.toISOString());
+    setSelectedDayFilter(newDate);
+  };
+
+  const decrementDate = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setSelectedDate(newDate.toISOString());
+    setSelectedDayFilter(newDate);
   };
 
   return (
     <>
       <IonFooter id="footerTimeLineFilter" className="ion-padding">
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-          }}
-        >
-          <IonLabel style={{ marginRight: "10px" }}>Wähle Datum und Uhrzeit</IonLabel>
-        </div>
         <IonRange
           dualKnobs={true}
           min={0}
@@ -79,10 +86,23 @@ export const TimeSliderComponent = ({
           }}
           onIonChange={handleTimeChange}
         />
-        <IonDatetimeButton
-          id="filterMenuDateSelection"
-          datetime="datetime"
-        ></IonDatetimeButton>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "10px",
+          }}
+        >
+          <IonButton onClick={decrementDate}>&lt;</IonButton>
+          <IonButton id="filterMenuDateSelection" fill="solid">
+            <IonDatetimeButton
+              datetime="datetime"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </IonButton>
+          <IonButton onClick={incrementDate}>&gt;</IonButton>
+        </div>
 
         <IonModal keepContentsMounted={true} id="dialogSelectFilterDate">
           <IonHeader>
@@ -99,7 +119,18 @@ export const TimeSliderComponent = ({
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-          <IonDatetime id="datetime" presentation="date" onIonChange={handleDateChange} />
+
+          <div
+            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          >
+            <IonDatetime
+              id="datetime"
+              presentation="date"
+              value={selectedDate}
+              onIonChange={handleDateChange}
+            />
+          </div>
+
           <IonFooter className="ion-padding">
             <IonButton
               onClick={() => document.getElementById("dialogSelectFilterDate").dismiss()}
