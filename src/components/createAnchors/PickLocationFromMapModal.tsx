@@ -94,7 +94,7 @@ const CreateOutside = ({
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   useEffect(() => {
-    mapRef && mapRef.invalidateSize();
+    if (mapRef) mapRef.invalidateSize();
   }, [mapRef, localAnchor.lat]);
 
   function GetPosClickDisplayedMap() {
@@ -143,18 +143,18 @@ const CreateOutside = ({
   );
 };
 
-export const CreateLocationModal = ({
+export const PickLocationFromMapModal = ({
   localAnchor,
   setLocalAnchor,
-  createLocationModalOpen,
-  setCreateLocationModalOpen,
+  locationMapModalOpen,
+  setLocationMapModalOpen,
   setLocationSetMap,
 }: AnchorCreateProps & {
   createLocationModalOpen: boolean;
   setCreateLocationModalOpen: (state: boolean) => void;
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const closeModal = () => setCreateLocationModalOpen(false);
+  const closeModal = () => setLocationMapModalOpen(false);
   const [showOutside, setShowOutside] = useState(true);
   const [mapRef, setMapRef] = useState<Map>();
 
@@ -163,7 +163,7 @@ export const CreateLocationModal = ({
   });
   return (
     <IonModal
-      isOpen={createLocationModalOpen}
+      isOpen={locationMapModalOpen}
       style={{ "--min-height": "100vh", "--min-width": "100vw" }}
     >
       <IonHeader>
