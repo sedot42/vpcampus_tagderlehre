@@ -108,7 +108,7 @@ export const MapContainerComponent = ({
   // After the long touch a temporary marker is set and the "createAnchor" Modal is opened with the respective coordinates already filled out
   const MapEventHandlers = () => {
     const map = useMap();
-    const [coords, setCoords] = useState(null);
+    const [coords, setCoords] = useState<[number, number] | null>(null);
 
     const clearMousedownTimeout = () => {
       if (mousedownInterval.current) {
@@ -117,7 +117,7 @@ export const MapContainerComponent = ({
       }
     };
 
-    const handleStart = (latlng) => {
+    const handleStart = (latlng: L.LatLng) => {
       startPosition.current = [latlng.lat, latlng.lng];
       setCoords(startPosition.current);
       mousedownInterval.current = setTimeout(() => {
@@ -134,7 +134,7 @@ export const MapContainerComponent = ({
       }, 750); // Definition of the touch-duration
     };
 
-    const handleMove = (latlng) => {
+    const handleMove = (latlng: L.LatLng) => {
       if (startPosition.current) {
         const distanceMoved = latlng.distanceTo({
           lat: startPosition.current[0],
@@ -288,7 +288,7 @@ export const MapContainerComponent = ({
           {mapAnchors.map((anchor) => (
             <Marker
               key={anchor.id}
-              position={[anchor.lat, anchor.lon]}
+              position={[anchor.lat as number, anchor.lon as number]} // mapAnchors are filtered to only include anchors with lat and lon
               eventHandlers={{
                 click: () => handleAnchorClick(anchor),
               }}
