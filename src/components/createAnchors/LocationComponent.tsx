@@ -12,10 +12,16 @@ import {
 import { qrCodeOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "../settings/SelectionModal";
-import { CreateLocationModal } from "./CreateLocationModal";
+import { PickLocationFromMapModal } from "./PickLocationFromMapModal";
+import {
+  CapacitorBarcodeScanner,
+  CapacitorBarcodeScannerTypeHint,
+} from "@capacitor/barcode-scanner";
+import * as wellknown from "wellknown";
 import "../../theme/styles.css";
 import "leaflet/dist/leaflet.css";
 import { Anchor, DraftAnchor } from "../../types/types";
+import roomData from "../mapAnchors/floorplan/room_geometries/mapdata-campus-default.jsonDB.json";
 
 export const LocationGroup = ({
   localAnchor,
@@ -30,8 +36,8 @@ export const LocationGroup = ({
 }) => {
   const { anchors } = useContext(AnchorContext);
 
-  const [locationModalOpen, setLocationModalOpen] = useState(false);
-  const [createLocationModalOpen, setCreateLocationModalOpen] = useState(false);
+  const [locationListModalOpen, setLocationListModalOpen] = useState(false);
+  const [locationMapModalOpen, setLocationMapModalOpen] = useState(false);
   const [locationSet, setLocationSet] = useState<boolean>(false);
   const [locationSetMap, setLocationSetMap] = useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<"none" | "map" | "list" | "current">(
@@ -67,7 +73,12 @@ export const LocationGroup = ({
   };
 
   const resetLocation = () => {
-    setLocalAnchor({ lat: undefined, lon: undefined, room_id: undefined });
+    setLocalAnchor({
+      ...localAnchor,
+      lat: undefined,
+      lon: undefined,
+      room_id: undefined,
+    });
     setLocationSet(false);
     setLocationSetMap(false);
     setShowMapLocation(false);
@@ -75,22 +86,50 @@ export const LocationGroup = ({
   };
 
   const handleListeClick = () => {
-    setLocationModalOpen(true);
+    setLocationListModalOpen(true);
     setActiveButton("list");
   };
 
-  const handleSaveRoom = (newList) => {
+  const handleSaveRoom = (selectedRoom: string[]) => {
     setLocalAnchor({
       ...localAnchor,
-      room_id: newList[0],
+      room_id: selectedRoom[0],
     });
-    setLocationModalOpen(false);
+    setLocationListModalOpen(false);
     setActiveButton("list");
   };
 
   const handleMapButtonClick = () => {
-    setCreateLocationModalOpen(true);
+    setLocationMapModalOpen(true);
     setActiveButton("map");
+  };
+
+  // reset the constants for a new temporary location
+  const scanRoomQRCode = async function () {
+    try {
+      const { ScanResult } = await CapacitorBarcodeScanner.scanBarcode({
+        scanInstructions: "Scanne den QR-Code eines Raumes",
+        hint: CapacitorBarcodeScannerTypeHint.ALL,
+      });
+      console.log("Barcode data", ScanResult);
+      // try to get the room number from the scan result
+      const roomID = new URL(ScanResult).searchParams.get("idRoom");
+      if (roomID) {
+        // TODO Extract roomNumber from roomID via evento?
+      }
+      const roomNumber = RegExp(/(\d+\.\d+\.)(?<room>.+)$/, "gm").exec(ScanResult)?.groups
+        ?.room;
+      console.log(roomNumber, roomID, ScanResult);
+      const room = roomData.rooms.find((room) => room.nr === roomNumber);
+      // TODO geometry is in the local pixel CRS of the campusapp floorplan
+      const roomGeometry = wellknown.parse(String(room?.wkt_pt));
+      if (!room || !roomGeometry || roomGeometry.type !== "Point")
+        throw "Raum konnte nicht ermittelt werden";
+      console.log(roomGeometry, room);
+      handleSaveRoom([room.nr]);
+    } catch (err) {
+      alert(`Fehler beim Scannen des Raumes: ${err}`);
+    }
   };
 
   return (
@@ -98,8 +137,8 @@ export const LocationGroup = ({
       <IonItem lines="none">
         Ort
         <IonItemGroup>
-          {/* There are thre buttons how to fill out the location (map, roomlist or current location. 
-          If one of it is filled the other should be dissabled) */}
+          {/* There are thre buttons how to fill out the location (map, roomlist or current location.
+          If one of it is filled the other should be disabled) */}
           {!locationSetMap && !showMapLocation ? (
             <IonButton
               onClick={handleMapButtonClick}
@@ -124,11 +163,11 @@ export const LocationGroup = ({
             )
           )}
 
-          <CreateLocationModal
+          <PickLocationFromMapModal
             localAnchor={localAnchor}
             setLocalAnchor={setLocalAnchor}
-            createLocationModalOpen={createLocationModalOpen}
-            setCreateLocationModalOpen={setCreateLocationModalOpen}
+            locationMapModalOpen={locationMapModalOpen}
+            setLocationMapModalOpen={setLocationMapModalOpen}
             setLocationSetMap={setLocationSetMap}
           />
 
@@ -148,15 +187,16 @@ export const LocationGroup = ({
           <SelectionModal
             headerText="Ort auswählen"
             hasMultiSelection={false}
-            closeModal={() => setLocationModalOpen(false)}
-            isOpen={locationModalOpen}
+            closeModal={() => setLocationListModalOpen(false)}
+            isOpen={locationListModalOpen}
             selectionList={locationList}
             initialSelection={localAnchor.room_id ? [localAnchor.room_id] : []}
             modalConfirmAction={handleSaveRoom}
           >
             <>
               <IonFab vertical="top" horizontal="end" edge>
-                <IonFabButton>
+                <IonFabButton onClick={scanRoomQRCode}>
+                  {/* TODO QR-Code trigger */}
                   <IonIcon icon={qrCodeOutline}></IonIcon>
                 </IonFabButton>
               </IonFab>
