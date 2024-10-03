@@ -95,10 +95,11 @@ export const CreateAnchorModal = ({
     <IonModal
       ref={createModal}
       isOpen={showCreate}
-      initialBreakpoint={0.3}
-      breakpoints={[0, 0.3, 1]}
+      initialBreakpoint={1}
+      breakpoints={[0, 0.3, 0.7, 1]}
       onIonModalDidDismiss={() => {
-        setShowCreate(false), setShowDate(false);
+        setShowCreate(false);
+        setShowDate(false);
       }}
       onIonModalWillPresent={() => setLocalAnchor({ ...localAnchor, id: uuidv4() })} // Create new uuID each time the modal opens
     >
