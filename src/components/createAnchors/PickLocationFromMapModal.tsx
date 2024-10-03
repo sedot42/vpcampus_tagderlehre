@@ -19,14 +19,14 @@ import {
   useIonViewDidEnter,
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
-import { AnchorCreateProps } from "./CreateAnchorModal";
+import { Map, Marker } from "leaflet";
 import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
 import { LocateControl } from "../mapAnchors/ref/LocateControl";
-import { Map, Marker } from "leaflet";
+import { ConfigInput, createInputs } from "../globalUI/GenericFields";
+import { Anchor, DraftAnchor } from "../../types/types";
 
 import "../../theme/styles.css";
 import "leaflet/dist/leaflet.css";
-import { ConfigInput, createInputs } from "../globalUI/GenericFields";
 
 const fieldConfigs: ConfigInput[] = [
   {
@@ -59,7 +59,13 @@ const fieldConfigs: ConfigInput[] = [
   },
 ];
 
-const CreateInside = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
+const CreateInside = ({
+  localAnchor,
+  setLocalAnchor,
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+}) => {
   return (
     <IonContent className="ion-padding">
       {createInputs(localAnchor, setLocalAnchor, fieldConfigs)}
@@ -88,7 +94,9 @@ const CreateOutside = ({
   mapRef,
   setMapRef,
   setLocationSetMap,
-}: AnchorCreateProps & {
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   mapRef?: Map;
   setMapRef: (map: Map) => void;
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
@@ -149,9 +157,11 @@ export const PickLocationFromMapModal = ({
   locationMapModalOpen,
   setLocationMapModalOpen,
   setLocationSetMap,
-}: AnchorCreateProps & {
-  createLocationModalOpen: boolean;
-  setCreateLocationModalOpen: (state: boolean) => void;
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+  locationMapModalOpen: boolean;
+  setLocationMapModalOpen: (state: boolean) => void;
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   const closeModal = () => setLocationMapModalOpen(false);

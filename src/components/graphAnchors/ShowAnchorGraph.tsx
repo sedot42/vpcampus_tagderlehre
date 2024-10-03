@@ -9,10 +9,6 @@ import {
   IonButton,
   IonSelect,
   IonSelectOption,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
 } from "@ionic/react";
 import { Graph } from "./Graph";
 import { AnchorContext } from "../../anchorContext";
@@ -21,7 +17,7 @@ import { StatusHeader } from "../globalUI/StatusHeader";
 import { UpdateModal } from "../manageAnchors/UpdateModal"; // Adjust the import path as needed
 
 export const ShowAnchorGraph: React.FC = () => {
-  const { anchors, updateOneAnchor, deleteOneAnchor } = useContext(AnchorContext);
+  const { anchors } = useContext(AnchorContext);
   const [startNodeId, setStartNodeId] = useState<string | undefined>("");
   const [depth, setDepth] = useState<number>(1);
   const [showOrphans, setShowOrphans] = useState<boolean>(false);
@@ -124,8 +120,8 @@ export const ShowAnchorGraph: React.FC = () => {
         <UpdateModal
           modalData={selectedNode}
           setModalData={setSelectedNode}
-          openModal={isModalOpen}
-          setOpenModal={setIsModalOpen}
+          openUpdateModal={isModalOpen}
+          setOpenUpdateModal={setIsModalOpen}
         />
       )}
     </IonPage>

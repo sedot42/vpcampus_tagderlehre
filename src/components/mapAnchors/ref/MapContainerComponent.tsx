@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  MapContainer,
-  Marker,
-  LayersControl,
-  WMSTileLayer,
-  ImageOverlay,
-} from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import "./map.css";
+import { useEffect, useState } from "react";
+import L from "leaflet";
+import { MapContainer, Marker, WMSTileLayer, ImageOverlay } from "react-leaflet";
 import { AnchorInfoModal } from "./AnchorInfoModal";
 import { LocateControl } from "./LocateControl";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Anchor } from "../../../types/types";
+import { DBAnchor } from "../../../types/types";
 import {
   IonFab,
   IonFabButton,
@@ -21,14 +14,9 @@ import {
   IonList,
   IonRange,
 } from "@ionic/react";
-import {
-  closeCircleOutline,
-  settingsOutline,
-  locateOutline,
-  layersOutline,
-} from "ionicons/icons";
-
-const { BaseLayer } = LayersControl;
+import { closeCircleOutline, layersOutline } from "ionicons/icons";
+import "leaflet/dist/leaflet.css";
+import "./map.css";
 
 import Map_1 from "../floorplan/rastermaps/Map_1.jpg";
 import Map_2 from "../floorplan/rastermaps/Map_2.jpg";
@@ -48,7 +36,7 @@ import Map_ga from "../floorplan/rastermaps/Map_ga.jpg";
 import Map_TG from "../floorplan/rastermaps/Map_TG.jpg";
 import Map_u1 from "../floorplan/rastermaps/Map_u1.jpg";
 import Map_u2 from "../floorplan/rastermaps/Map_u2.jpg";
-import basemap from "../floorplan/rastermaps/basemap.jpg";
+import { LatLngBoundsExpression } from "leaflet";
 
 const imageMap = {
   1: Map_1,
@@ -79,9 +67,9 @@ const imageMap = {
 //  iconAnchor: [0, 0], // Point of the icon which will correspond to marker's location
 //});
 
-export const MapContainerComponent = ({ anchors }) => {
-  const [validAnchor, setAnchor] = useState<Anchor[]>([]);
-  const [selectedMarker, setSelectedMarker] = useState<Anchor[]>([]);
+export const MapContainerComponent = ({ anchors }: { anchors: DBAnchor[] }) => {
+  const [validAnchor, setAnchor] = useState<DBAnchor[]>([]);
+  const [selectedMarker, setSelectedMarker] = useState<DBAnchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<string>("");
   const [sliderValue, setSliderValue] = useState(1);
@@ -103,7 +91,7 @@ export const MapContainerComponent = ({ anchors }) => {
   };
 
   const groupMarkersByCoordinates = () => {
-    const grouped: { [key: string]: Anchor[] } = {};
+    const grouped: { [key: string]: DBAnchor[] } = {};
     validAnchor.forEach((marker) => {
       const key = `${marker.lat},${marker.lon}`;
       if (!grouped[key]) {
@@ -192,7 +180,7 @@ export const MapContainerComponent = ({ anchors }) => {
         {selectedLayer === "floorplan" && (
           <ImageOverlay
             url={getImageOverlayUrl(sliderValue)}
-            bounds={imageBounds}
+            bounds={imageBounds as LatLngBoundsExpression}
             opacity={0.9}
             className="grayscale-overlay"
           />

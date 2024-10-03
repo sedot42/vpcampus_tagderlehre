@@ -3,11 +3,17 @@ import { IonButton, IonLabel, IonIcon } from "@ionic/react";
 import { addCircleOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "../settings/SelectionModal";
-import { AnchorCreateProps } from "./CreateAnchorModal";
+import { Anchor, DraftAnchor } from "../../types/types";
 import { ModalButton } from "../globalUI/Buttons";
 import "../../theme/styles.css";
 
-export const TagComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
+export const TagComponent = ({
+  localAnchor,
+  setLocalAnchor,
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+}) => {
   const { anchors } = useContext(AnchorContext);
 
   const [tagsModalOpen, setTagsModalOpen] = useState(false);

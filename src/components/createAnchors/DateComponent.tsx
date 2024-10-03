@@ -6,11 +6,17 @@ import {
   IonLabel,
   IonItem,
 } from "@ionic/react";
-import { AnchorCreateProps } from "./CreateAnchorModal";
+import { Anchor, DraftAnchor } from "../../types/types";
 import "leaflet/dist/leaflet.css";
 import "../../theme/styles.css";
 
-export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
+export const DateComponent = ({
+  localAnchor,
+  setLocalAnchor,
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+}) => {
   type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
 
   const datetime = useRef<null | HTMLIonDatetimeElement>(null);
@@ -18,14 +24,16 @@ export const DateComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps
   const now = date.toISOString();
 
   const writeDateToAnchor = (timestamp: string, property: allowedProperties) => {
-    timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
+    return timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
   };
 
   useEffect(() => {
     // Set an initial date once
-    localAnchor.start_at === undefined &&
+    return (
+      localAnchor.start_at === undefined &&
       localAnchor.end_at === undefined &&
-      setLocalAnchor({ ...localAnchor, start_at: now, end_at: now });
+      setLocalAnchor({ ...localAnchor, start_at: now, end_at: now })
+    );
   }, []);
 
   return (

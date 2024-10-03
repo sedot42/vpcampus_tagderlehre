@@ -7,17 +7,14 @@ import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
 import { addOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
+import { DBAnchor } from "../../types/types";
 
 export const ManageAnchorsComponent = ({
   setShowCreate,
   setShowView,
-}: //anchors,
-//deleteOneAnchor,
-{
+}: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  //anchors: DBAnchor[];
-  //</React.SetStateAction>deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   return (
@@ -38,7 +35,7 @@ export const ManageAnchorsComponent = ({
           renderItem={(anchor, index) => (
             <ListAnchorsAsCardsComponent
               key={index}
-              anchor={anchor} // Type error in Search Bar Component! (returnes GenericObject instead of DBAnchor)
+              anchor={anchor as DBAnchor} // Type error in Search Bar Component! (returnes GenericObject instead of DBAnchor)
               index={index}
               deleteOneAnchor={deleteOneAnchor}
               setShowView={setShowView}

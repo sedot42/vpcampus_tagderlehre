@@ -24,11 +24,7 @@ export const CalendarAnchorComponent = () => {
       <IonContent className="ion-padding">
         <div className="SetTime">
           <h1>Set Time</h1>
-          <IonDatetime
-            placeholder="Select Date"
-            value={dateTime}
-            onIonChange={handleDateChange}
-          ></IonDatetime>
+          <IonDatetime value={dateTime} onIonChange={handleDateChange}></IonDatetime>
           The selected date is: {dateTime}
         </div>
         <div className="Counter">

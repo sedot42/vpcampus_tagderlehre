@@ -5,7 +5,7 @@ import { StatusHeader } from "../../globalUI/StatusHeader";
 import { AnchorContext } from "../../../anchorContext";
 import { MapContainerComponent } from "./MapContainerComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
-import { Anchor } from "../../../types/types";
+import { Anchor, DBAnchor } from "../../../types/types";
 
 export const MapComponent: React.FC = () => {
   const { anchors } = useContext(AnchorContext);
@@ -15,8 +15,7 @@ export const MapComponent: React.FC = () => {
   const [startTimeFilter, setStartTimeFilter] = useState<number>(7);
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18);
   const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false);
-  const [filteredAnchors, setFilteredAnchors] = useState<Anchor[]>([]);
-  const [sliderValue, setSliderValue] = useState(1);
+  const [filteredAnchors, setFilteredAnchors] = useState<DBAnchor[]>([]);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));

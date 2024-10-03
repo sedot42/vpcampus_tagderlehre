@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -12,7 +12,6 @@ import {
   IonDatetime,
   IonToast,
   IonRange,
-  IonLabel,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
 import { closeOutline, alertCircleOutline } from "ionicons/icons";
@@ -36,6 +35,7 @@ export const TimeSliderComponent = ({
   setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString()); // Added state for selectedDate
+  const modal = useRef<HTMLIonModalElement>(null);
 
   const defaultStartTime = 7;
   const defaultEndTime = 18;
@@ -104,16 +104,12 @@ export const TimeSliderComponent = ({
           <IonButton onClick={incrementDate}>&gt;</IonButton>
         </div>
 
-        <IonModal keepContentsMounted={true} id="dialogSelectFilterDate">
+        <IonModal ref={modal} keepContentsMounted={true} id="dialogSelectFilterDate">
           <IonHeader>
             <IonToolbar>
               <IonTitle>Datum auswählen</IonTitle>
               <IonButtons slot="end">
-                <IonButton
-                  onClick={() =>
-                    document.getElementById("dialogSelectFilterDate").dismiss()
-                  }
-                >
+                <IonButton onClick={() => modal.current?.dismiss()}>
                   <IonIcon icon={closeOutline} size="large" />
                 </IonButton>
               </IonButtons>
@@ -133,7 +129,7 @@ export const TimeSliderComponent = ({
 
           <IonFooter className="ion-padding">
             <IonButton
-              onClick={() => document.getElementById("dialogSelectFilterDate").dismiss()}
+              onClick={() => modal.current?.dismiss()}
               expand="full"
               color="primary"
             >

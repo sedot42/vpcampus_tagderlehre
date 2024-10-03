@@ -4,10 +4,16 @@ import { addCircleOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
 import { SelectionModal } from "../settings/SelectionModal";
 import { ModalButton } from "../globalUI/Buttons";
-import { AnchorCreateProps } from "./CreateAnchorModal";
+import { Anchor, DraftAnchor } from "../../types/types";
 import "../../theme/styles.css";
 
-export const GroupComponent = ({ localAnchor, setLocalAnchor }: AnchorCreateProps) => {
+export const GroupComponent = ({
+  localAnchor,
+  setLocalAnchor,
+}: {
+  localAnchor: DraftAnchor<Anchor>;
+  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
+}) => {
   const { anchors } = useContext(AnchorContext);
 
   const [groupsModalOpen, setGroupsModalOpen] = useState(false);

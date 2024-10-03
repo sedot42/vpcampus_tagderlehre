@@ -45,6 +45,7 @@ const extent_levels = [
   [0, 0, 1704, 1250],
   [0, 0, 1955, 1250],
 ];
+/*
 const ol_vector_layer = new VectorLayer({ source: new VectorSource(), opacity: 0 });
 const layers = [ol_vector_layer];
 
@@ -102,3 +103,4 @@ const ol_map = new Map({
 // add room feature
 const feature = new WKT().readFeature(room_wkt_string_from_json);
 ol_vector_layer.getSource().addFeature(feature);
+*/

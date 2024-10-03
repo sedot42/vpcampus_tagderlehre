@@ -9,17 +9,10 @@ import {
   IonLabel,
 } from "@ionic/react";
 import React from "react";
-
-interface Anchor {
-  id: string;
-  anchor_name: string;
-  anchor_description: string;
-  lat: number;
-  lon: number;
-}
+import { DBAnchor } from "../../../types/types";
 
 interface AnchorInfoModalProps {
-  anchors: Anchor[];
+  anchors: DBAnchor[];
   onClose: () => void;
 }
 

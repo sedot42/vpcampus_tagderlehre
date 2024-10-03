@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   IonButton,
   IonFab,
@@ -207,7 +207,7 @@ export const LocationGroup = ({
                   justifyContent: "space-around",
                 }}
               >
-                <IonButton onClick={handleSaveRoom} expand="full" color="primary">
+                <IonButton onClick={() => handleSaveRoom} expand="full" color="primary">
                   Speichern
                 </IonButton>
               </div>

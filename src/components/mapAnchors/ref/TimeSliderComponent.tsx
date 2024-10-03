@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -25,7 +25,17 @@ export const TimeSliderComponent = ({
   setSelectedDayFilter,
   showToastAnchorNoPos,
   setShowToastAnchorNoPos,
+}: {
+  startTimeFilter: number;
+  endTimeFilter: number;
+  setStartTimeFilter: React.Dispatch<React.SetStateAction<number>>;
+  setEndTimeFilter: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedDayFilter: React.Dispatch<React.SetStateAction<Date>>;
+  showToastAnchorNoPos: boolean;
+  setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const modal = useRef<HTMLIonModalElement>(null);
+
   // Default values if not provided
   const defaultStartTime = 7;
   const defaultEndTime = 18;
@@ -66,16 +76,12 @@ export const TimeSliderComponent = ({
           datetime="datetime"
         ></IonDatetimeButton>
 
-        <IonModal keepContentsMounted={true} id="dialogSelectFilterDate">
+        <IonModal ref={modal} keepContentsMounted={true} id="dialogSelectFilterDate">
           <IonHeader>
             <IonToolbar>
               <IonTitle>Datum auswählen</IonTitle>
               <IonButtons slot="end">
-                <IonButton
-                  onClick={() =>
-                    document.getElementById("dialogSelectFilterDate").dismiss()
-                  }
-                >
+                <IonButton onClick={() => modal.current?.dismiss()}>
                   <IonIcon icon={closeOutline} size="large" />
                 </IonButton>
               </IonButtons>
@@ -84,7 +90,7 @@ export const TimeSliderComponent = ({
           <IonDatetime id="datetime" presentation="date" onIonChange={handleDateChange} />
           <IonFooter className="ion-padding">
             <IonButton
-              onClick={() => document.getElementById("dialogSelectFilterDate").dismiss()}
+              onClick={() => modal.current?.dismiss()}
               expand="full"
               color="primary"
             >
