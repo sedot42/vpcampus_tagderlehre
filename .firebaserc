@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "campusvp"
-  }
+    "default": "campusvp",
+    "campusvp": "campusvp-b5c23"
+  },
+  "targets": {},
+  "etags": {}
 }
