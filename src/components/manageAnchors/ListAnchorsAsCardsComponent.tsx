@@ -95,11 +95,9 @@ export const ListAnchorsAsCardsComponent = ({
                 text: "Löschen",
                 role: "confirm",
                 handler: () => {
-                  {
-                    anchorToDelete && deleteOneAnchor(anchorToDelete.id);
-                    setShowView(false);
-                    console.log("Delete", anchor.anchor_name);
-                  }
+                  if (anchorToDelete) deleteOneAnchor(anchorToDelete.id);
+                  setShowView(false);
+                  console.log("Delete", anchor.anchor_name);
                 },
               },
             ]}

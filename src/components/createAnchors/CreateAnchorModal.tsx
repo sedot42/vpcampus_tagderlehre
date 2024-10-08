@@ -59,7 +59,6 @@ export const CreateAnchorModal = ({
   };
 
   const handleSubmission = () => {
-    console.log(localAnchor);
     if (!isDraftAnchor(localAnchor)) {
       const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
       createOneAnchor(dbAnchor);
