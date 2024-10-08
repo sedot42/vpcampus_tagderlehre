@@ -28,7 +28,6 @@ import { v4 as uuidv4 } from "uuid";
 export const CreateAnchorModal = ({
   showCreate,
   setShowCreate,
-  //closeModal,
   localAnchor,
   setLocalAnchor,
   showDate,
@@ -38,7 +37,6 @@ export const CreateAnchorModal = ({
 }: {
   showCreate: boolean;
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
-  //closeModal: () => void;
   localAnchor: DraftAnchor<Anchor>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   showDate: boolean;
