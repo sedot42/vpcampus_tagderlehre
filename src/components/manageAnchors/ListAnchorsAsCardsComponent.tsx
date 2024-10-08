@@ -38,8 +38,8 @@ export const ListAnchorsAsCardsComponent = ({
           <IonLabel>
             <div style={{ fontWeight: 700, color: "black" }}>{anchor.anchor_name}</div>
             <IonNote class="ion-text-wrap">
-              {anchor.loc_description
-                ? `${anchor.loc_description}`
+              {anchor.anchor_description
+                ? `${anchor.anchor_description}`
                 : "Keine Beschreibung vorhanden"}{" "}
               <br />
               {anchor.start_at &&
