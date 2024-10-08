@@ -7,11 +7,11 @@ import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
 export const ViewAnchorModal = ({
   showView,
   setShowView,
-  showViewAnchorID,
+  showViewAnchorIDs,
 }: {
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  showViewAnchorID: string[];
+  showViewAnchorIDs: string[];
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext); // load anchors state and delete action
 
@@ -20,12 +20,8 @@ export const ViewAnchorModal = ({
 
   // Filter all anchors which match the List of IDs (which is set by other component)
   const filteredAnchors = anchors.filter((anchor) =>
-    showViewAnchorID.includes(anchor.id)
+    showViewAnchorIDs.includes(anchor.id)
   );
-  console.log(filteredAnchors);
-  //console.log("ID:", showViewEventID);
-  console.log("Anchor", filteredAnchors);
-  //console.log("draftAnchor", draftAnchor);
 
   return (
     <IonModal
@@ -39,7 +35,7 @@ export const ViewAnchorModal = ({
       }}
     >
       <IonList>
-        {showViewAnchorID && // If there is no Event ID (e.g. on App Launch) this content should not render
+        {showViewAnchorIDs && // If there is no Event ID (e.g. on App Launch) this content should not render
           filteredAnchors.map((anchor, index) => (
             // Load content from CardsComponent (shared with other components)
             <ListAnchorsAsCardsComponent

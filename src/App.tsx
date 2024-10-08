@@ -45,7 +45,6 @@ import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatM
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-/* import { CreateFunctionalAnchorComponent } from "./components/createAnchors/CreateFunctionalAnchorComponent"; */
 import { MapComponent } from "./components/mapAnchors/MapComponent";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
@@ -61,13 +60,13 @@ setupIonicReact();
 const App: React.FC = () => {
   // States for create modal
   const [localAnchor, setLocalAnchor] = useState(draftAnchor);
-  const [showDate, setShowDate] = useState<boolean>(false);
-  const [showCreate, setShowCreate] = useState<boolean>(false);
-  const [showMapLocation, setShowMapLocation] = useState<boolean>(false);
+  const [showDate, setShowDate] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  const [showMapLocation, setShowMapLocation] = useState(false);
 
   // States for view modal
-  const [showView, setShowView] = useState<boolean>(false);
-  const [showViewAnchorID, setShowViewAnchorID] = useState<string[]>([""]);
+  const [showView, setShowView] = useState(false);
+  const [showViewAnchorIDs, setShowViewAnchorID] = useState([""]);
 
   return (
     <AnchorProvider>
@@ -166,7 +165,7 @@ const App: React.FC = () => {
           <ViewAnchorModal
             showView={showView}
             setShowView={setShowView}
-            showViewAnchorID={showViewAnchorID}
+            showViewAnchorIDs={showViewAnchorIDs}
             //anchors={anchors}
             //deleteOneAnchor={deleteOneAnchor}
           />

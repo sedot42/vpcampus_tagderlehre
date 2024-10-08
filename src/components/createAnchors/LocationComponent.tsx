@@ -196,7 +196,6 @@ export const LocationGroup = ({
             <>
               <IonFab vertical="top" horizontal="end" edge>
                 <IonFabButton onClick={scanRoomQRCode}>
-                  {/* TODO QR-Code trigger */}
                   <IonIcon icon={qrCodeOutline}></IonIcon>
                 </IonFabButton>
               </IonFab>
