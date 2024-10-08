@@ -21,7 +21,7 @@ import {
 import { closeOutline } from "ionicons/icons";
 import { Map, Marker } from "leaflet";
 import { MapContainer, WMSTileLayer, useMapEvents } from "react-leaflet";
-import { LocateControl } from "../mapAnchors/ref/LocateControl";
+import { LocateControl } from "../mapAnchors/LocateControl";
 import { ConfigInput, createInputs } from "../globalUI/GenericFields";
 import { Anchor, DraftAnchor } from "../../types/types";
 
