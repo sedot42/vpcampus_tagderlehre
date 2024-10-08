@@ -15,7 +15,7 @@ export type DraftAnchor<T extends Anchor | DBAnchor> = Omit<T, "id"> &
 export function isDraftAnchor(
   anchor: Anchor | DraftAnchor<Anchor>
 ): anchor is DraftAnchor<Anchor> {
-  return !!anchor.id;
+  return !anchor.id;
 }
 
 // overload so TS infers the correct type. begin with most narrow to widest.
