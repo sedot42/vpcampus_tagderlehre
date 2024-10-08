@@ -11,6 +11,12 @@ export type DBAnchor = Omit<Anchor, "owner_id"> & {
 // (DB)Anchor with optional id field
 export type DraftAnchor<T extends Anchor | DBAnchor> = Omit<T, "id"> &
   Partial<Pick<T, "id">>;
+// type guard for draft anchor, needed because of
+export function isDraftAnchor(
+  anchor: Anchor | DraftAnchor<Anchor>
+): anchor is DraftAnchor<Anchor> {
+  return !!anchor.id;
+}
 
 // overload so TS infers the correct type. begin with most narrow to widest.
 export function convertFlatAnchorToDBAnchor(anchor: Anchor): DBAnchor;

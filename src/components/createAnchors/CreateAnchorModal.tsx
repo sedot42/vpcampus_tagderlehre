@@ -12,10 +12,9 @@ import { addCircleOutline } from "ionicons/icons";
 import {
   Anchor,
   convertFlatAnchorToDBAnchor,
-  DBAnchor,
   DraftAnchor,
+  isDraftAnchor,
 } from "../../types/types";
-//import { draftAnchor } from "../../types/defaults";
 import { AnchorContext } from "../../anchorContext";
 import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFields";
 import { DateComponent } from "./DateComponent";
@@ -61,11 +60,13 @@ export const CreateAnchorModal = ({
 
   const handleSubmission = () => {
     console.log(localAnchor);
-    const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
-    createOneAnchor(dbAnchor as DBAnchor);
-    presentToast("middle");
-    setShowMapLocation(false);
-    setShowCreate(false);
+    if (!isDraftAnchor(localAnchor)) {
+      const dbAnchor = convertFlatAnchorToDBAnchor(localAnchor);
+      createOneAnchor(dbAnchor);
+      presentToast("middle");
+      setShowMapLocation(false);
+      setShowCreate(false);
+    }
   };
 
   const configTitle: ConfigInput[] = [
