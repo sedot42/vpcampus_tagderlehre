@@ -102,8 +102,8 @@ const CreateOutside = ({
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   useEffect(() => {
-    if (mapRef) mapRef.invalidateSize();
-  }, [mapRef, localAnchor.lat]);
+    if (mapRef) setTimeout(() => mapRef.invalidateSize(), 100);
+  });
 
   function GetPosClickDisplayedMap() {
     const map = useMapEvents({
@@ -123,30 +123,28 @@ const CreateOutside = ({
   }
   return (
     <IonContent className="ion-padding">
-      <div id="positionContainer" style={{ height: "600%", width: "100%" }}>
-        <MapContainer
-          id="selectPositionMap"
-          ref={setMapRef}
-          center={[47.5349015179286, 7.6419409280402535]}
-          zoom={18}
-          maxZoom={22}
-          maxBounds={[
-            [45.8148308954386, 5.740290246442871],
-            [47.967830538595194, 10.594475942663449],
-          ]}
-        >
-          <WMSTileLayer
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            format="image/jpeg"
-            detectRetina={true}
-            minZoom={7.5}
-            maxZoom={25}
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <GetPosClickDisplayedMap />
-          <LocateControl />
-        </MapContainer>
-      </div>
+      <MapContainer
+        id="selectPositionMap"
+        ref={setMapRef}
+        center={[47.5349015179286, 7.6419409280402535]}
+        zoom={18}
+        maxZoom={22}
+        maxBounds={[
+          [45.8148308954386, 5.740290246442871],
+          [47.967830538595194, 10.594475942663449],
+        ]}
+      >
+        <WMSTileLayer
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          format="image/jpeg"
+          detectRetina={true}
+          minZoom={7.5}
+          maxZoom={25}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <GetPosClickDisplayedMap />
+        <LocateControl />
+      </MapContainer>
     </IonContent>
   );
 };
