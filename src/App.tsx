@@ -162,13 +162,15 @@ const App: React.FC = () => {
           setShowMapLocation={setShowMapLocation}
           showMapLocation={showMapLocation}
         ></CreateAnchorModal>
-        <ViewAnchorModal
-          showView={showView}
-          setShowView={setShowView}
-          showViewAnchorID={showViewAnchorID}
-          //anchors={anchors}
-          //deleteOneAnchor={deleteOneAnchor}
-        ></ViewAnchorModal>
+        {showView && (
+          <ViewAnchorModal
+            showView={showView}
+            setShowView={setShowView}
+            showViewAnchorID={showViewAnchorID}
+            //anchors={anchors}
+            //deleteOneAnchor={deleteOneAnchor}
+          />
+        )}
       </IonApp>
     </AnchorProvider>
   );
