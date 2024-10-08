@@ -151,23 +151,23 @@ const App: React.FC = () => {
             </IonTabBar>
           </IonTabs>
         </IonReactRouter>
-        <CreateAnchorModal
-          showCreate={showCreate}
-          setShowCreate={setShowCreate}
-          localAnchor={localAnchor}
-          setLocalAnchor={setLocalAnchor}
-          showDate={showDate}
-          setShowDate={setShowDate}
-          setShowMapLocation={setShowMapLocation}
-          showMapLocation={showMapLocation}
-        ></CreateAnchorModal>
+        {showCreate && (
+          <CreateAnchorModal
+            showCreate={showCreate}
+            setShowCreate={setShowCreate}
+            localAnchor={localAnchor}
+            setLocalAnchor={setLocalAnchor}
+            showDate={showDate}
+            setShowDate={setShowDate}
+            setShowMapLocation={setShowMapLocation}
+            showMapLocation={showMapLocation}
+          />
+        )}
         {showView && (
           <ViewAnchorModal
             showView={showView}
             setShowView={setShowView}
             showViewAnchorIDs={showViewAnchorIDs}
-            //anchors={anchors}
-            //deleteOneAnchor={deleteOneAnchor}
           />
         )}
       </IonApp>
