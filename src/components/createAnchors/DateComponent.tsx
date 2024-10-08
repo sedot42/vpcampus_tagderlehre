@@ -18,23 +18,20 @@ export const DateComponent = ({
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
 }) => {
   type allowedProperties = "start_at" | "end_at" | "valid_from" | "valid_until";
-
-  const datetime = useRef<null | HTMLIonDatetimeElement>(null);
-  const date = new Date();
-  const now = date.toISOString();
-
+  const datetimeRef = useRef<null | HTMLIonDatetimeElement>(null);
   const writeDateToAnchor = (timestamp: string, property: allowedProperties) => {
     return timestamp && setLocalAnchor({ ...localAnchor, [property]: timestamp });
   };
 
   useEffect(() => {
     // Set an initial date once
-    return (
-      localAnchor.start_at === undefined &&
-      localAnchor.end_at === undefined &&
-      setLocalAnchor({ ...localAnchor, start_at: now, end_at: now })
-    );
-  }, []);
+    if (localAnchor.start_at === undefined && localAnchor.end_at === undefined)
+      setLocalAnchor({
+        ...localAnchor,
+        start_at: new Date().toISOString(),
+        end_at: new Date().toISOString(),
+      });
+  }, [localAnchor, setLocalAnchor]);
 
   return (
     <>
@@ -53,7 +50,7 @@ export const DateComponent = ({
           presentation="date-time"
           showDefaultButtons
           preferWheel
-          ref={datetime}
+          ref={datetimeRef}
           onIonChange={(event) =>
             writeDateToAnchor(event.detail.value as string, "start_at")
           }
