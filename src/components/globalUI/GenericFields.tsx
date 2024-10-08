@@ -10,12 +10,11 @@ export type ConfigInput = {
 };
 
 // Creates a set of input fields.
-export const createInputs = (
-  // FixMe: Define types
-  state: any,
-  setState: (state: any) => void,
-  config: ConfigInput[],
-) => {
+export function createInputs<T>(
+  state: T,
+  setState: React.Dispatch<React.SetStateAction<T>>,
+  config: ConfigInput[]
+) {
   return config.map((entry, index) => (
     <IonInput
       color="dark"
@@ -28,7 +27,7 @@ export const createInputs = (
       clearInput={true}
       value={state[entry.property] || ""}
       placeholder={entry.label || ""}
-      onIonInput={(event: any) => {
+      onIonInput={(event) => {
         setState({
           ...state,
           [entry.property]: event.target.value as string,
@@ -45,13 +44,13 @@ export const createInputs = (
       )}
     </IonInput>
   ));
-};
+}
 
-export const createTextarea = (
-  state: any,
-  setState: (state: any) => void,
-  config: ConfigInput[],
-) => {
+export function createTextarea<T>(
+  state: T,
+  setState: React.Dispatch<React.SetStateAction<T>>,
+  config: ConfigInput[]
+) {
   return config.map((entry, index) => (
     <IonTextarea
       autoGrow={true}
@@ -64,7 +63,7 @@ export const createTextarea = (
       key={index}
       value={state[entry.property] || ""}
       placeholder={entry.label || ""}
-      onIonInput={(event: any) => {
+      onIonInput={(event) => {
         setState({
           ...state,
           [entry.property]: event.target.value as string,
@@ -81,4 +80,4 @@ export const createTextarea = (
       )}
     </IonTextarea>
   ));
-};
+}
