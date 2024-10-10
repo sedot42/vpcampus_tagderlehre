@@ -7,6 +7,10 @@ export type DBAnchor = Omit<Anchor, "owner_id"> & {
     name?: string;
   };
 };
+// type guard
+export function isDBAnchor(anchor: DBAnchor | DraftAnchor<DBAnchor>): anchor is DBAnchor {
+  return anchor.owner.id !== undefined;
+}
 
 // (DB)Anchor with optional id field
 export type DraftAnchor<T extends Anchor | DBAnchor> = Omit<T, "id"> &
@@ -51,6 +55,7 @@ export type Anchor = {
   id: string;
   anchor_name: string;
   anchor_description?: string;
+  anchor_ref?: string[];
   tags?: string[];
   attachments?: string[];
 
@@ -88,8 +93,3 @@ export type Anchor = {
   owner_group_id?: string;
   private_anchor?: boolean;
 };
-
-// typeguard
-export function isDBAnchor(anchor: DBAnchor | DraftAnchor<DBAnchor>): anchor is DBAnchor {
-  return anchor.id !== undefined && anchor.owner.id !== undefined;
-}

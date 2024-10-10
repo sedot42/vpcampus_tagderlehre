@@ -58,6 +58,9 @@ const imageMap = {
   17: Map_u1,
   18: Map_u2,
 };
+function isInImageMapKeyRange(key: number): key is keyof typeof imageMap {
+  return 1 <= key && key <= 18;
+}
 
 //// Define a custom icon
 //const yellowIcon = L.divIcon({
@@ -72,7 +75,7 @@ export const MapContainerComponent = ({ anchors }: { anchors: DBAnchor[] }) => {
   const [selectedMarker, setSelectedMarker] = useState<DBAnchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<string>("");
-  const [sliderValue, setSliderValue] = useState(1);
+  const [sliderValue, setSliderValue] = useState<keyof typeof imageMap>(1);
   const [showRangeSlider, setShowRangeSlider] = useState(false);
 
   useEffect(() => {
@@ -125,7 +128,7 @@ export const MapContainerComponent = ({ anchors }: { anchors: DBAnchor[] }) => {
     setShowLayerControl(false);
   };
 
-  const getImageOverlayUrl = (value: number) => {
+  const getImageOverlayUrl = (value: keyof typeof imageMap) => {
     console.log(imageMap[value]);
     return imageMap[value] || ""; // Return the corresponding image URL
   };
@@ -218,7 +221,13 @@ export const MapContainerComponent = ({ anchors }: { anchors: DBAnchor[] }) => {
               ticks={true}
               snaps={true}
               value={sliderValue}
-              onIonChange={(e) => setSliderValue(e.detail.value as number)}
+              onIonChange={(e) => {
+                if (
+                  typeof e.detail.value === "number" &&
+                  isInImageMapKeyRange(e.detail.value)
+                )
+                  setSliderValue(e.detail.value);
+              }}
             />
           </div>
         )}

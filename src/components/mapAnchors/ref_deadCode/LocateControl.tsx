@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, Marker, TileLayer, WMSTileLayer, useMap } from "react-leaflet";
+import { useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import {
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonLabel,
-  IonList,
-  IonItem,
-  IonButton,
-} from "@ionic/react";
+import { IonIcon, IonButton } from "@ionic/react";
 import { locateOutline } from "ionicons/icons";
 import "./map.css";
 
 export const LocateControl = () => {
   const map = useMap();
 
-  const handleLocate = (e) => {
+  const handleLocate = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

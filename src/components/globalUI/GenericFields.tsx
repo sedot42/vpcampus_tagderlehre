@@ -1,5 +1,5 @@
 import { IonInput, IonText, IonTextarea } from "@ionic/react";
-import { Anchor } from "../../types/types";
+import { Anchor, DraftAnchor } from "../../types/types";
 
 export type ConfigInput = {
   required: boolean;
@@ -10,7 +10,7 @@ export type ConfigInput = {
 };
 
 // Creates a set of input fields.
-export function createInputs<T>(
+export function createInputs<T extends DraftAnchor<Anchor>>(
   state: T,
   setState: React.Dispatch<React.SetStateAction<T>>,
   config: ConfigInput[]
@@ -25,7 +25,7 @@ export function createInputs<T>(
       fill={entry.fill || undefined}
       key={index}
       clearInput={true}
-      value={state[entry.property] || ""}
+      value={String(state[entry.property]) || ""}
       placeholder={entry.label || ""}
       onIonInput={(event) => {
         setState({
@@ -46,7 +46,7 @@ export function createInputs<T>(
   ));
 }
 
-export function createTextarea<T>(
+export function createTextarea<T extends DraftAnchor<Anchor>>(
   state: T,
   setState: React.Dispatch<React.SetStateAction<T>>,
   config: ConfigInput[]
@@ -61,7 +61,7 @@ export function createTextarea<T>(
       required={entry.required}
       fill={entry.fill || undefined}
       key={index}
-      value={state[entry.property] || ""}
+      value={String(state[entry.property]) || ""}
       placeholder={entry.label || ""}
       onIonInput={(event) => {
         setState({

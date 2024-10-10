@@ -1,20 +1,40 @@
-import React, { useRef, useEffect, useState } from "react";
-import { DataSet, Network } from "vis-network/standalone";
+import { useRef, useEffect, useState } from "react";
+import { DataSet, Edge, Network, Node } from "vis-network/standalone";
 import "vis-network/styles/vis-network.css";
+import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 
-export const Graph = ({ data, startNodeId, depth, onNodeClick }) => {
+export const Graph = ({
+  data,
+  startNodeId,
+  depth,
+  onNodeClick,
+}: {
+  data: DBAnchor[];
+  startNodeId: undefined | DBAnchor["id"];
+  depth: number;
+  onNodeClick: (node: Anchor) => void;
+}) => {
   const containerRef = useRef(null);
-  const [networkData, setNetworkData] = useState({ nodes: [], edges: [] });
+  const [networkData, setNetworkData] = useState<{ nodes: Node[]; edges: Edge[] }>({
+    nodes: [],
+    edges: [],
+  });
 
-  const generateGraphData = (data, startId, maxDepth) => {
-    const nodes = [];
-    const edges = [];
+  const generateGraphData = (
+    data: DBAnchor[],
+    startId: Anchor["id"],
+    maxDepth: number
+  ) => {
+    const nodes: Node[] = [];
+    const edges: Edge[] = [];
     const visited = new Set();
     const nodeQueue = [{ id: startId, level: 0 }];
     const nodesById = new Map();
 
     while (nodeQueue.length > 0) {
-      const { id, level } = nodeQueue.shift();
+      const element = nodeQueue.shift();
+      if (!element) continue;
+      const { id, level } = element;
 
       if (level > maxDepth) continue;
       if (visited.has(id)) continue;
@@ -61,7 +81,7 @@ export const Graph = ({ data, startNodeId, depth, onNodeClick }) => {
   }, [data, startNodeId, depth]);
 
   useEffect(() => {
-    if (containerRef.current && networkData.nodes.length > 0) {
+    if (containerRef.current && networkData.nodes && networkData.nodes.length > 0) {
       const { nodes, edges } = networkData;
 
       const networkDataSet = {
@@ -90,7 +110,7 @@ export const Graph = ({ data, startNodeId, depth, onNodeClick }) => {
         const nodeId = event.nodes[0];
         const node = data.find((n) => n.id === nodeId);
         if (node) {
-          onNodeClick(node);
+          onNodeClick(convertDBAnchorToFlatAnchor(node));
         }
       });
     }

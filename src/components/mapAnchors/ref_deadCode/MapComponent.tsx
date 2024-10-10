@@ -5,13 +5,12 @@ import { StatusHeader } from "../../globalUI/StatusHeader";
 import { AnchorContext } from "../../../anchorContext";
 import { MapContainerComponent } from "./MapContainerComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
-import { Anchor, DBAnchor } from "../../../types/types";
+import { DBAnchor } from "../../../types/types";
 
 export const MapComponent: React.FC = () => {
   const { anchors } = useContext(AnchorContext);
 
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date());
-  const [selectedFloor] = useState<number>(2);
   const [startTimeFilter, setStartTimeFilter] = useState<number>(7);
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18);
   const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false);
@@ -41,8 +40,8 @@ export const MapComponent: React.FC = () => {
     const selectedEndMinutes = endTimeFilter * 60;
 
     const filteredAnchors = anchors.filter((anchor) => {
-      const startDate = new Date(anchor.start_at);
-      const endDate = new Date(anchor.end_at);
+      const startDate = new Date(String(anchor.start_at));
+      const endDate = new Date(String(anchor.end_at));
 
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         console.warn(`Invalid date for anchor: ${anchor.id}`);

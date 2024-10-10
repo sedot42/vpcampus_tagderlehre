@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import { Graph } from "./Graph";
 import { AnchorContext } from "../../anchorContext";
-import { Anchor } from "../../types/types";
+import { Anchor, DBAnchor } from "../../types/types";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { UpdateModal } from "../manageAnchors/UpdateModal"; // Adjust the import path as needed
 
@@ -24,11 +24,11 @@ export const ShowAnchorGraph: React.FC = () => {
   const [selectedNode, setSelectedNode] = useState<Anchor | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const handleStartNodeChange = (e: any) => {
+  const handleStartNodeChange = (e: CustomEvent) => {
     setStartNodeId(e.detail.value);
   };
 
-  const handleDepthChange = (e: any) => {
+  const handleDepthChange = (e: CustomEvent) => {
     setDepth(parseInt(e.detail.value));
   };
 
@@ -47,7 +47,7 @@ export const ShowAnchorGraph: React.FC = () => {
   };
 
   // Function to determine orphans
-  const isOrphan = (node: any, allNodes: any[]) => {
+  const isOrphan = (node: DBAnchor, allNodes: DBAnchor[]) => {
     const hasNoRefs = !node.anchor_ref || node.anchor_ref.length === 0;
     const notReferenced = !allNodes.some((otherNode) =>
       otherNode.anchor_ref?.includes(node.id)
@@ -129,13 +129,15 @@ export const ShowAnchorGraph: React.FC = () => {
 };
 
 // Utility function for calculating node depths
-const calculateDepths = (startNodeId, anchors) => {
-  const depths = {};
+const calculateDepths = (startNodeId: Anchor["id"], anchors: DBAnchor[]) => {
+  const depths: { [key: Anchor["id"]]: number } = {};
   const queue = [{ id: startNodeId, depth: 0 }];
   const visited = new Set();
 
   while (queue.length > 0) {
-    const { id, depth } = queue.shift();
+    const element = queue.shift();
+    if (!element) continue;
+    const { id, depth } = element;
     if (visited.has(id)) continue;
     visited.add(id);
     depths[id] = depth;

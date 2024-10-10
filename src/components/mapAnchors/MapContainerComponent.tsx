@@ -79,10 +79,10 @@ export const MapContainerComponent = ({
   };
 
   // On click on Anchor display the ListModal. If there are several Anchors at the same location create a list, based on their IDs
-  const handleAnchorClick = (anchor) => {
+  const handleAnchorClick = (anchor: DBAnchor) => {
     console.log(anchor);
-    const lat: number = anchor.lat;
-    const lon: number = anchor.lon;
+    const lat = anchor.lat;
+    const lon = anchor.lon;
     // Find all anchors with the same coordinates
     const matchingAnchors = mapAnchors.filter((a) => a.lat === lat && a.lon === lon);
     console.log(matchingAnchors);

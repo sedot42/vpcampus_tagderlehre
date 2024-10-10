@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   IonModal,
   IonHeader,
@@ -12,6 +12,8 @@ import {
   IonDatetime,
   IonToast,
   IonRange,
+  RangeCustomEvent,
+  DatetimeCustomEvent,
 } from "@ionic/react";
 import "leaflet/dist/leaflet.css";
 import { closeOutline, alertCircleOutline } from "ionicons/icons";
@@ -41,16 +43,20 @@ export const TimeSliderComponent = ({
   const defaultEndTime = 18;
 
   // Function to handle time changes from the range slider
-  const handleTimeChange = (e) => {
-    const { lower, upper } = e.detail.value;
-    setStartTimeFilter(lower);
-    setEndTimeFilter(upper);
+  const handleTimeChange = (e: RangeCustomEvent) => {
+    if (typeof e.detail.value === "object") {
+      const { lower, upper } = e.detail.value;
+      setStartTimeFilter(lower);
+      setEndTimeFilter(upper);
+    }
   };
 
   // Function to handle date selection from IonDatetime
-  const handleDateChange = (e) => {
-    const selectedDate = new Date(e.detail.value);
-    setSelectedDayFilter(selectedDate);
+  const handleDateChange = (e: DatetimeCustomEvent) => {
+    if (typeof e.detail.value === "string") {
+      const selectedDate = new Date(e.detail.value);
+      setSelectedDayFilter(selectedDate);
+    }
   };
 
   return (
