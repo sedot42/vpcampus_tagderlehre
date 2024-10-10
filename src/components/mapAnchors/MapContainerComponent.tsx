@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./map.css";
-import L from "leaflet";
+import L, { LeafletMouseEvent } from "leaflet";
 import {
   useIonViewDidEnter,
   IonFab,
@@ -36,7 +36,6 @@ export const MapContainerComponent = ({
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
-  const [validAnchors, setValidAnchors] = useState<DBAnchor[]>([]);
   const [showLayerControl, setShowLayerControl] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<string>("openstreetmap");
   const [sliderValue, setSliderValue] = useState(1);
@@ -49,15 +48,6 @@ export const MapContainerComponent = ({
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event("resize"));
   });
-
-  // Timeout since the markers on the map are not rendered correctly --> should be fixed in a different way
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setValidAnchors(filteredAnchors);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [filteredAnchors]);
 
   // Filter the anchors based on the timeslider. If the Floorplans are displayed they should also be filtered based on the floorlevel
   const mapAnchors = useMemo(() => {
@@ -103,12 +93,15 @@ export const MapContainerComponent = ({
     setSelectedLayer(layerUrl);
     setShowLayerControl(false);
   };
+  // disable event propagation on the range slider
+  useEffect(() => {
+    if (ref.current) L.DomEvent.disableClickPropagation(ref.current);
+  });
 
   // Very complicated function. This handles the "longTouch" on the map and assures that this works on mobile and desktop.
   // After the long touch a temporary marker is set and the "createAnchor" Modal is opened with the respective coordinates already filled out
   const MapEventHandlers = () => {
     const map = useMap();
-    const [coords, setCoords] = useState<[number, number] | null>(null);
 
     const clearMousedownTimeout = () => {
       if (mousedownInterval.current) {
@@ -119,7 +112,6 @@ export const MapContainerComponent = ({
 
     const handleStart = (latlng: L.LatLng) => {
       startPosition.current = [latlng.lat, latlng.lng];
-      setCoords(startPosition.current);
       mousedownInterval.current = setTimeout(() => {
         setMarkerPosition([latlng.lat, latlng.lng]);
         setShowCreate(true);
@@ -152,52 +144,20 @@ export const MapContainerComponent = ({
     };
 
     useEffect(() => {
-      const handleTouchStart = (e) => {
-        const latlng = map.mouseEventToLatLng(e.touches[0]);
-        handleStart(latlng);
-      };
-
-      const handleTouchMove = (e) => {
-        const latlng = map.mouseEventToLatLng(e.touches[0]);
-        handleMove(latlng);
-      };
-
-      const handleTouchEnd = () => {
-        handleEnd();
-      };
-
-      const handleMouseDown = (e) => {
-        handleStart(e.latlng);
-      };
-
-      const handleMouseMove = (e) => {
-        handleMove(e.latlng);
-      };
-
-      const handleMouseUp = () => {
-        handleEnd();
-      };
+      const handleMouseDown = (e: LeafletMouseEvent) => handleStart(e.latlng);
+      const handleMouseMove = (e: LeafletMouseEvent) => handleMove(e.latlng);
+      const handleMouseUp = () => handleEnd();
 
       map.on("mousedown", handleMouseDown);
       map.on("mousemove", handleMouseMove);
       map.on("mouseup", handleMouseUp);
       map.on("mouseout", handleEnd);
 
-      map.getContainer().addEventListener("touchstart", handleTouchStart);
-      map.getContainer().addEventListener("touchmove", handleTouchMove);
-      map.getContainer().addEventListener("touchend", handleTouchEnd);
-      map.getContainer().addEventListener("touchcancel", handleTouchEnd);
-
       return () => {
         map.off("mousedown", handleMouseDown);
         map.off("mousemove", handleMouseMove);
         map.off("mouseup", handleMouseUp);
         map.off("mouseout", handleEnd);
-
-        map.getContainer().removeEventListener("touchstart", handleTouchStart);
-        map.getContainer().removeEventListener("touchmove", handleTouchMove);
-        map.getContainer().removeEventListener("touchend", handleTouchEnd);
-        map.getContainer().removeEventListener("touchcancel", handleTouchEnd);
 
         clearMousedownTimeout();
       };
@@ -278,7 +238,6 @@ export const MapContainerComponent = ({
 
         {/* Display of the Markers aswell as the clustering */}
         <MarkerClusterGroup
-          ref={ref}
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={40}
@@ -315,7 +274,6 @@ export const MapContainerComponent = ({
                 pin={true}
                 pinFormatter={(value) => `${value}`}
                 value={sliderValue}
-                onIonFocus={() => L.DomEvent.disableClickPropagation(ref.current)}
                 onIonChange={(e) => setSliderValue(e.detail.value as number)}
               />
             </div>
