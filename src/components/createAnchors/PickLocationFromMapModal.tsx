@@ -9,9 +9,6 @@ import {
   IonTitle,
   IonButtons,
   IonToolbar,
-  IonGrid,
-  IonCol,
-  IonRow,
   IonInput,
   IonLabel,
   IonSegment,
@@ -93,13 +90,11 @@ const CreateOutside = ({
   setLocalAnchor,
   mapRef,
   setMapRef,
-  setLocationSetMap,
 }: {
   localAnchor: DraftAnchor<Anchor>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   mapRef?: Map;
   setMapRef: (map: Map) => void;
-  setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   useEffect(() => {
     // timeout so leaflet can do it's calculations after transitions are finished
@@ -117,7 +112,6 @@ const CreateOutside = ({
         const mapPositionMarker = new Marker(e.latlng);
         mapPositionMarker.addTo(map); // add to map;
         setLocalAnchor({ ...localAnchor, lat: e.latlng.lat, lon: e.latlng.lng });
-        setLocationSetMap(true);
       },
     });
     return null;
@@ -153,17 +147,14 @@ const CreateOutside = ({
 export const PickLocationFromMapModal = ({
   localAnchor,
   setLocalAnchor,
-  locationMapModalOpen,
-  setLocationMapModalOpen,
-  setLocationSetMap,
+  isOpen,
+  closeModal,
 }: {
-  localAnchor: DraftAnchor<Anchor>;
-  setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
-  locationMapModalOpen: boolean;
-  setLocationMapModalOpen: (state: boolean) => void;
-  setLocationSetMap: Dispatch<SetStateAction<boolean>>;
+  localAnchor: DraftAnchor<Anchor> | Anchor;
+  setLocalAnchor: Dispatch<SetStateAction<DraftAnchor<Anchor> | Anchor>>;
+  isOpen: boolean;
+  closeModal: () => void;
 }) => {
-  const closeModal = () => setLocationMapModalOpen(false);
   const [showOutside, setShowOutside] = useState(true);
   const [mapRef, setMapRef] = useState<Map>();
 
@@ -171,10 +162,7 @@ export const PickLocationFromMapModal = ({
     window.dispatchEvent(new Event("resize"));
   });
   return (
-    <IonModal
-      isOpen={locationMapModalOpen}
-      style={{ "--min-height": "100vh", "--min-width": "100vw" }}
-    >
+    <IonModal isOpen={isOpen} style={{ "--min-height": "100vh", "--min-width": "100vw" }}>
       <IonHeader>
         <IonToolbar>
           <IonTitle slot="start">Ort erstellen</IonTitle>
@@ -199,36 +187,22 @@ export const PickLocationFromMapModal = ({
           setLocalAnchor={setLocalAnchor}
           mapRef={mapRef}
           setMapRef={setMapRef}
-          setLocationSetMap={setLocationSetMap}
         />
       ) : (
         <CreateInside localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
       )}
-      <IonFooter>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonButton
-                onClick={closeModal}
-                id="saveTempLocation"
-                expand="full"
-                color="primary"
-              >
-                Speichern
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                onClick={closeModal}
-                id="cancelTempLocation"
-                expand="full"
-                color="primary"
-              >
-                Abbrechen
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+      <IonFooter
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <IonButton onClick={closeModal} id="cancelTempLocation" color="light">
+          Abbrechen
+        </IonButton>
+        <IonButton onClick={closeModal} id="saveTempLocation" color="primary">
+          Speichern
+        </IonButton>
       </IonFooter>
     </IonModal>
   );

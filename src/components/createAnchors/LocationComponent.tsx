@@ -38,8 +38,6 @@ export const LocationGroup = ({
 
   const [locationListModalOpen, setLocationListModalOpen] = useState(false);
   const [locationMapModalOpen, setLocationMapModalOpen] = useState(false);
-  const [locationSet, setLocationSet] = useState<boolean>(false);
-  const [locationSetMap, setLocationSetMap] = useState<boolean>(false);
   const [activeButton, setActiveButton] = useState<"none" | "map" | "list" | "current">(
     "none"
   );
@@ -60,7 +58,6 @@ export const LocationGroup = ({
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocalAnchor({ ...localAnchor, lat: latitude, lon: longitude });
-          setLocationSet(true);
           setActiveButton("current");
         },
         (error) => {
@@ -79,8 +76,6 @@ export const LocationGroup = ({
       lon: undefined,
       room_id: undefined,
     });
-    setLocationSet(false);
-    setLocationSetMap(false);
     setShowMapLocation(false);
     setActiveButton("none");
   };
@@ -137,40 +132,26 @@ export const LocationGroup = ({
       <IonItem lines="none">
         Ort
         <IonItemGroup>
-          {/* There are thre buttons how to fill out the location (map, roomlist or current location.
+          {/* There are three buttons how to fill out the location (map, roomlist or current location.
           If one of it is filled the other should be disabled) */}
-          {!locationSetMap && !showMapLocation ? (
-            <IonButton
-              onClick={handleMapButtonClick}
-              disabled={
-                (activeButton !== "none" && activeButton !== "map") || showMapLocation
-              }
-            >
-              via Karte
-            </IonButton>
-          ) : (
-            (showMapLocation || locationSetMap) && (
-              <IonButton
-                color="medium"
-                className="tagContainerButton"
-                onClick={resetLocation}
-              >
-                <IonLabel className="tagContainerButtonLabels ion-text-wrap">
-                  {`Lat: ${localAnchor.lat}, Lon: ${localAnchor.lon}`}
-                </IonLabel>
-                <IonIcon icon={trashOutline} />
-              </IonButton>
-            )
-          )}
+          {/* get location via map */}
+          <IonButton
+            color={localAnchor.lat && activeButton === "map" ? "medium" : "primary"}
+            onClick={localAnchor.lat ? resetLocation : handleMapButtonClick}
+            disabled={
+              (activeButton !== "none" && activeButton !== "map") || showMapLocation
+            }
+          >
+            <IonLabel className="tagContainerButtonLabels ion-text-wrap">
+              {localAnchor.lat && localAnchor.lon && activeButton === "map"
+                ? `Lat: ${Math.trunc(localAnchor.lat * 100) / 100},
+                   Lon: ${Math.trunc(localAnchor.lon * 100) / 100}`
+                : "Via Karte"}
+            </IonLabel>
+            {localAnchor.lat && activeButton === "map" && <IonIcon icon={trashOutline} />}
+          </IonButton>
 
-          <PickLocationFromMapModal
-            localAnchor={localAnchor}
-            setLocalAnchor={setLocalAnchor}
-            locationMapModalOpen={locationMapModalOpen}
-            setLocationMapModalOpen={setLocationMapModalOpen}
-            setLocationSetMap={setLocationSetMap}
-          />
-
+          {/* get location via room list */}
           <IonButton
             color={localAnchor.room_id ? "medium" : "primary"}
             onClick={localAnchor.room_id ? resetLocation : handleListeClick}
@@ -183,59 +164,67 @@ export const LocationGroup = ({
             </IonLabel>
             {localAnchor.room_id && <IonIcon icon={trashOutline} />}
           </IonButton>
-
-          <SelectionModal
-            headerText="Ort auswählen"
-            hasMultiSelection={false}
-            closeModal={() => setLocationListModalOpen(false)}
-            isOpen={locationListModalOpen}
-            selectionList={locationList}
-            initialSelection={localAnchor.room_id ? [localAnchor.room_id] : []}
-            modalConfirmAction={handleSaveRoom}
+          {/* get location via device position */}
+          <IonButton
+            color={localAnchor.lat && activeButton === "current" ? "medium" : "primary"}
+            onClick={localAnchor.lat ? resetLocation : handleLocationClick}
+            disabled={
+              (activeButton !== "none" && activeButton !== "current") || showMapLocation
+            }
           >
-            <>
-              <IonFab vertical="top" horizontal="end" edge>
-                <IonFabButton onClick={scanRoomQRCode}>
-                  <IonIcon icon={qrCodeOutline}></IonIcon>
-                </IonFabButton>
-              </IonFab>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <IonButton onClick={() => handleSaveRoom} expand="full" color="primary">
-                  Speichern
-                </IonButton>
-              </div>
-            </>
-          </SelectionModal>
-
-          {!locationSet ? (
-            <IonButton
-              onClick={handleLocationClick}
-              disabled={
-                (activeButton !== "none" && activeButton !== "current") || showMapLocation
-              }
-            >
-              Aktueller Standort
-            </IonButton>
-          ) : (
-            <IonButton
-              color="medium"
-              className="tagContainerButton"
-              onClick={resetLocation}
-            >
-              <IonLabel className="tagContainerButtonLabels ion-text-wrap">
-                {`Lat: ${localAnchor.lat}, Lon: ${localAnchor.lon}`}
-              </IonLabel>
+            <IonLabel className="tagContainerButtonLabels ion-text-wrap">
+              {localAnchor.lat && localAnchor.lon && activeButton === "current"
+                ? `Lat: ${Math.trunc(localAnchor.lat * 100) / 100},
+                   Lon: ${Math.trunc(localAnchor.lon * 100) / 100}`
+                : "Aktueller Standort"}
+            </IonLabel>
+            {localAnchor.lat && activeButton === "current" && (
               <IonIcon icon={trashOutline} />
-            </IonButton>
-          )}
+            )}
+          </IonButton>
         </IonItemGroup>
       </IonItem>
+      {/* Modals to select a location from map or room list */}
+      <PickLocationFromMapModal
+        localAnchor={localAnchor}
+        setLocalAnchor={setLocalAnchor}
+        closeModal={() => {
+          setLocationMapModalOpen(false);
+          if (!localAnchor.lat) setActiveButton("none");
+        }}
+        isOpen={locationMapModalOpen}
+      />
+      <SelectionModal
+        headerText="Ort auswählen"
+        hasMultiSelection={false}
+        closeModal={() => {
+          setLocationListModalOpen(false);
+          if (!localAnchor.lat) setActiveButton("none");
+        }}
+        isOpen={locationListModalOpen}
+        selectionList={locationList}
+        initialSelection={localAnchor.room_id ? [localAnchor.room_id] : []}
+        modalConfirmAction={handleSaveRoom}
+      >
+        <>
+          <IonFab vertical="top" horizontal="end" edge>
+            <IonFabButton onClick={scanRoomQRCode}>
+              <IonIcon icon={qrCodeOutline}></IonIcon>
+            </IonFabButton>
+          </IonFab>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+            }}
+          >
+            <IonButton onClick={() => handleSaveRoom} expand="full" color="primary">
+              Speichern
+            </IonButton>
+          </div>
+        </>
+      </SelectionModal>
     </>
   );
 };

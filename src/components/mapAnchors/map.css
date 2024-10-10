@@ -1,28 +1,26 @@
-  
-  ion-range::part(pin) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20%;
-    transform: scale(1.01);
-    top: -15px;
-    width: 50px;
-    height: 30px;
-    transition: transform 120ms ease, background 120ms ease;
-    --bar-border-radius: 20px;
-    font-size: large;
-  }
- 
-  ion-range {
-    --bar-height: 7px;
-    --bar-border-radius: 20px;
-    --knob-size: 30px;
-    margin-left: 20px;
-    margin-right: 20px;
+ion-range::part(pin) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20%;
+  transform: scale(1.01);
+  top: -15px;
+  width: 50px;
+  height: 30px;
+  transition: transform 120ms ease, background 120ms ease;
+  --bar-border-radius: 20px;
+  font-size: large;
+}
 
-  }
+ion-range {
+  --bar-height: 7px;
+  --bar-border-radius: 20px;
+  --knob-size: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
 
-div.rangeClass{
+div.rangeClass {
   width: 150px;
   height: 80px;
   background-color: yellow;
@@ -106,11 +104,11 @@ div.rangeClass{
   top: 10px;
   right: 10px;
   z-index: 1000;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  display:block;
-  
+  display: block;
 }
-
 
 .rotated-image {
   transform: rotate(1035deg);
@@ -127,8 +125,6 @@ div.rangeClass{
   z-index: 1000;
 }
 
-
-  
 .range-slider-container::part(pin) {
   display: inline-flex;
   align-items: center;
@@ -143,18 +139,18 @@ div.rangeClass{
 }
 
 .range-slider-container {
-  pointer-events: auto; 
+  pointer-events: auto;
 }
 
 .vertical-range {
-  pointer-events: auto; 
+  pointer-events: auto;
 }
 
-#mapContainer{
-cursor:pointer
+#mapContainer {
+  cursor: pointer;
 }
-.leaflet-touch{
-  cursor:pointer
+.leaflet-touch {
+  cursor: pointer;
 }
 
 ion-datetime-button::part(native) {
