@@ -146,7 +146,7 @@ export const LocationGroup = ({
                 (activeButton !== "none" && activeButton !== "map") || showMapLocation
               }
             >
-              Über Karte wählen
+              via Karte
             </IonButton>
           ) : (
             (showMapLocation || locationSetMap) && (
@@ -179,7 +179,7 @@ export const LocationGroup = ({
             }
           >
             <IonLabel className="ion-text-wrap">
-              {localAnchor.room_id ? `Room: ${localAnchor.room_id}` : "Raum über Liste"}
+              {localAnchor.room_id ? `Raum: ${localAnchor.room_id}` : "via Raumliste"}
             </IonLabel>
             {localAnchor.room_id && <IonIcon icon={trashOutline} />}
           </IonButton>
@@ -220,7 +220,7 @@ export const LocationGroup = ({
                 (activeButton !== "none" && activeButton !== "current") || showMapLocation
               }
             >
-              Aktuellen Standort verwenden
+              Aktueller Standort
             </IonButton>
           ) : (
             <IonButton

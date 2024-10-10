@@ -25,8 +25,8 @@ export const ViewAnchorModal = ({
     <IonModal
       ref={viewModalRef}
       isOpen={showView}
-      initialBreakpoint={0.3}
-      breakpoints={[0, 0.3, 1]}
+      initialBreakpoint={0.5}
+      breakpoints={[0, 0.5, 1]}
       handleBehavior="cycle"
       onIonModalDidDismiss={() => {
         setShowView(false);

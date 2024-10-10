@@ -102,6 +102,7 @@ const CreateOutside = ({
   setLocationSetMap: Dispatch<SetStateAction<boolean>>;
 }) => {
   useEffect(() => {
+    // timeout so leaflet can do it's calculations after transitions are finished
     if (mapRef) setTimeout(() => mapRef.invalidateSize(), 100);
   });
 
