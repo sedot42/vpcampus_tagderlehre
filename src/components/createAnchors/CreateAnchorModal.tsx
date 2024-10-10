@@ -161,8 +161,7 @@ export const CreateAnchorModal = ({
       >
         <IonButton
           id="abort"
-          fill="clear"
-          color="dark"
+          color="light"
           onClick={() => setShowCreate(false)}
           expand="block"
           style={{ padding: "4px" }}
