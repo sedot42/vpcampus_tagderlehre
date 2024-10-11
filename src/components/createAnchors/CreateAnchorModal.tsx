@@ -143,7 +143,7 @@ export const CreateAnchorModal = ({
           showMapLocation={showMapLocation}
         />
         <TagComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
-        <GroupComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} />
+        {/* <GroupComponent localAnchor={localAnchor} setLocalAnchor={setLocalAnchor} /> */}
 
         <ModalButton
           id="openDialogSelectDocument"
