@@ -149,7 +149,14 @@ export const CreateAnchorModal = ({
           id="openDialogSelectDocument"
           text="Dokumente"
           icon={addCircleOutline}
-          onClick={() => console.log("not implemented")}
+          onClick={() =>
+            present({
+              message: "Nicht implementiert",
+              duration: 2000,
+              position: "bottom",
+              color: "warning",
+            })
+          }
         />
       </IonContent>
       <IonFooter
