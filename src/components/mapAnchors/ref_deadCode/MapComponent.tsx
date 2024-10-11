@@ -20,55 +20,48 @@ export const MapComponent: React.FC = () => {
     window.dispatchEvent(new Event("resize"));
   });
 
-  const convertTimeToMinutes = (date: Date) =>
-    date.getUTCHours() * 60 + date.getUTCMinutes();
-
-  const filterAnchors = () => {
-    const selectedDate = new Date(
-      Date.UTC(
-        selectedDayFilter.getUTCFullYear(),
-        selectedDayFilter.getUTCMonth(),
-        selectedDayFilter.getUTCDate()
-      )
-    );
-
-    const startOfDay = new Date(selectedDate);
-    const endOfDay = new Date(selectedDate);
-    endOfDay.setUTCHours(23, 59, 59, 999);
-
-    const selectedStartMinutes = startTimeFilter * 60;
-    const selectedEndMinutes = endTimeFilter * 60;
-
-    const filteredAnchors = anchors.filter((anchor) => {
-      const startDate = new Date(String(anchor.start_at));
-      const endDate = new Date(String(anchor.end_at));
-
-      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        console.warn(`Invalid date for anchor: ${anchor.id}`);
-        return false;
-      }
-
-      const anchorStartMinutes = convertTimeToMinutes(startDate);
-      const anchorEndMinutes = convertTimeToMinutes(endDate);
-
-      const isDateInSelectedDay =
-        (startDate >= startOfDay && startDate <= endOfDay) ||
-        (endDate >= startOfDay && endDate <= endOfDay) ||
-        (startDate < startOfDay && endDate > endOfDay);
-
-      const isTimeInRange =
-        anchorStartMinutes < selectedEndMinutes &&
-        anchorEndMinutes > selectedStartMinutes;
-
-      return isDateInSelectedDay && isTimeInRange;
-    });
-
-    setFilteredAnchors(filteredAnchors);
-  };
-
   useEffect(() => {
     if (anchors.length > 0) {
-      filterAnchors();
+      const selectedDate = new Date(
+        Date.UTC(
+          selectedDayFilter.getUTCFullYear(),
+          selectedDayFilter.getUTCMonth(),
+          selectedDayFilter.getUTCDate()
+        )
+      );
+
+      const startOfDay = new Date(selectedDate);
+      const endOfDay = new Date(selectedDate);
+      endOfDay.setUTCHours(23, 59, 59, 999);
+
+      const selectedStartMinutes = startTimeFilter * 60;
+      const selectedEndMinutes = endTimeFilter * 60;
+
+      const filteredAnchors = anchors.filter((anchor) => {
+        const startDate = new Date(String(anchor.start_at));
+        const endDate = new Date(String(anchor.end_at));
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+          console.warn(`Invalid date for anchor: ${anchor.id}`);
+          return false;
+        }
+
+        const anchorStartMinutes = convertTimeToMinutes(startDate);
+        const anchorEndMinutes = convertTimeToMinutes(endDate);
+
+        const isDateInSelectedDay =
+          (startDate >= startOfDay && startDate <= endOfDay) ||
+          (endDate >= startOfDay && endDate <= endOfDay) ||
+          (startDate < startOfDay && endDate > endOfDay);
+
+        const isTimeInRange =
+          anchorStartMinutes < selectedEndMinutes &&
+          anchorEndMinutes > selectedStartMinutes;
+
+        return isDateInSelectedDay && isTimeInRange;
+      });
+
+      setFilteredAnchors(filteredAnchors);
     }
   }, [anchors, selectedDayFilter, startTimeFilter, endTimeFilter]);
 
@@ -90,3 +83,7 @@ export const MapComponent: React.FC = () => {
     </IonPage>
   );
 };
+
+function convertTimeToMinutes(date: Date) {
+  return date.getUTCHours() * 60 + date.getUTCMinutes();
+}
