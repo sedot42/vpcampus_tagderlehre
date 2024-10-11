@@ -25,7 +25,7 @@ export function createInputs<T extends DraftAnchor<Anchor>>(
       fill={entry.fill || undefined}
       key={index}
       clearInput={true}
-      value={String(state[entry.property]) || ""}
+      value={state[entry.property] ? String(state[entry.property]) : ""}
       placeholder={entry.label || ""}
       onIonInput={(event) => {
         setState({
@@ -61,7 +61,7 @@ export function createTextarea<T extends DraftAnchor<Anchor>>(
       required={entry.required}
       fill={entry.fill || undefined}
       key={index}
-      value={String(state[entry.property]) || ""}
+      value={state[entry.property] ? String(state[entry.property]) : ""}
       placeholder={entry.label || ""}
       onIonInput={(event) => {
         setState({
