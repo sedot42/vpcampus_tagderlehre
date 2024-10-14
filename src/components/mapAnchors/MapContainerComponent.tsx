@@ -144,20 +144,52 @@ export const MapContainerComponent = ({
     };
 
     useEffect(() => {
-      const handleMouseDown = (e: LeafletMouseEvent) => handleStart(e.latlng);
-      const handleMouseMove = (e: LeafletMouseEvent) => handleMove(e.latlng);
-      const handleMouseUp = () => handleEnd();
+      const handleTouchStart = (e) => {
+        const latlng = map.mouseEventToLatLng(e.touches[0]);
+        handleStart(latlng);
+      };
+
+      const handleTouchMove = (e) => {
+        const latlng = map.mouseEventToLatLng(e.touches[0]);
+        handleMove(latlng);
+      };
+
+      const handleTouchEnd = () => {
+        handleEnd();
+      };
+
+      const handleMouseDown = (e) => {
+        handleStart(e.latlng);
+      };
+
+      const handleMouseMove = (e) => {
+        handleMove(e.latlng);
+      };
+
+      const handleMouseUp = () => {
+        handleEnd();
+      };
 
       map.on("mousedown", handleMouseDown);
       map.on("mousemove", handleMouseMove);
       map.on("mouseup", handleMouseUp);
       map.on("mouseout", handleEnd);
 
+      map.getContainer().addEventListener("touchstart", handleTouchStart);
+      map.getContainer().addEventListener("touchmove", handleTouchMove);
+      map.getContainer().addEventListener("touchend", handleTouchEnd);
+      map.getContainer().addEventListener("touchcancel", handleTouchEnd);
+
       return () => {
         map.off("mousedown", handleMouseDown);
         map.off("mousemove", handleMouseMove);
         map.off("mouseup", handleMouseUp);
         map.off("mouseout", handleEnd);
+
+        map.getContainer().removeEventListener("touchstart", handleTouchStart);
+        map.getContainer().removeEventListener("touchmove", handleTouchMove);
+        map.getContainer().removeEventListener("touchend", handleTouchEnd);
+        map.getContainer().removeEventListener("touchcancel", handleTouchEnd);
 
         clearMousedownTimeout();
       };
