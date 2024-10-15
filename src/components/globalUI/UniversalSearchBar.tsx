@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from "react";
 import {
   IonIcon,
@@ -16,54 +14,47 @@ import { closeCircleOutline, timeOutline } from "ionicons/icons";
 import { get, update, del } from "idb-keyval";
 import Fuse from "fuse.js";
 
-type GenericObject = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-};
-
-type UniversalSearchBarProps = {
-  entitiesToBeSearched: GenericObject[]; // What to be searched with the search bar
-  historyKeyName: string; // An arbitrary key name that is used to store the history in chache
-  titlePropertyName: string; // Property that is used to display a name or title in the results
-  renderItem: (entityToBeSearched: GenericObject, index: number) => React.ReactElement;
-};
-
-export const UniversalSearchBar = ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const UniversalSearchBar = <T extends Record<string, any>>({
   entitiesToBeSearched,
   historyKeyName,
   renderItem,
   titlePropertyName,
-}: UniversalSearchBarProps) => {
+}: {
+  entitiesToBeSearched: T[]; // What to be searched with the search bar
+  historyKeyName: string; // An arbitrary key name that is used to store the history in chache
+  titlePropertyName: string; // Property that is used to display a name or title in the results
+  renderItem: (entityToBeSearched: T, index: number) => React.ReactElement;
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<GenericObject[]>([]);
+  const [suggestions, setSuggestions] = useState<T[]>([]);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
-
-  // Extract keys dynamically from the first item in mockState
-  const keys =
-    entitiesToBeSearched.length > 0 ? Object.keys(entitiesToBeSearched[0]) : [];
 
   // Load search history from IndexedDB on component mount
   useEffect(() => {
     get(historyKeyName).then((history) => {
       if (history) setSearchHistory(history);
     });
-  }, []);
+  }, [historyKeyName]);
 
-  // Initialize Fuse.js for fuzzy search
-  const fuse = useMemo(
-    () =>
-      new Fuse(entitiesToBeSearched, {
-        keys: keys, // Use dynamically extracted keys
-        threshold: 0.9,
-        includeScore: true,
-      }),
-    [entitiesToBeSearched, keys]
+  // Extract keys dynamically from the first item in mockState
+  const keys = useMemo(
+    () => (entitiesToBeSearched.length > 0 ? Object.keys(entitiesToBeSearched[0]) : []),
+    [entitiesToBeSearched]
   );
+  // Initialize Fuse.js for fuzzy search
+  const fuse = useMemo(() => {
+    return new Fuse(entitiesToBeSearched, {
+      keys: keys, // Use dynamically extracted keys
+      threshold: 0.3,
+      includeScore: true,
+    });
+  }, [entitiesToBeSearched, keys]);
 
   // Filter anchors based on search query
   const filteredEntities = useMemo(() => {
-    if (searchQuery.trim() === "") return entitiesToBeSearched;
+    if (searchQuery.trim().length < 3) return entitiesToBeSearched;
 
     const searchTerms = searchQuery
       .toLowerCase()
@@ -193,13 +184,13 @@ export const UniversalSearchBar = ({
       )}
       <IonInfiniteScroll>
         <IonList>
-          {filteredEntities.length > 0 ? (
+          {filteredEntities.length === 0 && searchQuery.trim() !== "" ? (
+            <IonItem>No matches found</IonItem>
+          ) : (
             filteredEntities.map((entity, index) => {
               return renderItem(entity, index);
             })
-          ) : searchQuery.trim() !== "" ? (
-            <IonItem>No matches found</IonItem>
-          ) : null}
+          )}
         </IonList>
       </IonInfiniteScroll>
     </>
