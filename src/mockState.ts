@@ -26,7 +26,7 @@ export const mockState = [
   },
   {
     id: "208ef33f-90e2-4119-9ccc-d8316f0bd324",
-    anchor_name: "WID 01",
+    anchor_name: "Einführung in Webprogrammierung",
     anchor_description:
       "Veranstaltung 01 im Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
     tags: ["Lehre", "HS24", "BSc"],
@@ -50,7 +50,7 @@ export const mockState = [
   },
   {
     id: "308ef33f-90e2-4119-9ccc-d8316f0bd174",
-    anchor_name: "WID 02",
+    anchor_name: "Frontend Frameworks",
     anchor_description:
       "Veranstaltung 02 im Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
     tags: ["Lehre", "HS24", "BSc"],
@@ -74,9 +74,9 @@ export const mockState = [
   },
   {
     id: "408ef33f-90e2-4119-9ccc-d8316f0bd814",
-    anchor_name: "WID 03",
+    anchor_name: "IoT Einführung",
     anchor_description:
-      "Veranstaltung 03 im Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
+      "Veranstaltung 03 im Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung'. Bitte lest Euch zur Vorbereitung das Skript Seite 42 bis 64 durch, siehe Moodle-Link.",
     tags: ["Lehre", "HS24", "BSc"],
     attachments: ["https://moodle.fhnw.ch/course/view.phpid=57413"],
     campus_id: "Campus Muttenz",
@@ -98,7 +98,7 @@ export const mockState = [
   },
   {
     id: "4a8ef33f-90e2-4119-9ccc-d8316f0bd814",
-    anchor_name: "WID 04",
+    anchor_name: "Fullstack Softwarearchitektur",
     anchor_description:
       "Veranstaltung 04 im Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
     tags: ["Lehre", "HS24", "BSc"],
