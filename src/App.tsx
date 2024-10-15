@@ -16,7 +16,6 @@ import {
   mapOutline,
   settingsOutline,
   gitNetworkOutline,
-  qrCodeOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -66,7 +65,7 @@ const App: React.FC = () => {
 
   // States for view modal
   const [showView, setShowView] = useState(false);
-  const [showViewAnchorIDs, setShowViewAnchorID] = useState([""]);
+  const [showViewAnchorIDs, setShowViewAnchorIDs] = useState([""]);
 
   return (
     <AnchorProvider>
@@ -80,7 +79,7 @@ const App: React.FC = () => {
                   setLocalAnchor={setLocalAnchor}
                   setShowDate={setShowDate}
                   setShowView={setShowView}
-                  setShowViewAnchorID={setShowViewAnchorID}
+                  setShowViewAnchorID={setShowViewAnchorIDs}
                 />
               </Route>
               <Route exact path="/calendarHeatmap">
@@ -98,7 +97,7 @@ const App: React.FC = () => {
                   setLocalAnchor={setLocalAnchor}
                   setShowMapLocation={setShowMapLocation}
                   setShowView={setShowView}
-                  setShowViewAnchorID={setShowViewAnchorID}
+                  setShowViewAnchorIDs={setShowViewAnchorIDs}
                 />
               </Route>
               <Route path="/manageAnchors">
@@ -120,28 +119,24 @@ const App: React.FC = () => {
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
+              <IonTabButton tab="mapAnchors" href="/mapAnchors">
+                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
+                <IonLabel>Karte</IonLabel>
+              </IonTabButton>
+
               <IonTabButton tab="calendarAnchors" href="/calendarAnchors">
                 <IonIcon aria-hidden="true" icon={calendarOutline} size="large" />
                 <IonLabel>Kalender</IonLabel>
               </IonTabButton>
 
+              <IonTabButton tab="manageAnchors" href="/manageAnchors">
+                <IonIcon aria-hidden="true" icon={createOutline} size="large" />
+                <IonLabel>Ankerliste</IonLabel>
+              </IonTabButton>
+
               <IonTabButton tab="graphAnchor" href="/graphAnchor">
                 <IonIcon aria-hidden="true" icon={gitNetworkOutline} size="large" />
                 <IonLabel>Graph</IonLabel>
-              </IonTabButton>
-
-              <IonTabButton tab="mapAnchors" href="/mapAnchors">
-                <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
-                <IonLabel>Karte</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="manageAnchors" href="/manageAnchors">
-                <IonIcon aria-hidden="true" icon={createOutline} size="large" />
-                <IonLabel>Verwalten</IonLabel>
-              </IonTabButton>
-
-              <IonTabButton tab="qrScanner" href="/qrscanner">
-                <IonIcon aria-hidden="true" icon={qrCodeOutline} size="large" />
-                <IonLabel>QR Scanner</IonLabel>
               </IonTabButton>
 
               <IonTabButton tab="settings" href="/settings">
