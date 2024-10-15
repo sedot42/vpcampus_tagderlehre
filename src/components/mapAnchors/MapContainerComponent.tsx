@@ -27,14 +27,14 @@ export const MapContainerComponent = ({
   setLocalAnchor,
   setShowMapLocation,
   setShowView,
-  setShowViewAnchorID,
+  setShowViewAnchorIDs,
 }: {
   filteredAnchors: DBAnchor[];
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
+  setShowViewAnchorIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const [showLayerControl, setShowLayerControl] = useState(false);
   const [selectedLayer, setSelectedLayer] = useState<string>("openstreetmap");
@@ -80,7 +80,7 @@ export const MapContainerComponent = ({
     const anchorIDs = matchingAnchors.map((a) => a.id);
     console.log(anchorIDs);
     setShowView(true);
-    setShowViewAnchorID(anchorIDs);
+    setShowViewAnchorIDs(anchorIDs);
   };
 
   // open/close the range slider only if the Floorplans are displayed/closed
@@ -291,7 +291,7 @@ export const MapContainerComponent = ({
 
         {/* Call of all the interactions with the map */}
         <MapEventHandlers />
-        {/* Slieder for the Floorplans */}
+        {/* Slider for the Floorplans */}
         <div className="slider-wrapper">
           {showRangeSlider && (
             <div className="range-slider-container">

@@ -11,13 +11,13 @@ export const MapComponent = ({
   setLocalAnchor,
   setShowMapLocation,
   setShowView,
-  setShowViewAnchorID,
+  setShowViewAnchorIDs,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
+  setShowViewAnchorIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const { anchors } = useContext(AnchorContext);
 
@@ -99,7 +99,7 @@ export const MapComponent = ({
           setLocalAnchor={setLocalAnchor}
           setShowMapLocation={setShowMapLocation}
           setShowView={setShowView}
-          setShowViewAnchorID={setShowViewAnchorID}
+          setShowViewAnchorIDs={setShowViewAnchorIDs}
         />
       </IonContent>
       <TimeSliderComponent
