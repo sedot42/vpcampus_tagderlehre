@@ -269,23 +269,23 @@ export const MapContainerComponent = ({
         )}
 
         {/* Display of the Markers aswell as the clustering */}
-        <MarkerClusterGroup
+        {/* <MarkerClusterGroup
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
           maxClusterRadius={40}
           spiderfyOnMaxZoom={false}
           disableClusteringAtZoom={16}
-        >
-          {mapAnchors.map((anchor) => (
-            <Marker
-              key={anchor.id}
-              position={[anchor.lat as number, anchor.lon as number]} // mapAnchors are filtered to only include anchors with lat and lon
-              eventHandlers={{
-                click: () => handleAnchorClick(anchor),
-              }}
-            />
-          ))}
-        </MarkerClusterGroup>
+        > */}
+        {mapAnchors.map((anchor) => (
+          <Marker
+            key={anchor.id}
+            position={[anchor.lat as number, anchor.lon as number]} // mapAnchors are filtered to only include anchors with lat and lon
+            eventHandlers={{
+              click: () => handleAnchorClick(anchor),
+            }}
+          />
+        ))}
+        {/* </MarkerClusterGroup> */}
         {/* Find your Geolocation */}
         <LocateControl />
 
