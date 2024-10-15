@@ -1,4 +1,4 @@
-import { IonList, IonModal } from "@ionic/react";
+import { IonContent, IonList, IonModal } from "@ionic/react";
 import {} from "ionicons/icons";
 import { useContext, useRef } from "react";
 import { AnchorContext } from "../../anchorContext";
@@ -25,26 +25,28 @@ export const ViewAnchorModal = ({
     <IonModal
       ref={viewModalRef}
       isOpen={showView}
-      initialBreakpoint={0.5}
-      breakpoints={[0, 0.5, 1]}
+      initialBreakpoint={filteredAnchors.length > 2 ? 1 : 0.6}
+      breakpoints={[0, 0.6, 1]}
       handleBehavior="cycle"
       onIonModalDidDismiss={() => {
         setShowView(false);
       }}
     >
-      <IonList>
-        {showViewAnchorIDs && // If there is no Event ID (e.g. on App Launch) this content should not render
-          filteredAnchors.map((anchor, index) => (
-            // Load content from CardsComponent (shared with other components)
-            <ListAnchorsAsCardsComponent
-              key={index}
-              anchor={anchor}
-              index={index}
-              deleteOneAnchor={deleteOneAnchor}
-              setShowView={setShowView}
-            ></ListAnchorsAsCardsComponent>
-          ))}
-      </IonList>
+      <IonContent>
+        <IonList>
+          {showViewAnchorIDs && // If there is no Event ID (e.g. on App Launch) this content should not render
+            filteredAnchors.map((anchor, index) => (
+              // Load content from CardsComponent (shared with other components)
+              <ListAnchorsAsCardsComponent
+                key={index}
+                anchor={anchor}
+                index={index}
+                deleteOneAnchor={deleteOneAnchor}
+                setShowView={setShowView}
+              />
+            ))}
+        </IonList>
+      </IonContent>
     </IonModal>
   );
 };
