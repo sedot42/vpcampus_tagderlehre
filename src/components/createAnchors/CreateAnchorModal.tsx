@@ -20,7 +20,6 @@ import { ConfigInput, createInputs, createTextarea } from "../globalUI/GenericFi
 import { DateComponent } from "./DateComponent";
 import { ModalButton } from "../globalUI/Buttons";
 import { TagComponent } from "./TagComponent";
-import { GroupComponent } from "./GroupComponent";
 import { LocationGroup } from "./LocationComponent";
 import { v4 as uuidv4 } from "uuid";
 
