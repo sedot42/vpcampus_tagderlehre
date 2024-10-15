@@ -77,7 +77,7 @@ export const CalendarAnchorComponent = ({
     <IonPage>
       <StatusHeader titleText="Kalender" />
 
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding" style={{ "--ion-color-primary": "black" }}>
         <FullCalendar
           ref={calendarRef}
           locale="ch" // Time and Date formatting according to locale
