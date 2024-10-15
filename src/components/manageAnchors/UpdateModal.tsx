@@ -7,13 +7,13 @@ import {
   IonToolbar,
   IonButton,
   IonModal,
-  IonButtons,
   IonFooter,
   IonIcon,
   IonText,
   IonItem,
   IonInput,
   IonItemDivider,
+  IonTextarea,
 } from "@ionic/react";
 import { closeOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
@@ -64,36 +64,71 @@ export const UpdateModal = ({
   ];
 
   // Function to handle changes
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (key: keyof Anchor, value: Anchor[keyof Anchor]) => {
     setModalData({ ...modalData, [key]: value });
   };
 
   // Function to render fields
-  const renderField = (key: keyof Anchor, value: any) => {
-    return (
-      <IonItem key={key}>
+  const renderField = (key: keyof Anchor, value: Anchor[keyof Anchor]) => {
+    let inputElement: JSX.Element | JSX.Element[];
+    if (typeof value === "number") {
+      inputElement = (
         <IonInput
           label={key}
           labelPlacement="floating"
-          type={typeof value === "number" ? "number" : "text"}
-          value={value !== undefined && value !== null ? value.toString() : " "}
-          onIonInput={(e) => handleChange(key, e.detail.value)}
+          type={"number"}
+          value={value}
+          onIonInput={(e) => {
+            if (e.detail.value) handleChange(key, parseFloat(e.detail.value));
+          }}
         />
-      </IonItem>
-    );
+      );
+    } else if (key === "attachments" && Array.isArray(value)) {
+      inputElement = value?.map((a) => {
+        return (
+          <a
+            style={{ color: "blue" }}
+            key={String(a)}
+            href={String(a)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {a}
+          </a>
+        );
+      });
+    } else {
+      inputElement = (
+        <IonTextarea
+          autoGrow={true}
+          rows={1}
+          label={key}
+          labelPlacement="floating"
+          value={value !== undefined && value !== null ? value.toString() : ""}
+          onIonInput={(e) => {
+            if (e.detail.value) handleChange(key, e.detail.value);
+          }}
+        />
+      );
+    }
+    return <IonItem key={key}>{inputElement}</IonItem>;
   };
 
   return (
     <IonModal isOpen={openUpdateModal} onWillDismiss={() => setOpenUpdateModal(false)}>
       <IonHeader>
         <IonToolbar>
-          <IonIcon size="large" slot="start"></IonIcon>
           <IonTitle style={{ textAlign: "center" }}>Anker bearbeiten</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setOpenUpdateModal(false)}>
-              <IonIcon icon={closeOutline} size="large"></IonIcon>
-            </IonButton>
-          </IonButtons>
+          <IonButton
+            slot="end"
+            fill="clear"
+            onClick={(e) => {
+              setOpenUpdateModal(false);
+              e.stopPropagation();
+            }}
+          >
+            <IonIcon color="black" icon={closeOutline} size="large"></IonIcon>
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding ion-text-wrap">
@@ -122,15 +157,15 @@ export const UpdateModal = ({
       </IonContent>
       <IonFooter style={{ display: "flex", justifyContent: "center" }}>
         <IonButton
-          fill="clear"
           strong={true}
-          onClick={() => {
+          onClick={(e) => {
             // Convert from flat to nested for DB update
             updateOneAnchor(convertFlatAnchorToDBAnchor(modalData));
             setOpenUpdateModal(false);
+            e.stopPropagation();
           }}
         >
-          Save
+          Speichern
         </IonButton>
       </IonFooter>
     </IonModal>
