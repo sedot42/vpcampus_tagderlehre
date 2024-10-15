@@ -8,8 +8,15 @@ import {
   IonItemSliding,
   IonButton,
   IonAlert,
+  useIonToast,
 } from "@ionic/react";
-import { createOutline, mapOutline, trashOutline } from "ionicons/icons";
+import {
+  createOutline,
+  mapOutline,
+  qrCodeOutline,
+  shareSocialOutline,
+  trashOutline,
+} from "ionicons/icons";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 
@@ -31,8 +38,17 @@ export const ListAnchorsAsCardsComponent = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
+  const [present] = useIonToast();
+
   return (
-    <IonCard key={index} style={{ cursor: "pointer" }}>
+    <IonCard
+      key={index}
+      onClick={() => {
+        setModalData(convertDBAnchorToFlatAnchor(anchor));
+        setOpenUpdateModal(true);
+      }}
+      style={{ cursor: "pointer" }}
+    >
       <IonItemSliding>
         <IonItem lines="none" id={"open-modal-" + index}>
           <IonLabel>
@@ -62,24 +78,60 @@ export const ListAnchorsAsCardsComponent = ({
         <>
           <IonButton
             onClick={() => {
-              setModalData(convertDBAnchorToFlatAnchor(anchor as DBAnchor));
+              setModalData(convertDBAnchorToFlatAnchor(anchor));
               setOpenUpdateModal(true);
             }}
           >
             <IonIcon icon={createOutline} size="small" />
           </IonButton>
-          <IonButton>
+          <IonButton
+            onClick={(e) => {
+              present({
+                message: "Nicht implementiert",
+                duration: 2000,
+                position: "middle",
+                color: "warning",
+              });
+              e.stopPropagation();
+            }}
+          >
             <IonIcon icon={mapOutline} size="small" />
           </IonButton>
           <IonButton
             id={anchor.id + "delete"}
-            onClick={() => {
-              console.log(anchor.id);
+            onClick={(e) => {
               setShowDeleteConfirm(true);
               setAnchorToDelete(anchor);
+              e.stopPropagation();
             }}
           >
             <IonIcon icon={trashOutline} size="small" />
+          </IonButton>
+          <IonButton
+            onClick={(e) => {
+              present({
+                message: "Nicht implementiert",
+                duration: 2000,
+                position: "middle",
+                color: "warning",
+              });
+              e.stopPropagation();
+            }}
+          >
+            <IonIcon icon={shareSocialOutline} size="small" />
+          </IonButton>
+          <IonButton
+            onClick={(e) => {
+              present({
+                message: "Nicht implementiert",
+                duration: 2000,
+                position: "middle",
+                color: "warning",
+              });
+              e.stopPropagation();
+            }}
+          >
+            <IonIcon icon={qrCodeOutline} size="small" />
           </IonButton>
           <IonAlert
             isOpen={showDeleteConfirm}
@@ -88,7 +140,7 @@ export const ListAnchorsAsCardsComponent = ({
             message="Willst du den Anker endgültig Löschen?"
             buttons={[
               {
-                text: "Abrechnen",
+                text: "Abbrechen",
                 role: "cancel",
               },
               {
