@@ -133,7 +133,7 @@ export const TimeSliderComponent = ({
               expand="full"
               color="primary"
             >
-              Speichern
+              Auswählen
             </IonButton>
           </IonFooter>
         </IonModal>
