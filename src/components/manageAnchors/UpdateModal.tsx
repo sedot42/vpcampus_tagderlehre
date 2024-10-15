@@ -127,7 +127,7 @@ export const UpdateModal = ({
               e.stopPropagation();
             }}
           >
-            <IonIcon color="black" icon={closeOutline} size="large"></IonIcon>
+            <IonIcon style={{ color: "black" }} icon={closeOutline} />
           </IonButton>
         </IonToolbar>
       </IonHeader>
