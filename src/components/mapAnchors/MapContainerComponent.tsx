@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./map.css";
-import L, { LeafletMouseEvent } from "leaflet";
+import L from "leaflet";
 import {
   useIonViewDidEnter,
   IonFab,
@@ -144,25 +144,25 @@ export const MapContainerComponent = ({
     };
 
     useEffect(() => {
-      const handleTouchStart = (e) => {
-        const latlng = map.mouseEventToLatLng(e.touches[0]);
+      const handleTouchStart = (e: TouchEvent) => {
+        // NOTE: e.touches[0] is a Touch object, not a MouseEvent, but works just as well
+        const latlng = map.mouseEventToLatLng(e.touches[0] as unknown as MouseEvent);
         handleStart(latlng);
       };
 
-      const handleTouchMove = (e) => {
-        const latlng = map.mouseEventToLatLng(e.touches[0]);
+      const handleTouchMove = (e: TouchEvent) => {
+        // NOTE: e.touches[0] is a Touch object, not a MouseEvent, but works just as well
+        const latlng = map.mouseEventToLatLng(e.touches[0] as unknown as MouseEvent);
         handleMove(latlng);
       };
 
-      const handleTouchEnd = () => {
-        handleEnd();
-      };
+      const handleTouchEnd = () => handleEnd();
 
-      const handleMouseDown = (e) => {
+      const handleMouseDown = (e: L.LeafletMouseEvent) => {
         handleStart(e.latlng);
       };
 
-      const handleMouseMove = (e) => {
+      const handleMouseMove = (e: L.LeafletMouseEvent) => {
         handleMove(e.latlng);
       };
 
