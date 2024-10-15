@@ -159,7 +159,7 @@ export const LocationGroup = ({
               (activeButton !== "none" && activeButton !== "list") || showMapLocation
             }
           >
-            <IonLabel className="ion-text-wrap">
+            <IonLabel className="tagContainerButtonLabels ion-text-wrap">
               {localAnchor.room_id ? `Raum: ${localAnchor.room_id}` : "via Raumliste"}
             </IonLabel>
             {localAnchor.room_id && <IonIcon icon={trashOutline} />}
