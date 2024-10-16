@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./map.css";
 import L from "leaflet";
+// Fix Leaflet marker icon URLs: https://github.com/Leaflet/Leaflet/issues/4968
+import markerIconUrl from "../../../node_modules/leaflet/dist/images/marker-icon.png";
+import markerIconRetinaUrl from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
+import markerShadowUrl from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
+L.Icon.Default.prototype.options.iconUrl = markerIconUrl;
+L.Icon.Default.prototype.options.iconRetinaUrl = markerIconRetinaUrl;
+L.Icon.Default.prototype.options.shadowUrl = markerShadowUrl;
+L.Icon.Default.imagePath = ""; // necessary to avoid Leaflet adds some prefix to image path.
+
 import {
   useIonViewDidEnter,
   IonFab,
