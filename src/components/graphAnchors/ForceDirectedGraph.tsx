@@ -84,9 +84,14 @@ export const ForceDirectedGraph: React.FC = () => {
 
     group
       .append("path")
-      .style("fill", (d) => color(d.index))
-      .style("stroke", (d) => d3.rgb(color(d.index)).darker())
-      .attr("d", arc)
+      .style("fill", (d) => color(String(d.index)))
+      .style("stroke", (d) =>
+        d3
+          .rgb(color(String(d.index)))
+          .darker()
+          .toString()
+      )
+      .attr("d", arc.toString())
       .on("mouseover", (event, d) => {
         d3.select(event.currentTarget).style("opacity", 0.8);
         tooltipRef.current!.style.opacity = "1";
@@ -107,7 +112,7 @@ export const ForceDirectedGraph: React.FC = () => {
       .append("text")
       .attr("dy", ".35em")
       .append("textPath")
-      .attr("xlink:href", (d: any) => `#${d.index}`)
+      .attr("xlink:href", (d) => `#${d.index}`)
       .text((d) => tags[d.index])
       .style("fill", "#000")
       .style("font-size", "12px");
@@ -119,9 +124,11 @@ export const ForceDirectedGraph: React.FC = () => {
       .data(chords)
       .enter()
       .append("path")
-      .attr("d", ribbon)
-      .style("fill", (d) => color(d.target.index))
-      .style("stroke", (d) => d3.rgb(color(d.target.index)).darker())
+      .attr("d", ribbon.toString())
+      .style("fill", (d) => color(d.target.index.toString()))
+      .style("stroke", (d) =>
+        d3.rgb(color(d.target.index.toString())).darker().toString()
+      )
       .on("mouseover", (event, d) => {
         d3.select(event.currentTarget).style("opacity", 0.8);
         tooltipRef.current!.style.opacity = "1";
