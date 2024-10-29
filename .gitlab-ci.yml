@@ -9,7 +9,8 @@ pages:
   artifacts:
     paths:
       # The folder that contains the files to be exposed at the Page URL
-      - public
+      - dist
+  publish: dist
   rules:
     # This ensures that only pushes to the default branch will trigger
     # a pages deploy
