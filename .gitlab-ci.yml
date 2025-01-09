@@ -4,6 +4,7 @@ image: node:20-alpine
 before_script:
   - npm install
 pages:
+  stage: build
   script:
     - npm run build
   artifacts:
