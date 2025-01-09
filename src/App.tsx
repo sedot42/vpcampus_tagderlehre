@@ -66,6 +66,8 @@ const App: React.FC = () => {
   // States for view modal
   const [showView, setShowView] = useState(false);
   const [showViewAnchorIDs, setShowViewAnchorIDs] = useState([""]);
+  console.log("Window.location.pathname", window.location.pathname);
+  console.log(window.location.pathname.split("/")[1]);
 
   return (
     <AnchorProvider>
