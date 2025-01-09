@@ -9,7 +9,7 @@ import {
   IonTabs,
   setupIonicReact,
 } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
+import { IonReactHashRouter } from "@ionic/react-router";
 import {
   calendarOutline,
   createOutline,
@@ -67,14 +67,13 @@ const App: React.FC = () => {
   const [showView, setShowView] = useState(false);
   const [showViewAnchorIDs, setShowViewAnchorIDs] = useState([""]);
   console.log("Window.location.pathname", window.location.pathname);
-  console.log(window.location.pathname.split("/")[1]);
 
   return (
     <AnchorProvider>
       <IonApp>
         {/* set base path dynamically.
             only works for the first folder -> gitlab pages deployment */}
-        <IonReactRouter basename={window.location.pathname.split("/")[1]}>
+        <IonReactHashRouter>
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
@@ -149,7 +148,7 @@ const App: React.FC = () => {
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
-        </IonReactRouter>
+        </IonReactHashRouter>
         {showCreate && (
           <CreateAnchorModal
             showCreate={showCreate}
