@@ -70,10 +70,15 @@ const App: React.FC = () => {
   return (
     <AnchorProvider>
       <IonApp>
-        <IonReactRouter>
+        {/* set base path dynamically.
+            only works for the first folder -> gitlab pages deployment */}
+        <IonReactRouter basename={window.location.pathname.split("/")[1]}>
           <IonTabs>
             <IonRouterOutlet>
-              <Route exact path="/calendarAnchors">
+              <Route exact path="/">
+                <Redirect to="/mapAnchors" />
+              </Route>
+              <Route path="/calendarAnchors">
                 <CalendarAnchorComponent
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
@@ -91,7 +96,7 @@ const App: React.FC = () => {
               <Route exact path="/semantics">
                 <ForceDirectedGraph />
               </Route>
-              <Route exact path="/mapAnchors">
+              <Route path="/mapAnchors">
                 <MapComponent
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
@@ -110,9 +115,6 @@ const App: React.FC = () => {
               </Route>
               <Route path="/settings">
                 <SettingsComponent />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/mapAnchors" />
               </Route>
               <Route exact path="/qrscanner">
                 <ScanQRAnchorsComponent />

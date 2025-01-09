@@ -38,7 +38,7 @@ export const StatusHeader = ({
         <img
           alt="fhnw_log"
           height="24"
-          src="/assets/FHNW_HABG.svg"
+          src="./assets/FHNW_HABG.svg"
           style={{ marginLeft: "8px" }}
         />
         <HeaderTitle text={titleText} />
