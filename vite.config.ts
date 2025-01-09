@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     legacy()
   ],
-  base: "",
+  base: "./",
   test: {
     globals: true,
     environment: 'jsdom',
