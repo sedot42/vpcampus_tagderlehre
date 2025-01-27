@@ -7,6 +7,7 @@ pages:
   stage: build
   script:
     - free -m
+    # Give Node more memory to work with
     - export NODE_OPTIONS="--max-old-space-size=3076"
     - npm run build
   artifacts:
