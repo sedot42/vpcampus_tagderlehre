@@ -9,7 +9,7 @@ import {
   IonTabs,
   setupIonicReact,
 } from "@ionic/react";
-import { IonReactHashRouter } from "@ionic/react-router";
+import { IonReactRouter } from "@ionic/react-router";
 import {
   calendarOutline,
   createOutline,
@@ -71,9 +71,13 @@ const App: React.FC = () => {
   return (
     <AnchorProvider>
       <IonApp>
-        {/* set base path dynamically.
-            only works for the first folder -> gitlab pages deployment */}
-        <IonReactHashRouter>
+        {/* Set basename dynamically to support any number of nested basename dirs */}
+        <IonReactRouter
+          basename={window.location.pathname.substring(
+            0,
+            window.location.pathname.lastIndexOf("/")
+          )}
+        >
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
@@ -148,7 +152,7 @@ const App: React.FC = () => {
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
-        </IonReactHashRouter>
+        </IonReactRouter>
         {showCreate && (
           <CreateAnchorModal
             showCreate={showCreate}
