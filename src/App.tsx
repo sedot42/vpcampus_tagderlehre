@@ -71,7 +71,7 @@ const App: React.FC = () => {
   return (
     <AnchorProvider>
       <IonApp>
-        {/* Set basename dynamically to support any number of nested basename dirs */}
+        {/* Set basename dynamically to support any number of nested basename dirs, e.g. for hosting on GitLab pages */}
         <IonReactRouter
           basename={window.location.pathname.substring(
             0,
@@ -81,7 +81,7 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
-                <Redirect to="/mapAnchors" />
+                <Redirect to="/manageAnchors" />
               </Route>
               <Route path="/calendarAnchors">
                 <CalendarAnchorComponent
