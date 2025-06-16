@@ -2,8 +2,7 @@ export const mockState = [
   {
     id: "388ef33f-90e2-4119-9ccc-d8316f0bd324",
     anchor_name: "Modul 3050",
-    anchor_description:
-      "Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
+    anchor_description: "Webprogrammierung und interaktive Datenvisualisierung",
     tags: ["Lehre", "HS24", "BSc"],
     attachments: ["https://moodle.fhnw.ch/course/view.phpid=57413"],
     campus_id: "Campus Muttenz",
@@ -28,8 +27,7 @@ export const mockState = [
   {
     id: "200ef33f-90e2-4119-9ccc-d8316f0bd324",
     anchor_name: "Vorbesprechung zu Modul 3050",
-    anchor_description:
-      "Vorbesprechung zu Modul 3050 'Webprogrammierung und interaktive Datenvisualisierung' ",
+    anchor_description: "Webprogrammierung und interaktive Datenvisualisierung",
     tags: ["Lehre", "HS24", "BSc"],
     attachments: ["https://moodle.fhnw.ch/course/view.phpid=57413"],
     campus_id: "Campus Muttenz",
