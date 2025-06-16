@@ -125,7 +125,7 @@ export const UniversalSearchBar = <T extends Record<string, any>>({
   return (
     <>
       <IonSearchbar
-        style={{ paddingBottom: 0 }}
+        style={{ paddingBottom: 5 }}
         value={searchQuery}
         onIonInput={handleSearch}
         onIonFocus={handleSearchFocus}
@@ -136,8 +136,17 @@ export const UniversalSearchBar = <T extends Record<string, any>>({
       {/* Search history */}
       {showHistory && searchHistory.length > 0 && (
         <IonList>
-          <IonListHeader style={{ marginTop: -25 }}>
-            <IonLabel>Search History</IonLabel>
+          <IonListHeader
+            style={{
+              marginTop: -10,
+              display: "flex",
+              justifyItems: "center",
+              alignItems: "center",
+            }}
+          >
+            <IonLabel style={{ fontSize: "1.3rem", fontWeight: 700 }}>
+              Search History
+            </IonLabel>
             <IonButton fill="clear" color="danger" onClick={clearSearchHistory}>
               <IonIcon aria-hidden="true" icon={closeCircleOutline} />
               Clear History
