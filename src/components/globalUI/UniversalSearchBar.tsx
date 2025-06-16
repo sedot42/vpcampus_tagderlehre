@@ -125,6 +125,7 @@ export const UniversalSearchBar = <T extends Record<string, any>>({
   return (
     <>
       <IonSearchbar
+        style={{ paddingBottom: 0 }}
         value={searchQuery}
         onIonInput={handleSearch}
         onIonFocus={handleSearchFocus}
@@ -135,7 +136,7 @@ export const UniversalSearchBar = <T extends Record<string, any>>({
       {/* Search history */}
       {showHistory && searchHistory.length > 0 && (
         <IonList>
-          <IonListHeader>
+          <IonListHeader style={{ marginTop: -25 }}>
             <IonLabel>Search History</IonLabel>
             <IonButton fill="clear" color="danger" onClick={clearSearchHistory}>
               <IonIcon aria-hidden="true" icon={closeCircleOutline} />
@@ -162,7 +163,7 @@ export const UniversalSearchBar = <T extends Record<string, any>>({
       {/* Search suggestions */}
       {suggestions.length > 0 && (
         <IonList>
-          <IonListHeader>
+          <IonListHeader style={{ marginTop: -25 }}>
             <IonLabel>Suggestions</IonLabel>
           </IonListHeader>
           {suggestions.map((suggestion, index) => (
