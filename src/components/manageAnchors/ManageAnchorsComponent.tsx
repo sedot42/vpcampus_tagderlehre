@@ -18,7 +18,7 @@ export const ManageAnchorsComponent = ({
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   return (
     <IonPage>
-      <StatusHeader titleText="Übersicht" />
+      <StatusHeader titleText="Ankerliste" />
 
       <IonContent fullscreen>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
