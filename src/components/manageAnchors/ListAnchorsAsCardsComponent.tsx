@@ -38,7 +38,7 @@ export const ListAnchorsAsCardsComponent = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
-  const [present] = useIonToast();
+  const [showToast] = useIonToast();
 
   return (
     <IonCard
@@ -52,26 +52,30 @@ export const ListAnchorsAsCardsComponent = ({
       <IonItemSliding>
         <IonItem lines="none" id={"open-modal-" + index}>
           <IonLabel>
-            <div style={{ fontWeight: 700, color: "black" }}>{anchor.anchor_name}</div>
-            <IonNote class="ion-text-wrap">
-              {anchor.anchor_description
-                ? `${anchor.anchor_description}`
-                : "Keine Beschreibung vorhanden"}{" "}
-              <br />
-              {anchor.start_at &&
-                anchor.end_at &&
-                `Start: ${new Date(anchor.start_at).toLocaleString()} `}
-              <br />
-              {anchor.start_at &&
-                anchor.end_at &&
-                `Ende: ${new Date(anchor.end_at).toLocaleString()}`}
-              <br />
-              {(anchor.room_id || anchor.campus_id || anchor.faculty_name) &&
-                `Ort: ${anchor.room_id || ""} ${
-                  anchor.room_id && (anchor.faculty_name || anchor.campus_id) ? ", " : ""
-                }${anchor.faculty_name || ""} ${
-                  anchor.faculty_name && anchor.campus_id ? ", " : ""
-                }${anchor.campus_id || ""}`}
+            <h2 style={{ fontWeight: 700 }}>{anchor.anchor_name}</h2>
+            <IonNote style={{ color: "#555555" }} class="ion-text-wrap">
+              <p>
+                {anchor.anchor_description
+                  ? `${anchor.anchor_description}`
+                  : "Keine Beschreibung vorhanden"}
+              </p>
+              {anchor.start_at && anchor.end_at && (
+                <>
+                  <p>Start: {new Date(anchor.start_at).toLocaleString()}</p>
+                  <p>Ende: {new Date(anchor.end_at).toLocaleString()}</p>
+                </>
+              )}
+              {(anchor.room_id || anchor.campus_id || anchor.faculty_name) && (
+                <p>
+                  Ort: {anchor.room_id || ""}
+                  {anchor.room_id && (anchor.faculty_name || anchor.campus_id)
+                    ? ", "
+                    : ""}
+                  {anchor.faculty_name || ""}
+                  {anchor.faculty_name && anchor.campus_id ? ", " : ""}
+                  {anchor.campus_id || ""}
+                </p>
+              )}
             </IonNote>
           </IonLabel>
         </IonItem>
@@ -86,7 +90,7 @@ export const ListAnchorsAsCardsComponent = ({
           </IonButton>
           <IonButton
             onClick={(e) => {
-              present({
+              showToast({
                 message: "Nicht implementiert",
                 duration: 2000,
                 position: "middle",
@@ -109,7 +113,7 @@ export const ListAnchorsAsCardsComponent = ({
           </IonButton>
           <IonButton
             onClick={(e) => {
-              present({
+              showToast({
                 message: "Nicht implementiert",
                 duration: 2000,
                 position: "middle",
@@ -122,7 +126,7 @@ export const ListAnchorsAsCardsComponent = ({
           </IonButton>
           <IonButton
             onClick={(e) => {
-              present({
+              showToast({
                 message: "Nicht implementiert",
                 duration: 2000,
                 position: "middle",
