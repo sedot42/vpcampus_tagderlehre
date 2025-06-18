@@ -19,8 +19,8 @@
   "scope_url": "https://pwa.rocks/",
   "intent_filters": {
     "scope_url_scheme": "https http",
-    "scope_url_host": "pwa.rocks",
-    "scope_url_path": "/"
+    "scope_url_host": "igeo-gis.pages.fhnw.ch localhost",
+    "scope_url_path": "/campus-v-p-mobile"
   },
   "display_mode": "standalone",
   "orientation": "portrait",
