@@ -3,13 +3,13 @@
   "name": "Virtual-Physical-Campus",
   "icons": [
     {
-      "src": "vpcampus_icon.png",
+      "src": "vp_campus_icon.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     },
     {
-      "src": "vpcampus_icon.png",
+      "src": "vp_campus_icon.png",
       "type": "image/x-icon",
       "sizes": "512x512"
     }
