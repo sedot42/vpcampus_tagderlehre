@@ -3,19 +3,27 @@
   "name": "Virtual-Physical-Campus",
   "icons": [
     {
-      "src": "/favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "/favicon.png",
+      "src": "vpcampus_icon.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "vpcampus_icon.png",
+      "type": "image/x-icon",
+      "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "scope_url": "https://pwa.rocks/",
+  "intent_filters": {
+    "scope_url_scheme": "https http",
+    "scope_url_host": "pwa.rocks",
+    "scope_url_path": "/"
+  },
+  "display_mode": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#fde70e",
+  "background_color": "#fde70e"
 }
