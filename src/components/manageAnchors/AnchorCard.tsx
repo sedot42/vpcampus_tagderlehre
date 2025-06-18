@@ -20,7 +20,7 @@ import {
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 
-export const ListAnchorsAsCardsComponent = ({
+export const AnchorCard = ({
   anchor,
   index,
   deleteOneAnchor,
@@ -31,6 +31,7 @@ export const ListAnchorsAsCardsComponent = ({
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  // NOTE: Why does each AnchorCard need its own state for the modal? This could be lifted up
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
 
@@ -113,13 +114,19 @@ export const ListAnchorsAsCardsComponent = ({
           </IonButton>
           <IonButton
             onClick={(e) => {
-              showToast({
-                message: "Nicht implementiert",
-                duration: 2000,
-                position: "middle",
-                color: "warning",
-              });
               e.stopPropagation();
+              console.log(window.location);
+              navigator.clipboard.writeText(
+                new URL(
+                  `${window.location.origin}${window.location.pathname}#/mapAnchors?id=${anchor.id}`
+                ).toString()
+              );
+              showToast({
+                message: "Anchor-URL wurde kopiert",
+                duration: 3000,
+                position: "middle",
+                color: "success",
+              });
             }}
           >
             <IonIcon icon={shareSocialOutline} size="small" />

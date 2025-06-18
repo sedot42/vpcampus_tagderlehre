@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { IonPage, IonContent, IonIcon, IonFab, IonFabButton } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
-import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
+import { AnchorCard } from "./AnchorCard";
 import { addOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
 
@@ -32,13 +32,13 @@ export const ManageAnchorsComponent = ({
           historyKeyName={"searchHistoryAnchors"}
           titlePropertyName={"anchor_name"}
           renderItem={(anchor, index) => (
-            <ListAnchorsAsCardsComponent
+            <AnchorCard
               key={index}
               anchor={anchor} // Type error in Search Bar Component! (returnes GenericObject instead of DBAnchor)
               index={index}
               deleteOneAnchor={deleteOneAnchor}
               setShowView={setShowView}
-            ></ListAnchorsAsCardsComponent>
+            ></AnchorCard>
           )}
         />
       </IonContent>

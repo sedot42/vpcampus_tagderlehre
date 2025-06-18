@@ -2,7 +2,7 @@ import { IonContent, IonList, IonModal } from "@ionic/react";
 import {} from "ionicons/icons";
 import { useContext, useRef } from "react";
 import { AnchorContext } from "../../anchorContext";
-import { ListAnchorsAsCardsComponent } from "./ListAnchorsAsCardsComponent";
+import { AnchorCard } from "./AnchorCard";
 
 export const ViewAnchorModal = ({
   showView,
@@ -37,7 +37,7 @@ export const ViewAnchorModal = ({
           {showViewAnchorIDs && // If there is no Event ID (e.g. on App Launch) this content should not render
             filteredAnchors.map((anchor, index) => (
               // Load content from CardsComponent (shared with other components)
-              <ListAnchorsAsCardsComponent
+              <AnchorCard
                 key={index}
                 anchor={anchor}
                 index={index}
