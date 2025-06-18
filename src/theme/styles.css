@@ -133,7 +133,7 @@ ion-datetime-button::part(native) {
 /* -------------------------------------------------------------------------------- */
 
 ion-tab-bar {
-  min-height: 8% !important;
+  min-height: 5rem !important;
   --background: #fde70e;
   --border: #000000;
   --color: #000000;
