@@ -9,6 +9,8 @@ import {
   IonButton,
   IonAlert,
   useIonToast,
+  IonPopover,
+  IonContent,
 } from "@ionic/react";
 import {
   createOutline,
@@ -17,6 +19,7 @@ import {
   shareSocialOutline,
   trashOutline,
 } from "ionicons/icons";
+import QRCode from "react-qr-code";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
 import { UpdateModal } from "./UpdateModal";
 
@@ -126,18 +129,32 @@ export const AnchorCard = ({
             <IonIcon icon={shareSocialOutline} size="small" />
           </IonButton>
           <IonButton
+            id={`qr-trigger-${anchor.id}`}
             onClick={(e) => {
-              showToast({
-                message: "Nicht implementiert",
-                duration: 2000,
-                position: "middle",
-                color: "warning",
-              });
               e.stopPropagation();
             }}
           >
             <IonIcon icon={qrCodeOutline} size="small" />
           </IonButton>
+
+          <IonPopover
+            trigger={`qr-trigger-${anchor.id}`}
+            keepContentsMounted
+            style={{ "--height": "auto" }}
+          >
+            <IonContent className="ion-padding">
+              <QRCode
+                size={200}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={new URL(
+                  `${window.location.origin}${window.location.pathname}#/${
+                    anchor.lat ? "mapAnchors" : "manageAnchors"
+                  }?id=${anchor.id}`
+                ).toString()}
+                viewBox={`0 0 200 200`}
+              />
+            </IonContent>
+          </IonPopover>
           <IonAlert
             isOpen={showDeleteConfirm}
             header="Anker Löschen"
