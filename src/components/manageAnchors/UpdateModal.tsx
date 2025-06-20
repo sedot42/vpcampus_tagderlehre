@@ -14,9 +14,11 @@ import {
   IonInput,
   IonItemDivider,
   IonTextarea,
+  useIonRouter,
 } from "@ionic/react";
 import { closeOutline, trashOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
+import { useLocation } from "react-router";
 
 export const UpdateModal = ({
   modalData,
@@ -31,6 +33,8 @@ export const UpdateModal = ({
 }) => {
   const { updateOneAnchor } = useContext(AnchorContext);
   const { deleteOneAnchor } = useContext(AnchorContext);
+  const location = useLocation();
+  const router = useIonRouter();
 
   // List of all possible fields
   const fieldKeys: (keyof Anchor)[] = [
@@ -115,7 +119,17 @@ export const UpdateModal = ({
   };
 
   return (
-    <IonModal isOpen={openUpdateModal} onWillDismiss={() => setOpenUpdateModal(false)}>
+    <IonModal
+      isOpen={openUpdateModal}
+      onWillDismiss={() => {
+        setOpenUpdateModal(false);
+        router.push(
+          location.pathname.substring(0, location.pathname.lastIndexOf("/")),
+          "forward",
+          "replace"
+        ); // Reset URL search params when modal is closed
+      }}
+    >
       <IonHeader>
         <IonToolbar>
           <IonTitle style={{ textAlign: "center" }}>Anker bearbeiten</IonTitle>
@@ -124,6 +138,11 @@ export const UpdateModal = ({
             fill="clear"
             onClick={(e) => {
               setOpenUpdateModal(false);
+              router.push(
+                location.pathname.substring(0, location.pathname.lastIndexOf("/")),
+                "forward",
+                "replace"
+              ); // Reset URL search params when modal is closed
               e.stopPropagation();
             }}
           >

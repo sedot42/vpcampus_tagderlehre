@@ -9,7 +9,7 @@ import {
   IonTabs,
   setupIonicReact,
 } from "@ionic/react";
-import { IonReactHashRouter } from "@ionic/react-router";
+import { IonReactRouter } from "@ionic/react-router";
 import {
   calendarOutline,
   createOutline,
@@ -81,7 +81,7 @@ const App: React.FC = () => {
   return (
     <AnchorProvider>
       <IonApp>
-        <IonReactHashRouter>
+        <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
@@ -114,7 +114,23 @@ const App: React.FC = () => {
                   setShowViewAnchorIDs={setShowViewAnchorIDs}
                 />
               </Route>
+              <Route path="/mapAnchors/:id">
+                <MapPage
+                  setShowCreate={setShowCreate}
+                  setLocalAnchor={setLocalAnchor}
+                  setShowMapLocation={setShowMapLocation}
+                  setShowView={setShowView}
+                  setShowViewAnchorIDs={setShowViewAnchorIDs}
+                />
+              </Route>
               <Route path="/manageAnchors">
+                <ManageAnchorsComponent
+                  setShowCreate={setShowCreate}
+                  setShowView={setShowView}
+                  onOpenUpdateModal={handleOpenUpdateModal}
+                />
+              </Route>
+              <Route path="/manageAnchors/:id">
                 <ManageAnchorsComponent
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
@@ -129,7 +145,7 @@ const App: React.FC = () => {
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="mapAnchors" href="/mapAnchors">
+              <IonTabButton tab="mapAnchors" href="/mapAnchors/all">
                 <IonIcon aria-hidden="true" icon={mapOutline} size="large" />
                 <IonLabel>Karte</IonLabel>
               </IonTabButton>
@@ -155,35 +171,35 @@ const App: React.FC = () => {
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
-        </IonReactHashRouter>
-        {showCreate && (
-          <CreateAnchorModal
-            showCreate={showCreate}
-            setShowCreate={setShowCreate}
-            localAnchor={localAnchor}
-            setLocalAnchor={setLocalAnchor}
-            showDate={showDate}
-            setShowDate={setShowDate}
-            setShowMapLocation={setShowMapLocation}
-            showMapLocation={showMapLocation}
-          />
-        )}
-        {showView && (
-          <ViewAnchorModal
-            showView={showView}
-            setShowView={setShowView}
-            showViewAnchorIDs={showViewAnchorIDs}
-            onOpenUpdateModal={handleOpenUpdateModal}
-          />
-        )}
-        {openUpdateModal && updateModalData && (
-          <UpdateModal
-            modalData={updateModalData}
-            setModalData={setUpdateModalData}
-            openUpdateModal={openUpdateModal}
-            setOpenUpdateModal={setOpenUpdateModal}
-          />
-        )}
+          {showCreate && (
+            <CreateAnchorModal
+              showCreate={showCreate}
+              setShowCreate={setShowCreate}
+              localAnchor={localAnchor}
+              setLocalAnchor={setLocalAnchor}
+              showDate={showDate}
+              setShowDate={setShowDate}
+              setShowMapLocation={setShowMapLocation}
+              showMapLocation={showMapLocation}
+            />
+          )}
+          {showView && (
+            <ViewAnchorModal
+              showView={showView}
+              setShowView={setShowView}
+              showViewAnchorIDs={showViewAnchorIDs}
+              onOpenUpdateModal={handleOpenUpdateModal}
+            />
+          )}
+          {openUpdateModal && updateModalData && (
+            <UpdateModal
+              modalData={updateModalData}
+              setModalData={setUpdateModalData}
+              openUpdateModal={openUpdateModal}
+              setOpenUpdateModal={setOpenUpdateModal}
+            />
+          )}
+        </IonReactRouter>
       </IonApp>
     </AnchorProvider>
   );

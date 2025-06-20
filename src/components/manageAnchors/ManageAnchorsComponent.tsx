@@ -1,13 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-nested-ternary */
 import React, { useContext } from "react";
-import { IonPage, IonContent, IonIcon, IonFab, IonFabButton } from "@ionic/react";
+import {
+  IonPage,
+  IonContent,
+  IonIcon,
+  IonFab,
+  IonFabButton,
+  useIonViewWillEnter,
+} from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 import { AnchorCard } from "./AnchorCard";
 import { addOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
-import { Anchor } from "../../types/types";
+import { Anchor, convertDBAnchorToFlatAnchor } from "../../types/types";
+import { useParams } from "react-router";
 
 export const ManageAnchorsComponent = ({
   setShowCreate,
@@ -19,6 +27,16 @@ export const ManageAnchorsComponent = ({
   onOpenUpdateModal: (anchor: Anchor) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
+  const params = useParams<{ id?: string }>();
+
+  useIonViewWillEnter(() => {
+    // get highlighted anchor id from URL
+    const id = params.id;
+    const highlightedAnchor = anchors.find((anchor) => anchor.id == id);
+    if (highlightedAnchor) {
+      onOpenUpdateModal(convertDBAnchorToFlatAnchor(highlightedAnchor));
+    }
+  });
 
   return (
     <IonPage>

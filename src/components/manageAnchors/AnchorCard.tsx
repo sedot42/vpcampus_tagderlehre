@@ -83,7 +83,7 @@ export const AnchorCard = ({
           {anchor.lat && anchor.lon && (
             <IonButton
               onClick={(e) => e.stopPropagation()}
-              routerLink={`mapAnchors?id=${anchor.id}`}
+              routerLink={`mapAnchors/${anchor.id}`}
             >
               <IonIcon icon={mapOutline} size="small" />
             </IonButton>
@@ -104,9 +104,9 @@ export const AnchorCard = ({
               console.log(window.location);
               navigator.clipboard.writeText(
                 new URL(
-                  `${window.location.origin}${window.location.pathname}#/${
+                  `${window.location.origin}/${
                     anchor.lat ? "mapAnchors" : "manageAnchors"
-                  }?id=${anchor.id}`
+                  }/${anchor.id}`
                 ).toString()
               );
               showToast({
@@ -138,9 +138,9 @@ export const AnchorCard = ({
                 size={200}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                 value={new URL(
-                  `${window.location.origin}${window.location.pathname}#/${
+                  `${window.location.origin}/${
                     anchor.lat ? "mapAnchors" : "manageAnchors"
-                  }?id=${anchor.id}`
+                  }/${anchor.id}`
                 ).toString()}
                 viewBox={`0 0 200 200`}
               />

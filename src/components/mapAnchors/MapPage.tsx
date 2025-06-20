@@ -1,17 +1,11 @@
 import { useContext, useState, useEffect } from "react";
-import {
-  IonPage,
-  IonContent,
-  useIonViewWillEnter,
-  useIonViewWillLeave,
-  useIonRouter,
-} from "@ionic/react";
+import { IonPage, IonContent, useIonViewWillEnter } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { MapComponent } from "./MapComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
 import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
 
 interface MapPageProps {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,25 +31,18 @@ export const MapPage = ({
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18);
   const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false);
   const [filteredAnchors, setFilteredAnchors] = useState<DBAnchor[]>([]);
-  const currentURL = useLocation();
-  const router = useIonRouter();
+  const params = useParams<{ id?: string }>();
 
   useIonViewWillEnter(() => {
     // get highlighted anchor id from URL
-    const id = new URLSearchParams(currentURL.search).get("id");
+    const id = params.id;
     const highlightedAnchor = anchors.filter((anchor) => anchor.id == id)[0];
     if (highlightedAnchor?.lat && highlightedAnchor.start_at) {
       setSelectedDayFilter(new Date(highlightedAnchor.start_at));
     }
     setHighlightedAnchor(highlightedAnchor);
-    setShowView(!!id);
+    setShowView(!!highlightedAnchor);
     setShowViewAnchorIDs(id ? [id] : [""]);
-  }, [currentURL, anchors]);
-
-  useIonViewWillLeave(() => {
-    const targetRoute = window.location.hash.substring(1);
-    router.push("/mapAnchors", "root", "replace"); // inelegant way to reset the ID search param
-    router.push(targetRoute);
   });
 
   const convertTimeToMinutes = (date: Date) =>
