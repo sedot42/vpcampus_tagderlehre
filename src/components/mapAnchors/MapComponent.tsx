@@ -2,23 +2,26 @@ import { useContext, useState, useEffect } from "react";
 import { IonPage, IonContent, useIonViewDidEnter } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
-import { MapContainerComponent } from "./MapContainerComponent";
+import { MapComponent } from "./MapContainerComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
 import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
+import { useLocation } from "react-router";
 
-export const MapComponent = ({
-  setShowCreate,
-  setLocalAnchor,
-  setShowMapLocation,
-  setShowView,
-  setShowViewAnchorIDs,
-}: {
+interface MapPageProps {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   setShowViewAnchorIDs: React.Dispatch<React.SetStateAction<string[]>>;
-}) => {
+}
+
+export const MapPage = ({
+  setShowCreate,
+  setLocalAnchor,
+  setShowMapLocation,
+  setShowView,
+  setShowViewAnchorIDs,
+}: MapPageProps) => {
   const { anchors } = useContext(AnchorContext);
 
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date());
@@ -93,7 +96,7 @@ export const MapComponent = ({
     <IonPage>
       <StatusHeader titleText="Karte" />
       <IonContent fullscreen>
-        <MapContainerComponent
+        <MapComponent
           filteredAnchors={filteredAnchors}
           setShowCreate={setShowCreate}
           setLocalAnchor={setLocalAnchor}

@@ -30,7 +30,7 @@ import { layersOutline } from "ionicons/icons";
 
 import { draftAnchor } from "../../types/defaults";
 
-export const MapContainerComponent = ({
+export const MapComponent = ({
   filteredAnchors,
   setShowCreate,
   setLocalAnchor,

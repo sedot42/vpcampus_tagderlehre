@@ -44,7 +44,7 @@ import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatM
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { MapComponent } from "./components/mapAnchors/MapComponent";
+import { MapPage } from "./components/mapAnchors/MapComponent";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
 
@@ -99,7 +99,7 @@ const App: React.FC = () => {
                 <ForceDirectedGraph />
               </Route>
               <Route path="/mapAnchors">
-                <MapComponent
+                <MapPage
                   setShowCreate={setShowCreate}
                   setLocalAnchor={setLocalAnchor}
                   setShowMapLocation={setShowMapLocation}
