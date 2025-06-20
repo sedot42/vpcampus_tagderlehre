@@ -1,5 +1,11 @@
 import { useContext, useState, useEffect } from "react";
-import { IonPage, IonContent, useIonViewDidEnter } from "@ionic/react";
+import {
+  IonPage,
+  IonContent,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
+  useIonRouter,
+} from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
 import { MapComponent } from "./MapContainerComponent";
@@ -23,15 +29,33 @@ export const MapPage = ({
   setShowViewAnchorIDs,
 }: MapPageProps) => {
   const { anchors } = useContext(AnchorContext);
-
-  const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(new Date());
+  const [highlightedAnchor, setHighlightedAnchor] = useState<DBAnchor | null>(null);
+  const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(
+    new Date("06/27/2025 12:00")
+  );
   const [startTimeFilter, setStartTimeFilter] = useState<number>(7);
   const [endTimeFilter, setEndTimeFilter] = useState<number>(18);
   const [showToastAnchorNoPos, setShowToastAnchorNoPos] = useState<boolean>(false);
   const [filteredAnchors, setFilteredAnchors] = useState<DBAnchor[]>([]);
+  const currentURL = useLocation();
+  const router = useIonRouter();
 
-  useIonViewDidEnter(() => {
-    window.dispatchEvent(new Event("resize"));
+  useIonViewWillEnter(() => {
+    // get highlighted anchor id from URL
+    const id = new URLSearchParams(currentURL.search).get("id");
+    const highlightedAnchor = anchors.filter((anchor) => anchor.id == id)[0];
+    if (highlightedAnchor?.lat && highlightedAnchor.start_at) {
+      setSelectedDayFilter(new Date(highlightedAnchor.start_at));
+    }
+    setHighlightedAnchor(highlightedAnchor);
+    setShowView(!!id);
+    setShowViewAnchorIDs(id ? [id] : [""]);
+  }, [currentURL, anchors]);
+
+  useIonViewWillLeave(() => {
+    const targetRoute = window.location.hash.substring(1);
+    router.push("/mapAnchors", "root", "replace"); // inelegant way to reset the ID search param
+    router.push(targetRoute);
   });
 
   const convertTimeToMinutes = (date: Date) =>
@@ -103,6 +127,7 @@ export const MapPage = ({
           setShowMapLocation={setShowMapLocation}
           setShowView={setShowView}
           setShowViewAnchorIDs={setShowViewAnchorIDs}
+          highlightedAnchor={highlightedAnchor}
         />
       </IonContent>
       <TimeSliderComponent
@@ -110,6 +135,7 @@ export const MapPage = ({
         endTimeFilter={endTimeFilter}
         setStartTimeFilter={setStartTimeFilter}
         setEndTimeFilter={setEndTimeFilter}
+        selectedDayFilter={selectedDayFilter}
         setSelectedDayFilter={setSelectedDayFilter}
         showToastAnchorNoPos={showToastAnchorNoPos}
         setShowToastAnchorNoPos={setShowToastAnchorNoPos}

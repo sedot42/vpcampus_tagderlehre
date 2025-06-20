@@ -35,7 +35,6 @@ export const AnchorCard = ({
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [modalData, setModalData] = useState<Anchor | undefined>();
 
-  // States for delete Confirm Alert
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
@@ -89,19 +88,14 @@ export const AnchorCard = ({
           >
             <IonIcon icon={createOutline} size="small" />
           </IonButton>
-          <IonButton
-            onClick={(e) => {
-              showToast({
-                message: "Nicht implementiert",
-                duration: 2000,
-                position: "middle",
-                color: "warning",
-              });
-              e.stopPropagation();
-            }}
-          >
-            <IonIcon icon={mapOutline} size="small" />
-          </IonButton>
+          {anchor.lat && anchor.lon && (
+            <IonButton
+              onClick={(e) => e.stopPropagation()}
+              routerLink={`/mapAnchors?id=${anchor.id}`}
+            >
+              <IonIcon icon={mapOutline} size="small" />
+            </IonButton>
+          )}
           <IonButton
             id={anchor.id + "delete"}
             onClick={(e) => {

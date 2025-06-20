@@ -64,12 +64,8 @@ const App: React.FC = () => {
   const [showMapLocation, setShowMapLocation] = useState(false);
 
   // States for view modal
-  const searchParams = new URLSearchParams(
-    window.location.hash.substring(window.location.hash.indexOf("?"))
-  );
-  const id = searchParams.get("id");
-  const [showView, setShowView] = useState(!!id);
-  const [showViewAnchorIDs, setShowViewAnchorIDs] = useState(id ? [id] : [""]);
+  const [showView, setShowView] = useState(false);
+  const [showViewAnchorIDs, setShowViewAnchorIDs] = useState<string[]>([]);
 
   return (
     <AnchorProvider>

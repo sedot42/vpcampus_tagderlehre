@@ -22,6 +22,7 @@ export const TimeSliderComponent = ({
   endTimeFilter,
   setStartTimeFilter,
   setEndTimeFilter,
+  selectedDayFilter,
   setSelectedDayFilter,
   showToastAnchorNoPos,
   setShowToastAnchorNoPos,
@@ -30,11 +31,12 @@ export const TimeSliderComponent = ({
   endTimeFilter: number;
   setStartTimeFilter: React.Dispatch<React.SetStateAction<number>>;
   setEndTimeFilter: React.Dispatch<React.SetStateAction<number>>;
+  selectedDayFilter: Date;
   setSelectedDayFilter: React.Dispatch<React.SetStateAction<Date>>;
   showToastAnchorNoPos: boolean;
   setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString()); // Added state for selectedDate
+  const [selectedDate, setSelectedDate] = useState(selectedDayFilter.toISOString()); // Added state for selectedDate
   const modal = useRef<HTMLIonModalElement>(null);
 
   const defaultStartTime = 7;

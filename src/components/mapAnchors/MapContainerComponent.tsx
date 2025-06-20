@@ -24,7 +24,7 @@ import { MapContainer, Marker, WMSTileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { LocateControl } from "./LocateControl";
-import MarkerClusterGroup from "react-leaflet-cluster";
+// import MarkerClusterGroup from "react-leaflet-cluster";
 import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
 import { layersOutline } from "ionicons/icons";
 
@@ -36,6 +36,7 @@ export const MapComponent = ({
   setLocalAnchor,
   setShowMapLocation,
   setShowView,
+  highlightedAnchor,
   setShowViewAnchorIDs,
 }: {
   filteredAnchors: DBAnchor[];
@@ -43,6 +44,7 @@ export const MapComponent = ({
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  highlightedAnchor: DBAnchor | null;
   setShowViewAnchorIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const [showLayerControl, setShowLayerControl] = useState(false);
@@ -63,19 +65,20 @@ export const MapComponent = ({
     if (selectedLayer === "etagenplaene_image") {
       return filteredAnchors.filter((anchor) => anchor.floor_nr === sliderValue);
     }
+    // show only anchors with lat and lon
     return filteredAnchors.filter(
       (anchor) => typeof anchor.lat === "number" && typeof anchor.lon === "number"
     );
   }, [selectedLayer, filteredAnchors, sliderValue]);
 
   // Clusterfunction when you zoom out. (Maybe we should find an different solution ;)
-  const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
-    return L.divIcon({
-      html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
-      className: "custom-marker-cluster",
-      iconSize: L.point(33, 33, true),
-    });
-  };
+  // const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
+  //   return L.divIcon({
+  //     html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
+  //     className: "custom-marker-cluster",
+  //     iconSize: L.point(33, 33, true),
+  //   });
+  // };
 
   // On click on Anchor display the ListModal. If there are several Anchors at the same location create a list, based on their IDs
   const handleAnchorClick = (anchor: DBAnchor) => {
@@ -211,7 +214,11 @@ export const MapComponent = ({
     <>
       <MapContainer
         id="mapContainer"
-        center={[47.5349015179286, 7.6419409280402535]}
+        center={
+          highlightedAnchor?.lat && highlightedAnchor?.lon
+            ? [highlightedAnchor.lat, highlightedAnchor.lon]
+            : [47.5349015179286, 7.6419409280402535]
+        }
         zoom={18}
         maxZoom={22}
         maxBounds={[
@@ -292,6 +299,14 @@ export const MapComponent = ({
             eventHandlers={{
               click: () => handleAnchorClick(anchor),
             }}
+            {...(highlightedAnchor?.id === anchor.id && {
+              icon: L.divIcon({
+                className: "custom-marker",
+                html: '<div style="background-color: red; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+              }),
+            })}
           />
         ))}
         {/* </MarkerClusterGroup> */}
