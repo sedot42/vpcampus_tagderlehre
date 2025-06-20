@@ -3,15 +3,18 @@ import {} from "ionicons/icons";
 import { useContext, useRef } from "react";
 import { AnchorContext } from "../../anchorContext";
 import { AnchorCard } from "./AnchorCard";
+import { Anchor } from "../../types/types";
 
 export const ViewAnchorModal = ({
   showView,
   setShowView,
   showViewAnchorIDs,
+  onOpenUpdateModal,
 }: {
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   showViewAnchorIDs: string[];
+  onOpenUpdateModal: (anchorData: Anchor) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   // Reference of the viewModal
@@ -43,6 +46,7 @@ export const ViewAnchorModal = ({
                 index={index}
                 deleteOneAnchor={deleteOneAnchor}
                 setShowView={setShowView}
+                onOpenUpdateModal={onOpenUpdateModal}
               />
             ))}
         </IonList>

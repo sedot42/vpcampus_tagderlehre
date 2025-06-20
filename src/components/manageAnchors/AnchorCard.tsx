@@ -21,37 +21,31 @@ import {
 } from "ionicons/icons";
 import QRCode from "react-qr-code";
 import { Anchor, convertDBAnchorToFlatAnchor, DBAnchor } from "../../types/types";
-import { UpdateModal } from "./UpdateModal";
 
 export const AnchorCard = ({
   anchor,
   index,
   deleteOneAnchor,
   setShowView,
+  onOpenUpdateModal,
 }: {
   anchor: DBAnchor;
   index: number;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  onOpenUpdateModal: (anchorData: Anchor) => void;
 }) => {
-  // NOTE: Why does each AnchorCard need its own state for the modal? This could be lifted up
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
-  const [modalData, setModalData] = useState<Anchor | undefined>();
-
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
 
   const [showToast] = useIonToast();
 
+  const handleUpdateClick = () => {
+    onOpenUpdateModal(convertDBAnchorToFlatAnchor(anchor));
+  };
+
   return (
-    <IonCard
-      key={index}
-      onClick={() => {
-        setModalData(convertDBAnchorToFlatAnchor(anchor));
-        setOpenUpdateModal(true);
-      }}
-      style={{ cursor: "pointer" }}
-    >
+    <IonCard key={index} onClick={handleUpdateClick} style={{ cursor: "pointer" }}>
       <IonItemSliding>
         <IonItem lines="none" id={"open-modal-" + index}>
           <IonLabel>
@@ -83,18 +77,13 @@ export const AnchorCard = ({
           </IonLabel>
         </IonItem>
         <>
-          <IonButton
-            onClick={() => {
-              setModalData(convertDBAnchorToFlatAnchor(anchor));
-              setOpenUpdateModal(true);
-            }}
-          >
+          <IonButton onClick={handleUpdateClick}>
             <IonIcon icon={createOutline} size="small" />
           </IonButton>
           {anchor.lat && anchor.lon && (
             <IonButton
               onClick={(e) => e.stopPropagation()}
-              routerLink={`/mapAnchors?id=${anchor.id}`}
+              routerLink={`mapAnchors?id=${anchor.id}`}
             >
               <IonIcon icon={mapOutline} size="small" />
             </IonButton>
@@ -115,7 +104,9 @@ export const AnchorCard = ({
               console.log(window.location);
               navigator.clipboard.writeText(
                 new URL(
-                  `${window.location.origin}${window.location.pathname}#/mapAnchors?id=${anchor.id}`
+                  `${window.location.origin}${window.location.pathname}#/${
+                    anchor.lat ? "mapAnchors" : "manageAnchors"
+                  }?id=${anchor.id}`
                 ).toString()
               );
               showToast({
@@ -183,14 +174,6 @@ export const AnchorCard = ({
           ></IonAlert>
         </>
       </IonItemSliding>
-      {modalData && (
-        <UpdateModal
-          modalData={modalData}
-          setModalData={setModalData}
-          openUpdateModal={openUpdateModal}
-          setOpenUpdateModal={setOpenUpdateModal}
-        ></UpdateModal>
-      )}
     </IonCard>
   );
 };

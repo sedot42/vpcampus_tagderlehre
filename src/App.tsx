@@ -52,7 +52,9 @@ import { draftAnchor } from "./types/defaults";
 import { useState } from "react";
 import { CreateAnchorModal } from "./components/createAnchors/CreateAnchorModal";
 import { ViewAnchorModal } from "./components/manageAnchors/ViewAnchorModal";
+import { UpdateModal } from "./components/manageAnchors/UpdateModal";
 import { ScanQRAnchorsComponent } from "./components/scanQRAnchors/ScanQRAnchorsComponent";
+import { Anchor } from "./types/types";
 
 setupIonicReact();
 
@@ -66,6 +68,15 @@ const App: React.FC = () => {
   // States for view modal
   const [showView, setShowView] = useState(false);
   const [showViewAnchorIDs, setShowViewAnchorIDs] = useState<string[]>([]);
+
+  // States for update modal
+  const [updateModalData, setUpdateModalData] = useState<Anchor | undefined>();
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
+  const handleOpenUpdateModal = (anchorData: Anchor) => {
+    setUpdateModalData(anchorData);
+    setOpenUpdateModal(true);
+  };
 
   return (
     <AnchorProvider>
@@ -107,8 +118,7 @@ const App: React.FC = () => {
                 <ManageAnchorsComponent
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
-                  //anchors={anchors}
-                  //deleteOneAnchor={deleteOneAnchor}
+                  onOpenUpdateModal={handleOpenUpdateModal}
                 />
               </Route>
               <Route path="/settings">
@@ -163,6 +173,15 @@ const App: React.FC = () => {
             showView={showView}
             setShowView={setShowView}
             showViewAnchorIDs={showViewAnchorIDs}
+            onOpenUpdateModal={handleOpenUpdateModal}
+          />
+        )}
+        {openUpdateModal && updateModalData && (
+          <UpdateModal
+            modalData={updateModalData}
+            setModalData={setUpdateModalData}
+            openUpdateModal={openUpdateModal}
+            setOpenUpdateModal={setOpenUpdateModal}
           />
         )}
       </IonApp>

@@ -7,15 +7,19 @@ import { UniversalSearchBar } from "../globalUI/UniversalSearchBar";
 import { AnchorCard } from "./AnchorCard";
 import { addOutline } from "ionicons/icons";
 import { AnchorContext } from "../../anchorContext";
+import { Anchor } from "../../types/types";
 
 export const ManageAnchorsComponent = ({
   setShowCreate,
   setShowView,
+  onOpenUpdateModal,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
+  onOpenUpdateModal: (anchor: Anchor) => void;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
+
   return (
     <IonPage>
       <StatusHeader titleText="Ankerliste" />
@@ -38,6 +42,7 @@ export const ManageAnchorsComponent = ({
               index={index}
               deleteOneAnchor={deleteOneAnchor}
               setShowView={setShowView}
+              onOpenUpdateModal={onOpenUpdateModal}
             ></AnchorCard>
           )}
         />
