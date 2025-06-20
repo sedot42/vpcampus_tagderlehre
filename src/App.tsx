@@ -44,7 +44,7 @@ import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatM
 import { SettingsComponent } from "./components/settings/SettingsComponent";
 import { AnchorProvider } from "./anchorContext";
 
-import { MapPage } from "./components/mapAnchors/MapComponent";
+import { MapPage } from "./components/mapAnchors/MapPage";
 import { ShowAnchorGraph } from "./components/graphAnchors/ShowAnchorGraph";
 import { ForceDirectedGraph } from "./components/graphAnchors/ForceDirectedGraph";
 
