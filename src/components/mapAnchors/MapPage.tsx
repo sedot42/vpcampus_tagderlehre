@@ -117,7 +117,7 @@ export const MapPage = ({
   }, [anchors, selectedDayFilter, startTimeFilter, endTimeFilter]);
 
   return (
-    <IonPage>
+    <IonPage key={highlightedAnchor?.id || "mapPage"}>
       <StatusHeader titleText="Karte" />
       <IonContent fullscreen>
         <MapComponent
