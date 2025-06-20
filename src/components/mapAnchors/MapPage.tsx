@@ -8,7 +8,7 @@ import {
 } from "@ionic/react";
 import { StatusHeader } from "../globalUI/StatusHeader";
 import { AnchorContext } from "../../anchorContext";
-import { MapComponent } from "./MapContainerComponent";
+import { MapComponent } from "./MapComponent";
 import { TimeSliderComponent } from "./TimeSliderComponent";
 import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
 import { useLocation } from "react-router";
