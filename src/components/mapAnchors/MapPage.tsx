@@ -29,7 +29,7 @@ export const MapPage = ({
   setShowViewAnchorIDs,
 }: MapPageProps) => {
   const { anchors } = useContext(AnchorContext);
-  const [highlightedAnchor, setHighlightedAnchor] = useState<DBAnchor | null>(null);
+  const [highlightedAnchor, setHighlightedAnchor] = useState<DBAnchor | undefined>();
   const [selectedDayFilter, setSelectedDayFilter] = useState<Date>(
     new Date("06/27/2025 12:00")
   );

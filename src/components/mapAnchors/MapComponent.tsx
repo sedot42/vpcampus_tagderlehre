@@ -44,7 +44,7 @@ export const MapComponent = ({
   setLocalAnchor: React.Dispatch<React.SetStateAction<DraftAnchor<Anchor>>>;
   setShowMapLocation: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
-  highlightedAnchor: DBAnchor | null;
+  highlightedAnchor: DBAnchor | undefined;
   setShowViewAnchorIDs: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const [showLayerControl, setShowLayerControl] = useState(false);
