@@ -147,11 +147,16 @@ export const AnchorCard = ({
               {
                 text: "Abbrechen",
                 role: "cancel",
+                handler: () => {
+                  setShowDeleteConfirm(false);
+                  setShowView(false);
+                },
               },
               {
                 text: "Löschen",
                 role: "confirm",
                 handler: () => {
+                  setShowDeleteConfirm(false);
                   if (anchorToDelete) deleteOneAnchor(anchorToDelete.id);
                   setShowView(false);
                   console.log("Delete", anchor.anchor_name);
