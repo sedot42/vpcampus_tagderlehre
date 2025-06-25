@@ -38,18 +38,6 @@ export const StatusHeader = ({ titleText }: StatusHeaderProps) => {
           style={{ marginLeft: "8px" }}
         />
         <HeaderTitle text={titleText} />
-
-        {/*{ {children ? (
-          children
-        ) : (
-          <TextButton
-            color="protored"
-            onClick={buttonOnClick}
-            routerLink={routerLink}
-            text={buttonText || "haha"}
-            style={{ minWidth: 100 }}
-          />
-        )} */}
       </div>
     </IonHeader>
   );
