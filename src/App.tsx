@@ -16,6 +16,7 @@ import {
   mapOutline,
   settingsOutline,
   gitNetworkOutline,
+  searchOutline,
 } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -179,7 +180,7 @@ const App: React.FC = () => {
               </IonTabButton>
 
               <IonTabButton tab="manageAnchors" href="/manageAnchors">
-                <IonIcon aria-hidden="true" icon={createOutline} size="large" />
+                <IonIcon aria-hidden="true" icon={searchOutline} size="large" />
                 <IonLabel>Ankerliste</IonLabel>
               </IonTabButton>
 
