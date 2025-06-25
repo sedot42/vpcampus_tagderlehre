@@ -78,10 +78,31 @@ const App: React.FC = () => {
     setOpenUpdateModal(true);
   };
 
+  // calculate basename dynamically
+  const routes = [
+    "calendarAnchors",
+    "calendarHeatmap",
+    "graphAnchor",
+    "semantics",
+    "mapAnchors",
+    "manageAnchors",
+    "settings",
+    "qrscanner",
+  ];
+  const pathSegments = window.location.pathname
+    .split("/")
+    .filter((segment) => segment !== "");
+  // check if pathname includes known routes
+  const basename = routes.reduce((_res, route) => {
+    const routeIdx = pathSegments.indexOf(route);
+    if (routeIdx >= 0) return "/" + pathSegments.slice(0, routeIdx).join("/");
+    else return _res;
+  }, window.location.pathname);
+
   return (
     <AnchorProvider>
       <IonApp>
-        <IonReactRouter>
+        <IonReactRouter basename={basename}>
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
