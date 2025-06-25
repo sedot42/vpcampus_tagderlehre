@@ -17,7 +17,7 @@ import { AnchorContext } from "../../anchorContext";
 import { Anchor, convertDBAnchorToFlatAnchor } from "../../types/types";
 import { useParams } from "react-router";
 
-export const ManageAnchorsComponent = ({
+export const ManageAnchorsPage = ({
   setShowCreate,
   setShowView,
   onOpenUpdateModal,

@@ -38,7 +38,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
 import { CalendarAnchorComponent } from "./components/calendarAnchors/CalendarAnchorComponent";
-import { ManageAnchorsComponent } from "./components/manageAnchors/ManageAnchorsComponent";
+import { ManageAnchorsPage } from "./components/manageAnchors/ManageAnchorsPage";
 import { CalendarHeatMapComponent } from "./components/timeAnchors/CalendarHeatMapComponent";
 
 import { SettingsComponent } from "./components/settings/SettingsComponent";
@@ -145,7 +145,7 @@ const App: React.FC = () => {
                 />
               </Route>
               <Route path="/manageAnchors">
-                <ManageAnchorsComponent
+                <ManageAnchorsPage
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
                   onOpenUpdateModal={handleOpenUpdateModal}
@@ -153,7 +153,7 @@ const App: React.FC = () => {
                 />
               </Route>
               <Route path="/manageAnchors/:id">
-                <ManageAnchorsComponent
+                <ManageAnchorsPage
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
                   onOpenUpdateModal={handleOpenUpdateModal}
