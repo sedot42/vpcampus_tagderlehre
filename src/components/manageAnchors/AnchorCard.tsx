@@ -28,12 +28,14 @@ export const AnchorCard = ({
   deleteOneAnchor,
   setShowView,
   onOpenUpdateModal,
+  basename,
 }: {
   anchor: DBAnchor;
   index: number;
   deleteOneAnchor: (anchor: DBAnchor["id"]) => void;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   onOpenUpdateModal: (anchorData: Anchor) => void;
+  basename: string;
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [anchorToDelete, setAnchorToDelete] = useState<DBAnchor>();
@@ -104,7 +106,7 @@ export const AnchorCard = ({
               console.log(window.location);
               navigator.clipboard.writeText(
                 new URL(
-                  `${window.location.origin}/${
+                  `${window.location.origin}${basename}${
                     anchor.lat ? "mapAnchors" : "manageAnchors"
                   }/${anchor.id}`
                 ).toString()

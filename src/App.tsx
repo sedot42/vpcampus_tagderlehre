@@ -149,6 +149,7 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
                   onOpenUpdateModal={handleOpenUpdateModal}
+                  basename={basename}
                 />
               </Route>
               <Route path="/manageAnchors/:id">
@@ -156,6 +157,7 @@ const App: React.FC = () => {
                   setShowCreate={setShowCreate}
                   setShowView={setShowView}
                   onOpenUpdateModal={handleOpenUpdateModal}
+                  basename={basename}
                 />
               </Route>
               <Route path="/settings">

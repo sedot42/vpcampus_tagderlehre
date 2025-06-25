@@ -21,10 +21,12 @@ export const ManageAnchorsComponent = ({
   setShowCreate,
   setShowView,
   onOpenUpdateModal,
+  basename,
 }: {
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   onOpenUpdateModal: (anchor: Anchor) => void;
+  basename: string;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   const params = useParams<{ id?: string }>();
@@ -61,6 +63,7 @@ export const ManageAnchorsComponent = ({
               deleteOneAnchor={deleteOneAnchor}
               setShowView={setShowView}
               onOpenUpdateModal={onOpenUpdateModal}
+              basename={basename}
             ></AnchorCard>
           )}
         />
