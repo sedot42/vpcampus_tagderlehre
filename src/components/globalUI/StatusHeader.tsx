@@ -4,6 +4,8 @@ import { HeaderTitle } from "./Titles";
 import { TextButton } from "./Buttons";
 import { BOXSHADOW, COLOR, HEIGHT } from "../../theme/settings";
 
+import FHNW_HABG_LOGO from "../../../public/assets/FHNW_HABG.svg";
+
 type StatusHeaderProps = {
   titleText: string;
   buttonText?: string;
@@ -12,13 +14,7 @@ type StatusHeaderProps = {
   children?: React.ReactElement;
 };
 
-export const StatusHeader = ({
-  buttonOnClick,
-  buttonText,
-  titleText,
-  routerLink,
-  children,
-}: StatusHeaderProps) => {
+export const StatusHeader = ({ titleText }: StatusHeaderProps) => {
   return (
     <IonHeader
       style={{
@@ -38,7 +34,7 @@ export const StatusHeader = ({
         <img
           alt="fhnw_log"
           height="24"
-          src="/assets/FHNW_HABG.svg"
+          src={FHNW_HABG_LOGO}
           style={{ marginLeft: "8px" }}
         />
         <HeaderTitle text={titleText} />
