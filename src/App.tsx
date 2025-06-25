@@ -212,6 +212,7 @@ const App: React.FC = () => {
               setShowView={setShowView}
               showViewAnchorIDs={showViewAnchorIDs}
               onOpenUpdateModal={handleOpenUpdateModal}
+              basename={basename}
             />
           )}
           {openUpdateModal && updateModalData && (

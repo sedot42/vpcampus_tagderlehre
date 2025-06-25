@@ -10,11 +10,13 @@ export const ViewAnchorModal = ({
   setShowView,
   showViewAnchorIDs,
   onOpenUpdateModal,
+  basename,
 }: {
   showView: boolean;
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   showViewAnchorIDs: string[];
   onOpenUpdateModal: (anchorData: Anchor) => void;
+  basename: string;
 }) => {
   const { anchors, deleteOneAnchor } = useContext(AnchorContext);
   // Reference of the viewModal
@@ -47,6 +49,7 @@ export const ViewAnchorModal = ({
                 deleteOneAnchor={deleteOneAnchor}
                 setShowView={setShowView}
                 onOpenUpdateModal={onOpenUpdateModal}
+                basename={basename}
               />
             ))}
         </IonList>
