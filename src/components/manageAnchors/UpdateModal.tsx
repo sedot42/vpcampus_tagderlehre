@@ -101,11 +101,21 @@ export const UpdateModal = ({
           </a>
         );
       });
-    } else {
+    } else if (key === "anchor_description") {
       inputElement = (
         <IonTextarea
           autoGrow={true}
-          rows={1}
+          label={key}
+          labelPlacement="floating"
+          value={value !== undefined && value !== null ? value.toString() : ""}
+          onIonInput={(e) => {
+            if (e.detail.value) handleChange(key, e.detail.value);
+          }}
+        />
+      );
+    } else {
+      inputElement = (
+        <IonInput
           label={key}
           labelPlacement="floating"
           value={value !== undefined && value !== null ? value.toString() : ""}
@@ -132,7 +142,7 @@ export const UpdateModal = ({
     >
       <IonHeader>
         <IonToolbar>
-          <IonTitle style={{ textAlign: "center" }}>Anker bearbeiten</IonTitle>
+          <IonTitle style={{ textAlign: "center" }}>{modalData.anchor_name}</IonTitle>
           <IonButton
             slot="end"
             fill="clear"
@@ -152,7 +162,11 @@ export const UpdateModal = ({
       </IonHeader>
       <IonContent className="ion-padding ion-text-wrap">
         {/* Render all fields */}
-        {fieldKeys.map((key) => renderField(key, modalData[key]))}
+        {fieldKeys.map((key) =>
+          !["anchor_name", "id", "lat", "lon", "alt"].includes(key)
+            ? renderField(key, modalData[key])
+            : null
+        )}
 
         <IonButton
           fill="clear"
