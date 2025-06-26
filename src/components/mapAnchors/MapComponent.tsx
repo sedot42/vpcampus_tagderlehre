@@ -20,7 +20,7 @@ import {
   IonList,
   IonRange,
 } from "@ionic/react";
-import { MapContainer, Marker, WMSTileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, WMSTileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { LocateControl } from "./LocateControl";
@@ -29,6 +29,17 @@ import { Anchor, DBAnchor, DraftAnchor } from "../../types/types";
 import { layersOutline } from "ionicons/icons";
 
 import { draftAnchor } from "../../types/defaults";
+
+const mapboxToken =
+  "sk.eyJ1Ijoic2Vkb3QiLCJhIjoiY21jZHh4bWRzMGxuNjJ3cXczY3AyamkzNCJ9.VSwQUP-iRxj-Y5dAzZ9JHg";
+
+const etagenplaeneToMapboxTilesetID: { [key: string]: string } = {
+  "1": "sedot.13z48iuc",
+  "2": "sedot.42a263zn",
+  "3": "sedot.2ashmqc7",
+  "4": "sedot.bj1ps9jr",
+  "5": "sedot.1p4x1xkx",
+};
 
 export const MapComponent = ({
   filteredAnchors,
@@ -269,18 +280,13 @@ export const MapComponent = ({
             attribution="<a href='https://www.geodienste.ch/'>geodienste.ch</a>"
           />
         )}
-
         {selectedLayer === "etagenplaene_image" && (
-          <WMSTileLayer
-            key={sliderValue}
-            url={
-              "https://qgiscloud.com/sedot/qgis_floorplans/wms?SERVICE=WMS&REQUEST=GetCapabilities"
-            }
-            layers={sliderValue.toString()}
-            format="image/png"
+          <TileLayer
+            url={`https://api.mapbox.com/v4/${
+              etagenplaeneToMapboxTilesetID[sliderValue.toString()]
+            }/{z}/{x}/{y}.webp?access_token=${mapboxToken}`}
             minZoom={7.5}
             maxZoom={22}
-            transparent={true}
           />
         )}
 
@@ -323,7 +329,7 @@ export const MapComponent = ({
                 ref={ref}
                 className="vertical-range"
                 min={1}
-                max={12}
+                max={5}
                 step={1}
                 ticks={true}
                 snaps={true}
