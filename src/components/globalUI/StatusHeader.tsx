@@ -4,7 +4,7 @@ import { HeaderTitle } from "./Titles";
 import { TextButton } from "./Buttons";
 import { BOXSHADOW, COLOR, HEIGHT } from "../../theme/settings";
 
-import FHNW_HABG_LOGO from "../../../public/assets/FHNW_HABG.svg";
+import FHNW_HABG_LOGO from "./FHNW_HABG.svg";
 
 type StatusHeaderProps = {
   titleText: string;
