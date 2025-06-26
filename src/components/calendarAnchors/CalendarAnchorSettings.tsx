@@ -41,7 +41,7 @@ export const viewsSettings = {
 
   timeGrid: {
     // Applies to all timeGrids
-    slotMinTime: "00:00:00",
+    slotMinTime: "06:00:00",
     slotMaxTime: "24:00:00",
     scrollTime: "08:00:00", // Initial Time at which the Calendar will be zoomed to
     nowIndicator: true,
@@ -75,7 +75,7 @@ export const buttonTextSettings = {
 export const businessHoursSettings = {
   daysOfWeek: [1, 2, 3, 4, 5], // Monday - Friday
   startTime: "08:00", // a start time
-  endTime: "18:00", // an end time
+  endTime: "17:00", // an end time
 };
 
 export const eventTimeFormatSetting: Intl.DateTimeFormatOptions = {

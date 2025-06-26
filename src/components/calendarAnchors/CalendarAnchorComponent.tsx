@@ -7,6 +7,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventInput } from "@fullcalendar/core";
+import deLocale from "@fullcalendar/core/locales/de";
 
 import { transformEvent } from "./CalendarAnchorTransform";
 import {
@@ -34,7 +35,7 @@ export const CalendarAnchorComponent = ({
   setShowView: React.Dispatch<React.SetStateAction<boolean>>;
   setShowViewAnchorID: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
-  const [displayWeekends, setDisplayWeekends] = useState(true);
+  const [displayWeekends, setDisplayWeekends] = useState(false);
   const { anchors } = useContext(AnchorContext);
 
   // Create reference to the calendar (Needs to be checked against 0)
@@ -80,21 +81,16 @@ export const CalendarAnchorComponent = ({
       <IonContent className="ion-padding" style={{ "--ion-color-primary": "black" }}>
         <FullCalendar
           ref={calendarRef}
-          locale="ch" // Time and Date formatting according to locale
+          locale={deLocale}
           events={anchors.map(transformEvent)} // Load and transform events
           height="100%"
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          //
+          firstDay={1}
           // Define Header Toolbar Elements
           headerToolbar={{
             right: "today prev,next",
-            left: "dayGridMonthCustom,timeGridWeekCustom,timeGridDay",
+            left: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
-          // Define Footer Toolbar Elements
-          footerToolbar={{
-            right: "",
-          }}
-          //
           // Define Views and Layout of Calendar
           views={{
             day: {
@@ -111,7 +107,7 @@ export const CalendarAnchorComponent = ({
             },
             ...viewsSettings, // Load all other settings from external file
           }}
-          initialView="timeGridWeekCustom"
+          initialView="timeGridWeek"
           weekNumbers={false} // We do not show week numbers as they overlap with other content and the position cannot be changed
           weekNumberCalculation={"ISO"} // For better display of Month labels in Month View
           weekends={displayWeekends}
