@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IonModal,
   IonHeader,
@@ -36,7 +36,10 @@ export const TimeSliderComponent = ({
   showToastAnchorNoPos: boolean;
   setShowToastAnchorNoPos: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(selectedDayFilter.toISOString()); // Added state for selectedDate
+  const [selectedDate, setSelectedDate] = useState(selectedDayFilter.toISOString());
+  // update selected date when upstream filter changes
+  useEffect(() => setSelectedDate(selectedDayFilter.toISOString()), [selectedDayFilter]);
+  console.log("Selected Date:", selectedDate);
   const modal = useRef<HTMLIonModalElement>(null);
 
   const defaultStartTime = 7;
