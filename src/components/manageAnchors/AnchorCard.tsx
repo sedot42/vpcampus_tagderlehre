@@ -85,7 +85,7 @@ export const AnchorCard = ({
           {anchor.lat && anchor.lon && (
             <IonButton
               onClick={(e) => e.stopPropagation()}
-              routerLink={`mapAnchors/${anchor.id}`}
+              href={`#/mapAnchors/${anchor.id}`}
             >
               <IonIcon icon={mapOutline} size="small" />
             </IonButton>
