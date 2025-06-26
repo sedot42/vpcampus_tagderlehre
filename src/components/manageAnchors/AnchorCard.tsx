@@ -103,10 +103,9 @@ export const AnchorCard = ({
           <IonButton
             onClick={(e) => {
               e.stopPropagation();
-              console.log(window.location);
               navigator.clipboard.writeText(
                 new URL(
-                  `${window.location.origin}${basename}${
+                  `${window.location.origin}${basename}#/${
                     anchor.lat ? "mapAnchors" : "manageAnchors"
                   }/${anchor.id}`
                 ).toString()
@@ -140,7 +139,7 @@ export const AnchorCard = ({
                 size={200}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                 value={new URL(
-                  `${window.location.origin}/${
+                  `${window.location.origin}${basename}#/${
                     anchor.lat ? "mapAnchors" : "manageAnchors"
                   }/${anchor.id}`
                 ).toString()}

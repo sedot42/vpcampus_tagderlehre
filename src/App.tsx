@@ -9,10 +9,9 @@ import {
   IonTabs,
   setupIonicReact,
 } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
+import { IonReactHashRouter, IonReactRouter } from "@ionic/react-router";
 import {
   calendarOutline,
-  createOutline,
   mapOutline,
   settingsOutline,
   gitNetworkOutline,
@@ -99,11 +98,13 @@ const App: React.FC = () => {
     if (routeIdx >= 0) return "/" + pathSegments.slice(0, routeIdx).join("/");
     else return _res;
   }, window.location.pathname);
+  console.log("basename", basename);
+  console.log("import.meta.env.BASE_URL", import.meta.env.BASE_URL);
 
   return (
     <AnchorProvider>
       <IonApp>
-        <IonReactRouter basename={basename}>
+        <IonReactHashRouter>
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/">
@@ -224,7 +225,7 @@ const App: React.FC = () => {
               setOpenUpdateModal={setOpenUpdateModal}
             />
           )}
-        </IonReactRouter>
+        </IonReactHashRouter>
       </IonApp>
     </AnchorProvider>
   );
