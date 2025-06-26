@@ -74,7 +74,7 @@ export const buttonTextSettings = {
 
 export const businessHoursSettings = {
   daysOfWeek: [1, 2, 3, 4, 5], // Monday - Friday
-  startTime: "08:00", // a start time
+  startTime: "09:00", // a start time
   endTime: "17:00", // an end time
 };
 
