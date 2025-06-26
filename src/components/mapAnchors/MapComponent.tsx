@@ -274,7 +274,7 @@ export const MapComponent = ({
           <WMSTileLayer
             key={sliderValue}
             url={
-              "https://qgiscloud.com/CaroBro97/qgis_floorplans/wms?SERVICE=WMS&REQUEST=GetCapabilities"
+              "https://qgiscloud.com/sedot/qgis_floorplans/wms?SERVICE=WMS&REQUEST=GetCapabilities"
             }
             layers={sliderValue.toString()}
             format="image/png"
